@@ -1,0 +1,23 @@
+{
+    "name": "syscover/booking",
+    "type": "library",
+    "version": "5.2",
+    "description": "Booking package",
+    "keywords": ["syscover","pulsar","laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SYSCOVER SL",
+            "email": "info@syscover.com"
+        }
+    ],
+    "require": {
+      "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Syscover\\Booking\\": "src/Syscover/Booking"
+        }
+    },
+    "minimum-stability": "dev"
+}
