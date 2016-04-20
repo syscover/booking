@@ -88,7 +88,7 @@
     ])
     @include('pulsar::includes.html.form_datetimepicker_group', [
         'fieldSize' => 4,
-        'label' => trans('pulsar::pulsar.date'),
+        'label' => trans_choice('pulsar::pulsar.date', 1),
         'name' => 'date',
         'data' => [
             'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
