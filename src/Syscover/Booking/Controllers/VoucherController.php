@@ -1,74 +1,26 @@
 <?php namespace Syscover\Booking\Controllers;
 
-use Syscover\Pulsar\Controllers\Controller;
-use Syscover\Pulsar\Traits\TraitController;
+use Syscover\Pulsar\Core\Controller;
+use Syscover\Booking\Models\Voucher;
 
 /**
  * Class VoucherController
  * @package Syscover\Crm\Controllers
  */
 
-class VoucherController extends Controller {
-
-    use TraitController;
-
-    protected $routeSuffix  = 'crmCustomer';
-    protected $folder       = 'customer';
-    protected $package      = 'crm';
-    protected $aColumns     = ['id_301', 'name_301', 'surname_301', ['data' => 'email_301', 'type' => 'email'], 'name_300', ['data' => 'active_301', 'type' => 'active'], ['data' => 'confirmed_301', 'type' => 'active']];
-    protected $nameM        = 'name_300';
-    protected $model        = Customer::class;
-    protected $icon         = 'fa fa-user';
-    protected $objectTrans  = 'customer';
-
-    public function customIndex($parameters)
-    {
-        // init record on tap 4
-        $parameters['urlParameters']['tab']     = 1;
-
-        return $parameters;
-    }
-
-    public function customActionUrlParameters($actionUrlParameters, $parameters)
-    {
-        $actionUrlParameters['tab'] = 1;
-
-        return $actionUrlParameters;
-    }
+class VoucherController extends Controller
+{
+    protected $routeSuffix  = 'bookingVoucher';
+    protected $folder       = 'voucher';
+    protected $package      = 'booking';
+    protected $aColumns     = ['id_220', 'code_220', 'name_220'];
+    protected $nameM        = 'name_220';
+    protected $model        = Voucher::class;
+    protected $icon         = 'fa fa-sort-alpha-asc';
+    protected $objectTrans  = 'voucher';
 
     public function createCustomRecord($parameters)
     {
-        $parameters['langs']        = Lang::all();
-
-        $parameters['groups']       = Group::all();
-
-        $parameters['genres']       = array_map(function($object) {
-            $object->name = trans($object->name);
-            return $object;
-        }, config('pulsar.genres'));
-
-        $parameters['treatments']   = array_map(function($object) {
-            $object->name = trans($object->name);
-            return $object;
-        }, config('pulsar.treatments'));
-
-        $parameters['states']       = array_map(function($object) {
-            $object->name = trans($object->name);
-            return $object;
-        }, config('pulsar.states'));
-
-        $parameters['attachmentFamilies']   = AttachmentFamily::getAttachmentFamilies(['resource_015' => 'cms-article']);
-        $parameters['attachmentsInput']     = json_encode([]);
-
-        if(isset($parameters['id']))
-        {
-            // get attachments from base lang
-            $attachments = AttachmentLibrary::getRecords($this->package, 'cms-article', $parameters['id'], session('baseLang')->id_001, true);
-
-            // merge parameters and attachments array
-            $parameters  = array_merge($parameters, $attachments);
-        }
-
         return $parameters;
     }
 
@@ -137,17 +89,6 @@ class VoucherController extends Controller {
         // merge parameters and attachments array
         $parameters['attachmentFamilies']   = AttachmentFamily::getAttachmentFamilies(['resource_015' => 'cms-article']);
         $parameters                         = array_merge($parameters, $attachments);
-
-        return $parameters;
-    }
-
-    public function checkSpecialRulesToUpdate($parameters)
-    {
-        $customer = Customer::builder()->find($parameters['id']);
-
-        $parameters['specialRules']['emailRule']    = $this->request->input('email') == $customer->email_301? true : false;
-        $parameters['specialRules']['userRule']     = $this->request->input('user') == $customer->user_301? true : false;
-        $parameters['specialRules']['passRule']     = ! $this->request->has('password');
 
         return $parameters;
     }

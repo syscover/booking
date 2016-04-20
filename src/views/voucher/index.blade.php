@@ -2,7 +2,7 @@
 
 @section('head')
     @parent
-    <!-- booking::families.index -->
+    <!-- booking::voucher.index -->
     <script>
         $(document).ready(function() {
             if ($.fn.dataTable)
@@ -21,16 +21,16 @@
             }
         });
     </script>
-    <!-- booking::families.index -->
+    <!-- booking::voucher.index -->
 @stop
 
 @section('tHead')
-    <!-- booking::families.index -->
+    <!-- booking::voucher.index -->
     <tr>
         <th data-hide="phone,tablet">ID.</th>
         <th data-class="expand">{{ trans('pulsar::pulsar.name') }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>
-    <!-- /booking::families.index -->
+    <!-- /.booking::voucher.index -->
 @stop
