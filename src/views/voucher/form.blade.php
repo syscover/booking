@@ -183,5 +183,22 @@
             ])
         </div>
     </div>
+
+    @if(isset($bulk) && $bulk == 1)
+        @include('pulsar::includes.html.form_section_header', [
+            'label' => trans('pulsar::pulsar.vouchers_bulk_create'),
+            'icon' => 'fa fa-bolt'
+        ])
+        @include('pulsar::includes.html.form_text_group', [
+            'fieldSize' => 3,
+            'type' => 'number',
+            'label' => trans('booking::pulsar.vouchers_number'),
+            'name' => 'bulkCreate',
+            'value' => old('bulkCreate'),
+            'min' => '1',
+            'max' => '1000',
+            'required' => true
+        ])
+    @endif
     <!-- /.booking::voucher.create -->
 @stop

@@ -24,6 +24,12 @@
     <!-- booking::voucher.index -->
 @stop
 
+@section('headButtons')
+    @if($viewParameters['newButton'])
+        <a class="btn margin-b10 margin-l10" href="{{ route('createBookingVoucher', ['offset' => 0, 'bulk' => 1]) }}"><i class="fa fa-bolt"></i> {{ trans('booking::pulsar.vouchers_bulk_create') }}</a>
+    @endif
+@stop
+
 @section('tHead')
     <!-- booking::voucher.index -->
     <tr>
