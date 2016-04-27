@@ -2,6 +2,7 @@
 
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Voucher;
+use Syscover\Market\Models\Product;
 
 /**
  * Class VoucherController
@@ -21,6 +22,8 @@ class VoucherController extends Controller
 
     public function createCustomRecord($parameters)
     {
+        $parameters['products'] = Product::builder()->where('lang_112', base_lang()->id_001)->get();
+
         return $parameters;
     }
 

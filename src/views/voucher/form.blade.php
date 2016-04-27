@@ -83,6 +83,22 @@
         'required' => true,
         'readOnly' => true
     ])
+    @include('pulsar::includes.html.form_select_group', [
+        'fieldSize' => 8,
+        'label' => trans_choice('market::pulsar.product', 1),
+        'name' => 'product',
+        'value' => (int)old('company', isset($object->company_078)? $object->company_078 : null),
+        'objects' => $products,
+        'idSelect' => 'id_111',
+        'nameSelect' => 'name_112',
+        'required' => true,
+        'class' => 'select2',
+        'data' => [
+            'language' => config('app.locale'),
+            'width' => '100%',
+            'error-placement' => 'select2-product-outer-container'
+        ]
+    ])
 
     @include('pulsar::includes.html.form_text_group', [
          'fieldSize' => 4,
@@ -106,31 +122,66 @@
         'name' => 'description',
         'value' => old('description', isset($object->description_220)? $object->description_220 : null)
     ])
-    @include('pulsar::includes.html.form_datetimepicker_group', [
-        'fieldSize' => 4,
-        'label' => trans('pulsar::pulsar.expire_date'),
-        'name' => 'expireDate',
-        'data' => [
-            'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
-            'locale' => config('app.locale'),
-            'default-date' => old('expireDate', isset($object->date_220)? date('Y-m-d', $object->date_220) : null)
-        ]
-    ])
-    @include('pulsar::includes.html.form_datetimepicker_group', [
-        'fieldSize' => 4,
-        'label' => trans('booking::pulsar.used_date'),
-        'name' => 'usedDate',
-        'data' => [
-            'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
-            'locale' => config('app.locale'),
-            'default-date' => old('usedDate', isset($object->used_date_220)? date('Y-m-d', $object->used_date_220) : null)
-        ]
-    ])
+    <div class="row">
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_datetimepicker_group', [
+                'labelSize' => 4,
+                'fieldSize' => 8,
+                'label' => trans('booking::pulsar.used_date'),
+                'name' => 'usedDate',
+                'data' => [
+                    'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                    'locale' => config('app.locale'),
+                    'default-date' => old('usedDate', isset($object->used_date_220)? date('Y-m-d', $object->used_date_220) : null)
+                ]
+            ])
+        </div>
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_datetimepicker_group', [
+                'labelSize' => 4,
+                'fieldSize' => 8,
+                'label' => trans('pulsar::pulsar.expire_date'),
+                'name' => 'expireDate',
+                'data' => [
+                    'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                    'locale' => config('app.locale'),
+                    'default-date' => old('expireDate', isset($object->date_220)? date('Y-m-d', $object->date_220) : null)
+                ]
+            ])
+        </div>
+    </div>
     @include('pulsar::includes.html.form_checkbox_group', [
         'label' => trans('pulsar::pulsar.active'),
         'name' => 'active',
         'value' => 1,
         'checked' => old('active', isset($object->active_220)? $object->active_220 : true)
     ])
+    <div class="row">
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_text_group', [
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'type' => 'number',
+                'label' => trans_choice('pulsar::pulsar.price', 1),
+                'name' => 'price',
+                'value' => old('price', isset($object->price_220)? $object->price_220 : null),
+                'maxLength' => '255',
+                'rangeLength' => '2,255',
+                'required' => true
+            ])
+        </div>
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_text_group', [
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'type' => 'number',
+                'label' => trans_choice('pulsar::pulsar.cost', 1),
+                'name' => 'cost',
+                'value' => old('cost', isset($object->cost_220)? $object->cost_220 : null),
+                'maxLength' => '255',
+                'rangeLength' => '2,255'
+            ])
+        </div>
+    </div>
     <!-- /.booking::voucher.create -->
 @stop
