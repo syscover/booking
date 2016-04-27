@@ -186,7 +186,7 @@
 
     @if(isset($bulk) && $bulk == 1)
         @include('pulsar::includes.html.form_section_header', [
-            'label' => trans('pulsar::pulsar.vouchers_bulk_create'),
+            'label' => trans('booking::pulsar.vouchers_bulk_create'),
             'icon' => 'fa fa-bolt'
         ])
         @include('pulsar::includes.html.form_text_group', [
