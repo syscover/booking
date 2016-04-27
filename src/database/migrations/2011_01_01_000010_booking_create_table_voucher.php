@@ -21,8 +21,8 @@ class BookingCreateTableVoucher extends Migration {
 			$table->string('data_text_220');
 			$table->integer('customer_220')->nullable()->unsigned(); // customer that is related this voucher
 			$table->integer('product_220')->nullable()->unsigned(); // product that is related this voucher
-			$table->string('name_220')->nullable();
-			$table->text('description_220')->nullable();
+			$table->string('name_220')->nullable(); // name of voucher
+			$table->text('description_220')->nullable(); // description of voucher
 			$table->decimal('cost_220', 10, 2)->nullable(); // hotel price
 			$table->decimal('price_220', 10, 2)->nullable(); // public price
 			$table->integer('used_date_220')->unsigned()->nullable(); // used date

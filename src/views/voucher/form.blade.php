@@ -10,12 +10,27 @@
     <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('packages/syscover/pulsar/vendor/jquery.magnific-popup/jquery.magnific-popup.min.js') }}"></script>
 
+    @include('pulsar::includes.html.froala_references')
+
     <script>
         $(document).ready(function() {
             $('.magnific-popup').magnificPopup({
                 type: 'iframe',
                 removalDelay: 300,
                 mainClass: 'mfp-fade'
+            })
+
+            $('.wysiwyg').froalaEditor({
+                language: '{{ config('app.locale') }}',
+                toolbarInline: false,
+                toolbarSticky: true,
+                tabSpaces: true,
+                shortcutsEnabled: ['show', 'bold', 'italic', 'underline', 'strikeThrough', 'indent', 'outdent', 'undo', 'redo', 'insertImage', 'createLink'],
+                toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'insertHR', 'insertLink', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'],
+                toolbarButtonsMD: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'insertHR', 'insertLink', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'],
+                heightMin: 130,
+                enter: $.FroalaEditor.ENTER_BR,
+                key: '{{ config('pulsar.froalaEditorKey') }}'
             })
         })
 
@@ -86,15 +101,36 @@
         'rangeLength' => '2,255',
         'required' => true
     ])
+    @include('pulsar::includes.html.form_wysiwyg_group', [
+        'label' => trans_choice('pulsar::pulsar.description', 1),
+        'name' => 'description',
+        'value' => old('description', isset($object->description_220)? $object->description_220 : null)
+    ])
     @include('pulsar::includes.html.form_datetimepicker_group', [
         'fieldSize' => 4,
-        'label' => trans_choice('pulsar::pulsar.date', 1),
-        'name' => 'date',
+        'label' => trans('pulsar::pulsar.expire_date'),
+        'name' => 'expireDate',
         'data' => [
             'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
             'locale' => config('app.locale'),
-            'default-date' => old('date', isset($object->date_220)? date('Y-m-d', $object->date_220) : null)
+            'default-date' => old('expireDate', isset($object->date_220)? date('Y-m-d', $object->date_220) : null)
         ]
+    ])
+    @include('pulsar::includes.html.form_datetimepicker_group', [
+        'fieldSize' => 4,
+        'label' => trans('booking::pulsar.used_date'),
+        'name' => 'usedDate',
+        'data' => [
+            'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+            'locale' => config('app.locale'),
+            'default-date' => old('usedDate', isset($object->used_date_220)? date('Y-m-d', $object->used_date_220) : null)
+        ]
+    ])
+    @include('pulsar::includes.html.form_checkbox_group', [
+        'label' => trans('pulsar::pulsar.active'),
+        'name' => 'active',
+        'value' => 1,
+        'checked' => old('active', isset($object->active_220)? $object->active_220 : true)
     ])
     <!-- /.booking::voucher.create -->
 @stop
