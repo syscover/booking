@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBookingTable extends Migration {
+class CreateFamilyTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateBookingTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('011_221_booking', function(Blueprint $table)
+		Schema::create('011_223_family', function(Blueprint $table)
 		{
             $table->engine = 'InnoDB';
-            $table->increments('id_221')->unsigned();
-            $table->string('name_221', 50);
+            $table->increments('id_223')->unsigned();
+            $table->string('name_223');
 		});
 	}
 
@@ -27,7 +27,7 @@ class CreateBookingTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('011_220_family');
+		Schema::drop('011_223_family');
 	}
 
 }
