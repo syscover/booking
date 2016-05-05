@@ -21,6 +21,11 @@ class BookingServiceProvider extends ServiceProvider
         // register translations
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'booking');
 
+		// register config files
+		$this->publishes([
+			__DIR__ . '/../../config/booking.php' 			=> config_path('booking.php')
+		]);
+
         // register migrations
         $this->publishes([
             __DIR__ . '/../../database/migrations/' 		=> base_path('/database/migrations'),

@@ -12,13 +12,16 @@ class BookingCreateTablePlace extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('011_220_place', function(Blueprint $table)
+		// Types of places that can be reserved
+		if(! Schema::hasTable('011_220_place'))
 		{
-            $table->engine = 'InnoDB';
-            $table->increments('id_220')->unsigned();
-            $table->string('name_220');
-			$table->string('model_220');			// model to do queries
-		});
+			Schema::create('011_220_place', function (Blueprint $table) {
+				$table->engine = 'InnoDB';
+				$table->increments('id_220')->unsigned();
+				$table->smallInteger('model_220')->unsigned();	// model to do queries
+				$table->string('name_220');
+			});
+		}
 	}
 
 	/**
@@ -28,7 +31,9 @@ class BookingCreateTablePlace extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('011_220_campaign');
+		if(Schema::hasTable('011_220_place'))
+		{
+			Schema::drop('011_220_place');
+		}
 	}
-
 }
