@@ -43,10 +43,19 @@ class BookingCreateTableVoucher extends Migration {
 			$table->integer('used_date_222')->unsigned()->nullable(); // used date
 			$table->string('used_date_text_222')->nullable();
 
-			$table->integer('place_type_id_223')->unsigned(); // hotel, bodega, spa...
-			$table->integer('place_id_223')->unsigned(); // ID del hotel, bodega, spa...
+			$table->integer('place_id_223')->unsigned(); // hotel, bodega, spa... foreign key from 011_220_place
+			$table->integer('object_id_223')->unsigned(); // ID del hotel, bodega, spa...
 			
 			$table->boolean('active_222');
+
+			$table->foreign('campaign_id_222', 'fk01_011_222_voucher')->references('id_221')->on('011_221_campaign')
+				->onDelete('set null')->onUpdate('cascade');
+			$table->foreign('product_id_222', 'fk02_011_222_voucher')->references('id_111')->on('012_111_product')
+				->onDelete('set null')->onUpdate('cascade');
+			$table->foreign('customer_id_222', 'fk03_011_222_voucher')->references('id_301')->on('009_301_customer')
+				->onDelete('set null')->onUpdate('cascade');
+			$table->foreign('place_id_223', 'fk04_011_222_voucher')->references('id_220')->on('011_220_place')
+				->onDelete('restrict')->onUpdate('cascade');
 		});
 	}
 
