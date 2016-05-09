@@ -20,7 +20,19 @@ Route::group(['middleware' => ['web', 'pulsar']], function() {
     Route::any(config('pulsar.appName') . '/booking/customer/modal/{offset}/{modal}',            ['as'=>'modalBookingCustomer',             'uses'=>'Syscover\Crm\Controllers\CustomerController@index',                         'resource' => 'booking-voucher',       'action' => 'access']);
 
 
-
+    /*
+    |--------------------------------------------------------------------------
+    | CAMPAIGNS
+    |--------------------------------------------------------------------------
+    */
+    Route::any(config('pulsar.appName') . '/booking/campaigns/{offset?}',                          ['as'=>'bookingCampaign',                   'uses'=>'Syscover\Booking\Controllers\CampaignController@index',                      'resource' => 'booking-campaign',       'action' => 'access']);
+    Route::any(config('pulsar.appName') . '/booking/campaigns/json/data',                          ['as'=>'jsonDataBookingCampaign',           'uses'=>'Syscover\Booking\Controllers\CampaignController@jsonData',                   'resource' => 'booking-campaign',       'action' => 'access']);
+    Route::get(config('pulsar.appName') . '/booking/campaigns/create/{offset}',                    ['as'=>'createBookingCampaign',             'uses'=>'Syscover\Booking\Controllers\CampaignController@createRecord',               'resource' => 'booking-campaign',       'action' => 'create']);
+    Route::post(config('pulsar.appName') . '/booking/campaigns/store/{offset}',                    ['as'=>'storeBookingCampaign',              'uses'=>'Syscover\Booking\Controllers\CampaignController@storeRecord',                'resource' => 'booking-campaign',       'action' => 'create']);
+    Route::get(config('pulsar.appName') . '/booking/campaigns/{id}/edit/{offset}',                 ['as'=>'editBookingCampaign',               'uses'=>'Syscover\Booking\Controllers\CampaignController@editRecord',                 'resource' => 'booking-campaign',       'action' => 'access']);
+    Route::put(config('pulsar.appName') . '/booking/campaigns/update/{id}/{offset}',               ['as'=>'updateBookingCampaign',             'uses'=>'Syscover\Booking\Controllers\CampaignController@updateRecord',               'resource' => 'booking-campaign',       'action' => 'edit']);
+    Route::get(config('pulsar.appName') . '/booking/campaigns/delete/{id}/{offset}',               ['as'=>'deleteBookingCampaign',             'uses'=>'Syscover\Booking\Controllers\CampaignController@deleteRecord',               'resource' => 'booking-campaign',       'action' => 'delete']);
+    Route::delete(config('pulsar.appName') . '/booking/campaigns/delete/select/records',           ['as'=>'deleteSelectBookingCampaign',       'uses'=>'Syscover\Booking\Controllers\CampaignController@deleteRecordsSelect',        'resource' => 'booking-campaign',       'action' => 'delete']);
 
     /*
     |--------------------------------------------------------------------------

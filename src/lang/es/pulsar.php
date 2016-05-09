@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    'campaign'                              => 'Campaña|Campañas',
     'package_name'                          => 'Booking',
     'place'                                 => 'Sitio|Sitios',
     'voucher'                               => 'Voucher|Vouchers',

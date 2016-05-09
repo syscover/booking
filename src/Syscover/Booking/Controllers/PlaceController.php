@@ -5,7 +5,7 @@ use Syscover\Booking\Models\Place;
 
 /**
  * Class PlaceController
- * @package Syscover\Crm\Controllers
+ * @package Syscover\Booking\Controllers
  */
 
 class PlaceController extends Controller
