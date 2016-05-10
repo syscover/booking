@@ -18,7 +18,7 @@
                 type: 'iframe',
                 removalDelay: 300,
                 mainClass: 'mfp-fade'
-            })
+            });
 
             $('.wysiwyg').froalaEditor({
                 language: '{{ config('app.locale') }}',
@@ -31,15 +31,38 @@
                 heightMin: 130,
                 enter: $.FroalaEditor.ENTER_BR,
                 key: '{{ config('pulsar.froalaEditorKey') }}'
-            })
-        })
+            });
+
+            $('[name=product]').on('change', function () {
+                if($(this).val() == '')
+                {
+                    $('[name=price]').val('');
+                }
+                else
+                {
+                    var url = '{{ route('apiShowMarketProduct', ['lang' => base_lang()->id_001, 'id' => '%id%', 'api' => 1]) }}';
+                    $.ajax({
+                        type: "POST",
+                        url: url.replace('%id%', $(this).val()),
+                        dataType: 'json',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        success: function(data)
+                        {
+                            $('[name=price]').val(data.price_111);
+                            $('[name=name]').val(data.name_112);
+                            $('[name=description]').froalaEditor('html.set', data.description_112);
+                        }
+                    });
+                }
+            });
+        });
 
         function relatedCustomer(data)
         {
-            $('[name="customer"]').val(data.name_301 + ' ' + data.surname_301)
-            $('[name="customerId"]').val(data.id_301)
+            $('[name="customer"]').val(data.name_301 + ' ' + data.surname_301);
+            $('[name="customerId"]').val(data.id_301);
 
-            $.magnificPopup.close()
+            $.magnificPopup.close();
         }
     </script>
     <!-- /.booking::voucher.create -->
@@ -54,7 +77,7 @@
                 'fieldSize' => 4,
                 'label' => 'ID',
                 'name' => 'id',
-                'value' => old('id', isset($object->id_220)? $object->id_220 : null),
+                'value' => old('id', isset($object->id_222)? $object->id_222 : null),
                 'readOnly' => true
             ])
         </div>
@@ -64,19 +87,19 @@
                 'fieldSize' => 6,
                 'label' => trans_choice('pulsar::pulsar.date', 1),
                 'name' => 'date',
-                'value' => isset($object->date_text_220)? $object->date_text_220 : date(config('pulsar.datePattern')),
+                'value' => isset($object->date_text_222)? $object->date_text_222 : date(config('pulsar.datePattern')),
                 'readOnly' => true,
             ])
         </div>
     </div>
     @include('pulsar::includes.html.form_select_group', [
-        'fieldSize' => 8,
-        'label' => trans_choice('market::pulsar.product', 1),
-        'name' => 'product',
-        'value' => (int)old('company', isset($object->company_078)? $object->company_078 : null),
+        'fieldSize' => 4,
+        'label' => trans_choice('booking::pulsar.campaign', 1),
+        'name' => 'campaign',
+        'value' => (int)old('campaign', isset($object->campaign_id_222)? $object->campaign_id_222 : null),
         'objects' => $campaigns,
-        'idSelect' => 'id_111',
-        'nameSelect' => 'name_112',
+        'idSelect' => 'id_221',
+        'nameSelect' => 'name_221',
         'required' => true,
         'class' => 'select2',
         'data' => [
@@ -89,7 +112,7 @@
         'label' => trans_choice('pulsar::pulsar.customer', 1),
         'name' => 'customer',
         'value' => old('customer', isset($object->name_076)? $object->name_076 : null),
-        'valueId' => old('customerId', isset($object->customer_220)? $object->customer_220 : null),
+        'valueId' => old('customerId', isset($object->customer_222)? $object->customer_222 : null),
         'maxLength' => '255',
         'rangeLength' => '2,255',
         'modalUrl' => route('crmCustomer', [
@@ -100,10 +123,10 @@
         'readOnly' => true
     ])
     @include('pulsar::includes.html.form_select_group', [
-        'fieldSize' => 8,
+        'fieldSize' => 4,
         'label' => trans_choice('market::pulsar.product', 1),
         'name' => 'product',
-        'value' => (int)old('company', isset($object->company_078)? $object->company_078 : null),
+        'value' => (int)old('product', isset($object->product_id_222)? $object->product_id_222 : null),
         'objects' => $products,
         'idSelect' => 'id_111',
         'nameSelect' => 'name_112',
@@ -120,7 +143,7 @@
          'fieldSize' => 4,
         'label' => trans('pulsar::pulsar.code'),
         'name' => 'code',
-        'value' => old('code', isset($object->code_220)? $object->code_220 : null),
+        'value' => old('code', isset($object->code_222)? $object->code_222 : null),
         'maxLength' => '255',
         'rangeLength' => '2,255',
         'required' => true
@@ -128,7 +151,7 @@
     @include('pulsar::includes.html.form_text_group', [
         'label' => trans('pulsar::pulsar.name'),
         'name' => 'name',
-        'value' => old('name', isset($object->name_220)? $object->name_220 : null),
+        'value' => old('name', isset($object->name_222)? $object->name_222 : null),
         'maxLength' => '255',
         'rangeLength' => '2,255',
         'required' => true
@@ -136,7 +159,7 @@
     @include('pulsar::includes.html.form_wysiwyg_group', [
         'label' => trans_choice('pulsar::pulsar.description', 1),
         'name' => 'description',
-        'value' => old('description', isset($object->description_220)? $object->description_220 : null)
+        'value' => old('description', isset($object->description_222)? $object->description_222 : null)
     ])
     <div class="row">
         <div class="col-md-6">
@@ -148,7 +171,7 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale'),
-                    'default-date' => old('usedDate', isset($object->used_date_220)? date('Y-m-d', $object->used_date_220) : null)
+                    'default-date' => old('usedDate', isset($object->used_date_222)? date('Y-m-d', $object->used_date_222) : null)
                 ]
             ])
         </div>
@@ -161,17 +184,11 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale'),
-                    'default-date' => old('expireDate', isset($object->date_220)? date('Y-m-d', $object->date_220) : null)
+                    'default-date' => old('expireDate', isset($object->date_222)? date('Y-m-d', $object->date_222) : null)
                 ]
             ])
         </div>
     </div>
-    @include('pulsar::includes.html.form_checkbox_group', [
-        'label' => trans('pulsar::pulsar.active'),
-        'name' => 'active',
-        'value' => 1,
-        'checked' => old('active', isset($object->active_220)? $object->active_220 : true)
-    ])
     <div class="row">
         <div class="col-md-6">
             @include('pulsar::includes.html.form_text_group', [
@@ -180,7 +197,7 @@
                 'type' => 'number',
                 'label' => trans_choice('pulsar::pulsar.price', 1),
                 'name' => 'price',
-                'value' => old('price', isset($object->price_220)? $object->price_220 : null),
+                'value' => old('price', isset($object->price_222)? $object->price_222 : null),
                 'maxLength' => '255',
                 'rangeLength' => '2,255',
                 'required' => true
@@ -193,12 +210,18 @@
                 'type' => 'number',
                 'label' => trans_choice('pulsar::pulsar.cost', 1),
                 'name' => 'cost',
-                'value' => old('cost', isset($object->cost_220)? $object->cost_220 : null),
+                'value' => old('cost', isset($object->cost_222)? $object->cost_222 : null),
                 'maxLength' => '255',
                 'rangeLength' => '2,255'
             ])
         </div>
     </div>
+    @include('pulsar::includes.html.form_checkbox_group', [
+       'label' => trans('pulsar::pulsar.active'),
+       'name' => 'active',
+       'value' => 1,
+       'checked' => old('active', isset($object->active_222)? $object->active_222 : true)
+   ])
 
     @if(isset($bulk) && $bulk == 1)
         @include('pulsar::includes.html.form_section_header', [

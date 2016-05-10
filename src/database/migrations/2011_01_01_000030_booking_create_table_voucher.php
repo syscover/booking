@@ -23,16 +23,16 @@ class BookingCreateTableVoucher extends Migration {
 
 			// ID de campaña
 			$table->integer('campaign_id_222')->nullable()->unsigned();
-			
-			$table->string('code_222')->nullable();
+
+			$table->integer('customer_id_222')->nullable()->unsigned(); // customer who buy the voucher
+			$table->string('invoice_222')->nullable(); // invoice number where this voucher has been invoiced
+
 			$table->integer('product_id_222')->nullable()->unsigned(); // product that is related this voucher
+			$table->string('prefix_code_222')->nullable(); //prefix voucher code
 
 			$table->string('name_222')->nullable(); // name of voucher
 			$table->text('description_222')->nullable(); // description of voucher
-			
-			$table->integer('customer_id_222')->nullable()->unsigned(); // customer who buy the voucher
-			$table->string('invoice_222')->nullable(); // invoice number where this voucher has been invoiced
-			
+
 			$table->decimal('price_222', 10, 2)->nullable(); // public price
 			$table->decimal('cost_222', 10, 2)->nullable(); // hotel price
 
