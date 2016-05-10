@@ -1,5 +1,6 @@
 <?php namespace Syscover\Booking\Controllers;
 
+use Syscover\Booking\Models\Campaign;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Voucher;
 use Syscover\Market\Models\Product;
@@ -14,15 +15,16 @@ class VoucherController extends Controller
     protected $routeSuffix  = 'bookingVoucher';
     protected $folder       = 'voucher';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_220', 'code_220', 'name_220'];
-    protected $nameM        = 'name_220';
+    protected $aColumns     = ['id_222', 'code_222', 'name_222'];
+    protected $nameM        = 'name_222';
     protected $model        = Voucher::class;
     protected $icon         = 'fa fa-sort-alpha-asc';
     protected $objectTrans  = 'voucher';
 
     public function createCustomRecord($parameters)
     {
-        $parameters['products'] = Product::builder()->where('lang_112', base_lang()->id_001)->get();
+        $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
+        $parameters['products']     = Product::builder()->where('lang_112', base_lang()->id_001)->get();
 
         return $parameters;
     }

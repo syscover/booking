@@ -69,6 +69,22 @@
             ])
         </div>
     </div>
+    @include('pulsar::includes.html.form_select_group', [
+        'fieldSize' => 8,
+        'label' => trans_choice('market::pulsar.product', 1),
+        'name' => 'product',
+        'value' => (int)old('company', isset($object->company_078)? $object->company_078 : null),
+        'objects' => $campaigns,
+        'idSelect' => 'id_111',
+        'nameSelect' => 'name_112',
+        'required' => true,
+        'class' => 'select2',
+        'data' => [
+            'language' => config('app.locale'),
+            'width' => '100%',
+            'error-placement' => 'select2-product-outer-container'
+        ]
+    ])
     @include('pulsar::includes.html.form_iframe_select_group', [
         'label' => trans_choice('pulsar::pulsar.customer', 1),
         'name' => 'customer',
