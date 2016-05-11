@@ -1,4 +1,4 @@
-<li{!! is_current_resource(['booking-place','booking-voucher','booking-campaign']) !!}>
+<li{!! is_current_resource(['booking-place','booking-voucher','booking-campaign','booking-product-prefix','booking-family']) !!}>
     <a href="javascript:void(0)"><i class="fa fa-book"></i>Booking</a>
     <ul class="sub-menu">
         @if(is_allowed('booking-voucher', 'access'))
@@ -6,11 +6,14 @@
         @endif
 
         @if(is_allowed('booking-master-tables', 'access'))
-            <li{!! is_current_resource(['booking-campaign','booking-place','booking-product-prefix'], true) !!}>
+            <li{!! is_current_resource(['booking-campaign','booking-place','booking-product-prefix','booking-family'], true) !!}>
                 <a href="javascript:void(0)"><i class="icomoon-icon-grid"></i>{{ trans('pulsar::pulsar.master_tables') }}</a>
                 <ul class="sub-menu" >
                     @if(is_allowed('booking-campaign', 'access'))
                         <li{!! is_current_resource('booking-campaign') !!}><a href="{{ route('bookingCampaign') }}"><i class="fa fa-bookmark"></i>{{ trans_choice('booking::pulsar.campaign', 2) }}</a></li>
+                    @endif
+                    @if(is_allowed('booking-family', 'access'))
+                        <li{!! is_current_resource('booking-family') !!}><a href="{{ route('bookingFamily') }}"><i class="fa fa-align-justify"></i>{{ trans_choice('pulsar::pulsar.family', 2) }}</a></li>
                     @endif
                     @if(is_allowed('booking-place', 'access'))
                         <li{!! is_current_resource('booking-place') !!}><a href="{{ route('bookingPlace') }}"><i class="fa fa-map-marker"></i>{{ trans_choice('booking::pulsar.place', 2) }}</a></li>

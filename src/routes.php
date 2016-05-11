@@ -19,10 +19,24 @@ Route::group(['middleware' => ['web', 'pulsar']], function() {
 
     Route::any(config('pulsar.appName') . '/booking/customer/modal/{offset}/{modal}',            ['as'=>'modalBookingCustomer',             'uses'=>'Syscover\Crm\Controllers\CustomerController@index',                         'resource' => 'booking-voucher',       'action' => 'access']);
 
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCT PREFIX
+    |--------------------------------------------------------------------------
+    */
+    Route::any(config('pulsar.appName') . '/booking/family/{offset?}',                          ['as'=>'bookingFamily',                   'uses'=>'Syscover\Booking\Controllers\FamilyController@index',                      'resource' => 'booking-family',       'action' => 'access']);
+    Route::any(config('pulsar.appName') . '/booking/family/json/data',                          ['as'=>'jsonDataBookingFamily',           'uses'=>'Syscover\Booking\Controllers\FamilyController@jsonData',                   'resource' => 'booking-family',       'action' => 'access']);
+    Route::get(config('pulsar.appName') . '/booking/family/create/{offset}',                    ['as'=>'createBookingFamily',             'uses'=>'Syscover\Booking\Controllers\FamilyController@createRecord',               'resource' => 'booking-family',       'action' => 'create']);
+    Route::post(config('pulsar.appName') . '/booking/family/store/{offset}',                    ['as'=>'storeBookingFamily',              'uses'=>'Syscover\Booking\Controllers\FamilyController@storeRecord',                'resource' => 'booking-family',       'action' => 'create']);
+    Route::get(config('pulsar.appName') . '/booking/family/{id}/edit/{offset}',                 ['as'=>'editBookingFamily',               'uses'=>'Syscover\Booking\Controllers\FamilyController@editRecord',                 'resource' => 'booking-family',       'action' => 'access']);
+    Route::put(config('pulsar.appName') . '/booking/family/update/{id}/{offset}',               ['as'=>'updateBookingFamily',             'uses'=>'Syscover\Booking\Controllers\FamilyController@updateRecord',               'resource' => 'booking-family',       'action' => 'edit']);
+    Route::get(config('pulsar.appName') . '/booking/family/delete/{id}/{offset}',               ['as'=>'deleteBookingFamily',             'uses'=>'Syscover\Booking\Controllers\FamilyController@deleteRecord',               'resource' => 'booking-family',       'action' => 'delete']);
+    Route::delete(config('pulsar.appName') . '/booking/family/delete/select/records',           ['as'=>'deleteSelectBookingFamily',       'uses'=>'Syscover\Booking\Controllers\FamilyController@deleteRecordsSelect',        'resource' => 'booking-family',       'action' => 'delete']);
+
 
     /*
     |--------------------------------------------------------------------------
-    | PRODUCT PREFEX
+    | PRODUCT PREFIX
     |--------------------------------------------------------------------------
     */
     Route::any(config('pulsar.appName') . '/booking/products/prefix/{offset?}',                          ['as'=>'bookingProductPrefix',                   'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@index',                      'resource' => 'booking-product-prefix',       'action' => 'access']);

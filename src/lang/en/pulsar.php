@@ -2,6 +2,7 @@
 
 return [
     'campaign'                              => 'Campaign|Campaigns',
+    'mail_template'                         => 'Mail template',
     'package_name'                          => 'Booking',
     'place'                                 => 'Place|Places',
     'product_prefix'                        => 'Product prefix|Products prefix',

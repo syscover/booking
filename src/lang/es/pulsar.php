@@ -2,6 +2,7 @@
 
 return [
     'campaign'                              => 'Campaña|Campañas',
+    'mail_template'                         => 'Plantilla de email',
     'package_name'                          => 'Booking',
     'place'                                 => 'Sitio|Sitios',
     'product_prefix'                        => 'Prefijo de producto|Prefijos de productos',

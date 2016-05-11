@@ -1,7 +1,8 @@
 <?php namespace Syscover\Booking\Controllers;
 
+use Syscover\Market\Models\Product;
 use Syscover\Pulsar\Core\Controller;
-use Syscover\Booking\Models\Campaign;
+use Syscover\Booking\Models\ProductPrefix;
 
 /**
  * Class ProductPrefixController
@@ -13,25 +14,45 @@ class ProductPrefixController extends Controller
     protected $routeSuffix  = 'bookingProductPrefix';
     protected $folder       = 'product_prefix';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_221', 'name_221', ['data' => 'active_221', 'type' => 'active']];
+    protected $aColumns     = ['product_id_222', 'name_112', 'prefix_222'];
     protected $nameM        = 'name_221';
-    protected $model        = Campaign::class;
-    protected $icon         = 'fa fa-bookmark';
-    protected $objectTrans  = 'campaign';
+    protected $model        = ProductPrefix::class;
+    protected $icon         = 'fa fa-barcode';
+    protected $objectTrans  = 'product_prefix';
+
+    public function createCustomRecord($parameters)
+    {
+        $productRecords = ProductPrefix::builder()->get(['product_id_222']);
+        
+        $parameters['products'] = Product::builder()
+            ->where('lang_112', base_lang()->id_001)
+            ->whereNotIn('id_111', $productRecords)
+            ->get();
+        
+        return $parameters;
+    }
     
     public function storeCustomRecord($parameters)
     {
-        Campaign::create([
-            'name_221'      => $this->request->input('name'),
-            'active_221'    => $this->request->has('active')
+        ProductPrefix::create([
+            'product_id_222'    => $this->request->input('product'),
+            'prefix_222'        => $this->request->input('prefix')
         ]);
+    }
+
+    public function editCustomRecord($parameters)
+    {
+        $parameters['products'] = Product::builder()
+            ->where('lang_112', base_lang()->id_001)
+            ->get();
+
+        return $parameters;
     }
 
     public function updateCustomRecord($parameters)
     {
-        Campaign::where('id_221', $parameters['id'])->update([
-            'name_221'      => $this->request->input('name'),
-            'active_221'    => $this->request->has('active')
+        ProductPrefix::where('product_id_222', $parameters['id'])->update([
+            'prefix_222'        => $this->request->input('prefix')
         ]);
     }
 }

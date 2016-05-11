@@ -17,6 +17,7 @@ class BookingCreateTablePlace extends Migration {
 		{
 			Schema::create('011_220_place', function (Blueprint $table) {
 				$table->engine = 'InnoDB';
+				
 				$table->increments('id_220')->unsigned();
 				$table->smallInteger('model_220')->unsigned();	// model to do queries
 				$table->string('name_220');
