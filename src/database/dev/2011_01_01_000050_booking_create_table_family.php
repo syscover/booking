@@ -12,12 +12,14 @@ class CreateFamilyTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('011_223_family', function(Blueprint $table)
+		if(! Schema::hasTable('011_224_family')) 
 		{
-            $table->engine = 'InnoDB';
-            $table->increments('id_223')->unsigned();
-            $table->string('name_223');
-		});
+			Schema::create('011_224_family', function (Blueprint $table) {
+				$table->engine = 'InnoDB';
+				$table->primary('id_224')->unsigned();
+				$table->string('name_224');
+			});
+		}
 	}
 
 	/**
@@ -27,7 +29,9 @@ class CreateFamilyTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('011_223_family');
+		if(Schema::hasTable('011_224_family')) 
+		{
+			Schema::drop('011_224_family');
+		}
 	}
-
 }

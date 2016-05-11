@@ -35,5 +35,4 @@ class BookingCreateTableCampaign extends Migration {
 			Schema::drop('011_221_campaign');
 		}
 	}
-
 }
