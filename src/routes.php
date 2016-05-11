@@ -22,6 +22,21 @@ Route::group(['middleware' => ['web', 'pulsar']], function() {
 
     /*
     |--------------------------------------------------------------------------
+    | PRODUCT PREFEX
+    |--------------------------------------------------------------------------
+    */
+    Route::any(config('pulsar.appName') . '/booking/products/prefix/{offset?}',                          ['as'=>'bookingProductPrefix',                   'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@index',                      'resource' => 'booking-product-prefix',       'action' => 'access']);
+    Route::any(config('pulsar.appName') . '/booking/products/prefix/json/data',                          ['as'=>'jsonDataBookingProductPrefix',           'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@jsonData',                   'resource' => 'booking-product-prefix',       'action' => 'access']);
+    Route::get(config('pulsar.appName') . '/booking/products/prefix/create/{offset}',                    ['as'=>'createBookingProductPrefix',             'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@createRecord',               'resource' => 'booking-product-prefix',       'action' => 'create']);
+    Route::post(config('pulsar.appName') . '/booking/products/prefix/store/{offset}',                    ['as'=>'storeBookingProductPrefix',              'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@storeRecord',                'resource' => 'booking-product-prefix',       'action' => 'create']);
+    Route::get(config('pulsar.appName') . '/booking/products/prefix/{id}/edit/{offset}',                 ['as'=>'editBookingProductPrefix',               'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@editRecord',                 'resource' => 'booking-product-prefix',       'action' => 'access']);
+    Route::put(config('pulsar.appName') . '/booking/products/prefix/update/{id}/{offset}',               ['as'=>'updateBookingProductPrefix',             'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@updateRecord',               'resource' => 'booking-product-prefix',       'action' => 'edit']);
+    Route::get(config('pulsar.appName') . '/booking/products/prefix/delete/{id}/{offset}',               ['as'=>'deleteBookingProductPrefix',             'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@deleteRecord',               'resource' => 'booking-product-prefix',       'action' => 'delete']);
+    Route::delete(config('pulsar.appName') . '/booking/products/prefix/delete/select/records',           ['as'=>'deleteSelectBookingProductPrefix',       'uses'=>'Syscover\Booking\Controllers\ProductPrefixController@deleteRecordsSelect',        'resource' => 'booking-product-prefix',       'action' => 'delete']);
+
+
+    /*
+    |--------------------------------------------------------------------------
     | CAMPAIGNS
     |--------------------------------------------------------------------------
     */
