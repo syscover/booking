@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'booking'                               => 'Reserva|Reservas',
+    'booking_draft'                         => 'Borrador de Reserva|Borradores de Reserva',
     'campaign'                              => 'Campaña|Campañas',
     'mail_template'                         => 'Plantilla de email',
     'package_name'                          => 'Booking',

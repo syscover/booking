@@ -16,8 +16,10 @@ class BookingCreateTableCampaign extends Migration {
 		{
 			Schema::create('011_221_campaign', function (Blueprint $table) {
 				$table->engine = 'InnoDB';
+				
 				$table->increments('id_221')->unsigned();
 				$table->string('name_221');
+				$table->string('prefix_221')->nullable(); // custom prefix of this campaign, first campaign prefix, after product prefix
 				$table->boolean('active_221');
 			});
 		}

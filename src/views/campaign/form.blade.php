@@ -17,6 +17,15 @@
         'rangeLength' => '2,255',
         'required' => true
     ])
+    @include('pulsar::includes.html.form_text_group', [
+        'fieldSize' => 4,
+        'label' => trans('pulsar::pulsar.prefix'),
+        'name' => 'prefix',
+        'value' => old('prefix', isset($object->prefix_221)? $object->prefix_221 : null),
+        'maxLength' => '255',
+        'rangeLength' => '2,255',
+        'required' => true
+    ])
     @include('pulsar::includes.html.form_checkbox_group', [
         'fieldSize' => 4,
         'label' => trans('pulsar::pulsar.active'),

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
  * Class Campaign
  *
  * Model with properties
- * <br><b>[id, name, active]</b>
+ * <br><b>[id, name, prefix, active]</b>
  *
  * @package     Syscover\Booking\Models
  */
@@ -22,7 +22,7 @@ class Campaign extends Model
     protected $primaryKey   = 'id_221';
     protected $suffix       = '221';
     public $timestamps      = false;
-    protected $fillable     = ['id_221', 'name_221', 'active_221'];
+    protected $fillable     = ['id_221', 'name_221', 'prefix_221', 'active_221'];
     protected $maps         = [];
     protected $relationMaps = [];
     private static $rules   = [

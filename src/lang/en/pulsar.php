@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'booking'                               => 'Booking|Bookings',
+    'booking_draft'                         => 'Booking draft|Booking drafts',
     'campaign'                              => 'Campaign|Campaigns',
     'mail_template'                         => 'Mail template',
     'package_name'                          => 'Booking',

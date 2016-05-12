@@ -4,14 +4,14 @@ use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Campaign;
 
 /**
- * Class CampaignController
+ * Class BookingController
  * @package Syscover\Booking\Controllers
  */
 
-class CampaignController extends Controller
+class BookingController extends Controller
 {
-    protected $routeSuffix  = 'bookingCampaign';
-    protected $folder       = 'campaign';
+    protected $routeSuffix  = 'bookingBooking';
+    protected $folder       = 'booking';
     protected $package      = 'booking';
     protected $aColumns     = ['id_221', 'name_221', 'prefix_221', ['data' => 'active_221', 'type' => 'active']];
     protected $nameM        = 'name_221';
