@@ -33,10 +33,20 @@
                 key: '{{ config('pulsar.froalaEditorKey') }}'
             });
 
+            $('[name=campaign]').on('change', function () {
+
+                $.updateCodePrefix();
+            });
+
             $('[name=product]').on('change', function () {
+
+                $.updateCodePrefix();
+
                 if($(this).val() == '')
                 {
                     $('[name=price]').val('');
+                    $('[name=name]').val('');
+                    $('[name=description]').froalaEditor('html.set', '');
                 }
                 else
                 {
@@ -55,6 +65,88 @@
                     });
                 }
             });
+
+            // start invoice ID
+            $.formatInvoice = function(invoice) {
+                if(invoice.invoiceNumberFormatted == undefined)
+                {
+                    return '{{ trans('pulsar::pulsar.searching') }}...';
+                }
+                else
+                {
+                    return invoice.invoiceNumberFormatted;
+
+//                    if(Array.isArray(customer.tradeName))
+//                    {
+//                        return customer.companyCode + ' ' + customer.name
+//                    }
+//                    else
+//                    {
+//                        return customer.companyCode + ' ' + customer.name + ' (' + customer.tradeName + ')'
+//                    }
+                }
+            };
+
+            $.formatInvoiceSelection = function (invoice) {
+                if(invoice.invoiceNumberFormatted == undefined)
+                {
+                    @if(isset($customers))
+                        return '{{ $customers->first()->companyCode . ' ' . $customers->first()->name . (empty($customers->first()->tradeName)? null : ' ('. $customers->first()->tradeName .')') }}'
+                    @else
+                        return invoice;
+                    @endif
+                }
+                else
+                {
+                    return invoice.invoiceNumberFormatted;
+//                    if(Array.isArray(customer.tradeName))
+//                    {
+//                        $('[name=customerName]').val(customer.companyCode + ' ' + customer.name)
+//                        return customer.companyCode + ' ' + customer.name
+//                    }
+//                    else
+//                    {
+//                        $('[name=customerName]').val(customer.companyCode + ' ' + customer.name + ' (' + customer.tradeName + ')')
+//                        return customer.companyCode + ' ' + customer.name + ' (' + customer.tradeName + ')'
+//                    }
+                }
+            };
+
+            var itemsPerPage = 25; // intems per page
+            $('#invoiceId').select2({
+                ajax: {
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'POST',
+                    url: '{{ route('apiFacturadirectaInvoices') }}',
+                    data: function (params) {
+                        return {
+                            //invoiceNumberFormatted:  params.term, // search term
+                            start: params.page * itemsPerPage,
+                            limit: itemsPerPage
+                        };
+                    },
+                    dataType: 'json',
+                    delay: 300,
+                    processResults: function (data, params) {
+
+                        params.page = params.page || 0;
+
+                        return {
+                            results: data.invoice,
+                            pagination: {
+                                more: (params.page * itemsPerPage) < data.attributes.total
+                            }
+                        }
+                    },
+                    cache: true
+                },
+                minimumInputLength: 1,
+                templateResult: $.formatInvoice,
+                templateSelection: $.formatInvoiceSelection
+            });
+            // end invoice ID
         });
 
         function relatedCustomer(data)
@@ -64,6 +156,27 @@
 
             $.magnificPopup.close();
         }
+
+        $.updateCodePrefix = function(){
+            var productPrefix = $('[name=product]').children('option:selected').data('prefix');
+            var campaignPrefix = $('[name=campaign]').children('option:selected').data('prefix');
+
+            if(productPrefix == undefined || productPrefix == '')
+            {
+                if(campaignPrefix == undefined || campaignPrefix == '')
+                    $('[name=prefix]').val('');
+                else
+                    $('[name=prefix]').val(campaignPrefix);
+            }
+            else
+            {
+                if(campaignPrefix == undefined || campaignPrefix == '')
+                    $('[name=prefix]').val(productPrefix);
+                else
+                    $('[name=prefix]').val(campaignPrefix + '-' + productPrefix);
+            }
+        };
+
     </script>
     <!-- /.booking::voucher.create -->
 @stop
@@ -77,7 +190,7 @@
                 'fieldSize' => 4,
                 'label' => 'ID',
                 'name' => 'id',
-                'value' => old('id', isset($object->id_222)? $object->id_222 : null),
+                'value' => old('id', isset($object->id_226)? $object->id_226 : null),
                 'readOnly' => true
             ])
         </div>
@@ -87,16 +200,50 @@
                 'fieldSize' => 6,
                 'label' => trans_choice('pulsar::pulsar.date', 1),
                 'name' => 'date',
-                'value' => isset($object->date_text_222)? $object->date_text_222 : date(config('pulsar.datePattern')),
+                'value' => isset($object->date_text_226)? $object->date_text_226 : date(config('pulsar.datePattern')),
                 'readOnly' => true,
             ])
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_text_group', [
+                'labelSize' => 4,
+                'fieldSize' => 6,
+                'label' => trans('pulsar::pulsar.prefix'),
+                'name' => 'prefix',
+                'value' => old('prefix', isset($object->prefix_226)? $object->prefix_226 : null),
+                'maxLength' => '255',
+                'rangeLength' => '2,255',
+                'readOnly' => true
+            ])
+        </div>
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_select_group', [
+                'labelSize' => 4,
+                'fieldSize' => 8,
+                'label' => trans_choice('pulsar::pulsar.invoice', 1),
+                'id' => 'invoiceId',
+                'name' => 'invoiceId',
+                'value' => old('customerId', isset($object->invoice_id_226)? $object->invoice_id_226 : null),
+                'objects' => isset($invoices)? $invoices : null,
+                'idSelect' => 'id',
+                'nameSelect' => 'name',
+                'required' => true,
+                'data' => [
+                    'language' => config('app.locale'),
+                    'width' => '100%',
+                    'error-placement' => 'select2-customerId-outer-container'
+                ]
+            ])
+        </div>
+    </div>
+
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 4,
         'label' => trans_choice('booking::pulsar.campaign', 1),
         'name' => 'campaign',
-        'value' => (int)old('campaign', isset($object->campaign_id_222)? $object->campaign_id_222 : null),
+        'value' => (int)old('campaign', isset($object->campaign_id_226)? $object->campaign_id_226 : null),
         'objects' => $campaigns,
         'idSelect' => 'id_221',
         'nameSelect' => 'name_221',
@@ -106,13 +253,16 @@
             'language' => config('app.locale'),
             'width' => '100%',
             'error-placement' => 'select2-product-outer-container'
+        ],
+        'dataOption' => [
+            'prefix' => 'prefix_221'
         ]
     ])
     @include('pulsar::includes.html.form_iframe_select_group', [
         'label' => trans_choice('pulsar::pulsar.customer', 1),
         'name' => 'customer',
         'value' => old('customer', isset($object->name_076)? $object->name_076 : null),
-        'valueId' => old('customerId', isset($object->customer_222)? $object->customer_222 : null),
+        'valueId' => old('customerId', isset($object->customer_226)? $object->customer_226 : null),
         'maxLength' => '255',
         'rangeLength' => '2,255',
         'modalUrl' => route('crmCustomer', [
@@ -126,7 +276,7 @@
         'fieldSize' => 4,
         'label' => trans_choice('market::pulsar.product', 1),
         'name' => 'product',
-        'value' => (int)old('product', isset($object->product_id_222)? $object->product_id_222 : null),
+        'value' => (int)old('product', isset($object->product_id_226)? $object->product_id_226 : null),
         'objects' => $products,
         'idSelect' => 'id_111',
         'nameSelect' => 'name_112',
@@ -136,22 +286,17 @@
             'language' => config('app.locale'),
             'width' => '100%',
             'error-placement' => 'select2-product-outer-container'
+        ],
+        'dataOption' => [
+            'prefix' => 'prefix_222'
         ]
     ])
 
-    @include('pulsar::includes.html.form_text_group', [
-         'fieldSize' => 4,
-        'label' => trans('pulsar::pulsar.code'),
-        'name' => 'code',
-        'value' => old('code', isset($object->code_222)? $object->code_222 : null),
-        'maxLength' => '255',
-        'rangeLength' => '2,255',
-        'required' => true
-    ])
+
     @include('pulsar::includes.html.form_text_group', [
         'label' => trans('pulsar::pulsar.name'),
         'name' => 'name',
-        'value' => old('name', isset($object->name_222)? $object->name_222 : null),
+        'value' => old('name', isset($object->name_226)? $object->name_226 : null),
         'maxLength' => '255',
         'rangeLength' => '2,255',
         'required' => true
@@ -159,7 +304,7 @@
     @include('pulsar::includes.html.form_wysiwyg_group', [
         'label' => trans_choice('pulsar::pulsar.description', 1),
         'name' => 'description',
-        'value' => old('description', isset($object->description_222)? $object->description_222 : null)
+        'value' => old('description', isset($object->description_226)? $object->description_226 : null)
     ])
     <div class="row">
         <div class="col-md-6">
@@ -171,7 +316,7 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale'),
-                    'default-date' => old('usedDate', isset($object->used_date_222)? date('Y-m-d', $object->used_date_222) : null)
+                    'default-date' => old('usedDate', isset($object->used_date_226)? date('Y-m-d', $object->used_date_226) : null)
                 ]
             ])
         </div>
@@ -184,7 +329,7 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale'),
-                    'default-date' => old('expireDate', isset($object->date_222)? date('Y-m-d', $object->date_222) : null)
+                    'default-date' => old('expireDate', isset($object->date_226)? date('Y-m-d', $object->date_226) : null)
                 ]
             ])
         </div>
@@ -197,7 +342,7 @@
                 'type' => 'number',
                 'label' => trans_choice('pulsar::pulsar.price', 1),
                 'name' => 'price',
-                'value' => old('price', isset($object->price_222)? $object->price_222 : null),
+                'value' => old('price', isset($object->price_226)? $object->price_226 : null),
                 'maxLength' => '255',
                 'rangeLength' => '2,255',
                 'required' => true
@@ -210,7 +355,7 @@
                 'type' => 'number',
                 'label' => trans_choice('pulsar::pulsar.cost', 1),
                 'name' => 'cost',
-                'value' => old('cost', isset($object->cost_222)? $object->cost_222 : null),
+                'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null),
                 'maxLength' => '255',
                 'rangeLength' => '2,255'
             ])
@@ -220,7 +365,7 @@
        'label' => trans('pulsar::pulsar.active'),
        'name' => 'active',
        'value' => 1,
-       'checked' => old('active', isset($object->active_222)? $object->active_222 : true)
+       'checked' => old('active', isset($object->active_226)? $object->active_226 : true)
    ])
 
     @if(isset($bulk) && $bulk == 1)

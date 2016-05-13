@@ -2,10 +2,10 @@
     <a href="javascript:void(0)"><i class="fa fa-book"></i>Booking</a>
     <ul class="sub-menu">
         @if(is_allowed('booking-voucher', 'access'))
-            <li{!! is_current_resource('booking-voucher') !!}><a href="{{ route('bookingBooking') }}"><i class="fa fa-hourglass-end"></i>{{ trans_choice('booking::pulsar.booking', 2) }}</a></li>
+            <li{!! is_current_resource('booking-booking') !!}><a href="{{ route('bookingBooking') }}"><i class="fa fa-hourglass-end"></i>{{ trans_choice('booking::pulsar.booking', 2) }}</a></li>
         @endif
         @if(is_allowed('booking-voucher', 'access'))
-            <li{!! is_current_resource('booking-voucher') !!}><a href="{{ route('bookingBookingDraft') }}"><i class="fa fa-hourglass-half"></i>{{ trans_choice('booking::pulsar.booking_draft', 2) }}</a></li>
+            <li{!! is_current_resource('booking-booking-draft') !!}><a href="{{ route('bookingBookingDraft') }}"><i class="fa fa-hourglass-half"></i>{{ trans_choice('booking::pulsar.booking_draft', 2) }}</a></li>
         @endif
         @if(is_allowed('booking-voucher', 'access'))
             <li{!! is_current_resource('booking-voucher') !!}><a href="{{ route('bookingVoucher') }}"><i class="fa fa-sort-alpha-asc"></i>{{ trans_choice('booking::pulsar.voucher', 2) }}</a></li>

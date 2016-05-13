@@ -9,20 +9,20 @@ use Illuminate\Support\Facades\Validator;
  * Class Voucher
  *
  * Model with properties
- * <br><b>[id, date, data_text, campaign_id, code, product_id, name, description, customer_id, invoice, price, cost, expire_date, expire_date_text, used_date, used_date_text, place_id_223, object_id_223, active]</b>
+ * <br><b>[id, code, code_prefix, booking_id, date, data_text, campaign_id, customer_id, bearer, place_id, object_id, invoice, product_id, name, description, price, cost, paid, place_payout_date_225, place_payout_date_text_225, expire_date, expire_date_text, used_date, used_date_text, active]</b>
  *
- * @package     Syscover\Crm\Models
+ * @package     Syscover\Booking\Models
  */
 
 class Voucher extends Model
 {
     use Eloquence, Mappable;
 
-	protected $table        = '011_222_voucher';
-    protected $primaryKey   = 'id_222';
-    protected $suffix       = '222';
+	protected $table        = '011_226_voucher';
+    protected $primaryKey   = 'id_226';
+    protected $suffix       = '226';
     public $timestamps      = false;
-    protected $fillable     = ['id_222', 'date_222', 'data_text_222', 'campaign_id_222', 'code_222', 'product_id_222', 'name_222', 'description_222', 'customer_id_222', 'invoice_222', 'price_222', 'cost_222', 'expire_date_222', 'expire_date_text_222', 'used_date_222', 'used_date_text_222', 'place_id_223', 'object_id_223', 'active_222'];
+    protected $fillable     = ['id_226', 'code_226', 'code_prefix_226', 'booking_id_226', 'date_226', 'data_text_226', 'campaign_id_226', 'customer_id_226', 'bearer_226', 'place_id_226', 'object_id_226', 'invoice_226', 'product_id_226', 'name_226', 'description_226', 'price_226', 'cost_226', 'paid_226', 'place_payout_date_225', 'place_payout_date_text_225', 'expire_date_226', 'expire_date_text_226', 'used_date_226', 'used_date_text_226', 'active_226'];
     protected $maps         = [];
     protected $relationMaps = [];
     private static $rules   = [

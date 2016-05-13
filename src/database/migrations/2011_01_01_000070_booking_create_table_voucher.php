@@ -18,6 +18,8 @@ class BookingCreateTableVoucher extends Migration {
 				$table->engine = 'InnoDB';
 
 				$table->increments('id_226')->unsigned();
+				$table->string('code_226');
+				$table->string('code_prefix_226')->nullable(); //prefix voucher code
 
 				$table->integer('booking_id_226')->nullable()->unsigned(); // booking where this voucher has been used
 
@@ -33,10 +35,13 @@ class BookingCreateTableVoucher extends Migration {
 				$table->integer('place_id_226')->unsigned(); // hotel, bodega, spa... foreign key from 011_220_place
 				$table->integer('object_id_226')->unsigned(); // ID del hotel, bodega, spa...
 
-				$table->string('invoice_226')->nullable(); // invoice number from factura directa, where this voucher has been invoiced
+				// invoice data number and customer invoiced
+				$table->integer('invoice_id_226')->unsigned();
+				$table->string('invoice_code_226')->nullable();
+				$table->integer('invoice_customer_id_226')->unsigned();
+				$table->string('invoice_customer_name_226');
 
 				$table->integer('product_id_226')->unsigned(); // product that is related this voucher
-				$table->string('prefix_code_226'); //prefix voucher code
 
 				$table->string('name_226')->nullable(); // name of voucher
 				$table->text('description_226')->nullable(); // description of voucher

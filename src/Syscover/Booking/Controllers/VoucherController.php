@@ -1,6 +1,7 @@
 <?php namespace Syscover\Booking\Controllers;
 
 use Syscover\Booking\Models\Campaign;
+use Syscover\Booking\Models\ProductPrefix;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Voucher;
 use Syscover\Market\Models\Product;
@@ -15,8 +16,8 @@ class VoucherController extends Controller
     protected $routeSuffix  = 'bookingVoucher';
     protected $folder       = 'voucher';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_222', 'code_222', 'name_222'];
-    protected $nameM        = 'name_222';
+    protected $aColumns     = ['id_226', 'code_226'];
+    protected $nameM        = 'name_226';
     protected $model        = Voucher::class;
     protected $icon         = 'fa fa-sort-alpha-asc';
     protected $objectTrans  = 'voucher';
@@ -25,7 +26,18 @@ class VoucherController extends Controller
     {
         $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
         $parameters['products']     = Product::builder()->where('lang_112', base_lang()->id_001)->get();
+        $productPrefixes            = ProductPrefix::all();
 
+        $parameters['products']->map(function($item, $key) use ($productPrefixes) {
+            // set prefix products
+            $productPrefix = $productPrefixes->where('product_id_222', $item->id_111)->first();
+            if($productPrefix == null)
+                return $item->prefix_222 = null;
+            return $item->prefix_222 = $productPrefixes->where('product_id_222', $item->id_111)->first()->prefix_222;
+        });
+
+        
+        
         return $parameters;
     }
 
