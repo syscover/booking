@@ -32,37 +32,38 @@ class BookingCreateTableVoucher extends Migration {
 				$table->integer('customer_id_226')->unsigned(); // customer who buy the voucher
 				$table->string('bearer_226')->nullable(); // bearer of the voucher, should be nominative
 
-				$table->integer('place_id_226')->unsigned(); // hotel, bodega, spa... foreign key from 011_220_place
-				$table->integer('object_id_226')->unsigned(); // ID del hotel, bodega, spa...
-
 				// invoice data number and customer invoiced
-				$table->integer('invoice_id_226')->unsigned();
+				$table->integer('invoice_id_226')->nullable()->unsigned();
 				$table->string('invoice_code_226')->nullable();
-				$table->integer('invoice_customer_id_226')->unsigned();
-				$table->string('invoice_customer_name_226');
+				$table->integer('invoice_customer_id_226')->nullable()->unsigned();
+				$table->string('invoice_customer_name_226')->nullable();
 
 				$table->integer('product_id_226')->unsigned(); // product that is related this voucher
 
 				$table->string('name_226')->nullable(); // name of voucher
 				$table->text('description_226')->nullable(); // description of voucher
 
-				$table->decimal('price_226', 10, 2); // public price
+				$table->decimal('price_226', 10, 2); // price that is sold this voucher
+
+				// sin están inactivos no tiene fecha de caducidad, la tendría cuando se activa
+				$table->integer('expire_date_226')->unsigned()->nullable(); // el ultimo día del mes en curso  + 1 año
+				$table->string('expire_date_text_226')->nullable();
+
+				$table->boolean('active_226');
+
+				// campos ha rellenar durante la reserva
+				$table->integer('used_date_226')->unsigned()->nullable(); // used date
+				$table->string('used_date_text_226')->nullable();
+
+				$table->integer('place_id_226')->nullable()->unsigned(); // hotel, bodega, spa... foreign key from 011_220_place
+				$table->integer('object_id_226')->nullable()->unsigned(); // ID del hotel, bodega, spa...
+
 				$table->decimal('cost_226', 10, 2); // hotel price
 
 				// field to check if voucher is paid
 				$table->boolean('paid_226'); // hotel price
 				$table->integer('place_payout_date_225')->unsigned()->nullable();
 				$table->string('place_payout_date_text_225')->nullable();
-
-				// sin están inactivos no tiene fecha de caducidad, la tendría cuando se activa
-				$table->integer('expire_date_226')->unsigned()->nullable(); // el ultimo día del mes en curso  + 1 año
-				$table->string('expire_date_text_226')->nullable();
-
-				// campos ha rellenar durante la reserva
-				$table->integer('used_date_226')->unsigned()->nullable(); // used date
-				$table->string('used_date_text_226')->nullable();
-
-				$table->boolean('active_226');
 				
 
 				$table->foreign('campaign_id_226', 'fk01_011_226_voucher')->references('id_221')->on('011_221_campaign')

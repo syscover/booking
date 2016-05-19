@@ -34,8 +34,8 @@
     <!-- booking::voucher.index -->
     <tr>
         <th data-hide="phone,tablet">ID.</th>
-        <th>{{ trans('pulsar::pulsar.code') }}</th>
-        <th data-class="expand">{{ trans('pulsar::pulsar.name') }}</th>
+        <th data-class="expand">{{ trans('pulsar::pulsar.code') }}</th>
+        <th>{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>

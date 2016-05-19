@@ -66,6 +66,51 @@
                 }
             });
 
+            $('[name=place]').on('change', function () {
+                var url = '{{ route('bookingGetDataObjects', ['model' => '%model%']) }}';
+                $.ajax({
+                    type: "POST",
+                    url: url.replace('%model%', $(this).children('option:selected').data('model')),
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    success: function(data)
+                    {
+                        if(data.objects == undefined)
+                        {
+                            // hide select with objects
+                            $('#objectWrapper').fadeOut();
+                        }
+                        else
+                        {
+                            // remove all options
+                            $('[name=object]').find('option').remove();
+
+                            // add empty option
+                            $('[name=object]').append($('<option>', {
+                                value: null,
+                                text : '{{ trans('pulsar::pulsar.select_a') }} ' + data.name
+                            })).trigger("change");
+
+                            // add label text
+                            $('#objectLabel').html(data.name);
+
+                            // add options values
+                            $.each(data.objects, function (i, item) {
+                                $('[name=object]').append($('<option>', {
+                                    value: item[data.primaryKey],
+                                    text : item['name_' + data.suffix]
+                                }));
+                            });
+
+                            // show select with objects
+                            $('#objectWrapper').fadeIn();
+                        }
+                    }
+                });
+            });
+
+            $('#objectWrapper').hide();
+
             // start invoice ID
             $.formatInvoice = function(invoice) {
                 if(invoice.invoiceNumberFormatted == undefined)
@@ -75,15 +120,6 @@
                 else
                 {
                     return invoice.invoiceNumberFormatted;
-
-//                    if(Array.isArray(customer.tradeName))
-//                    {
-//                        return customer.companyCode + ' ' + customer.name
-//                    }
-//                    else
-//                    {
-//                        return customer.companyCode + ' ' + customer.name + ' (' + customer.tradeName + ')'
-//                    }
                 }
             };
 
@@ -98,17 +134,12 @@
                 }
                 else
                 {
+                    // save data in input hidden to save in controller
+                    $('[name=invoiceCode]').val(invoice.invoiceNumberFormatted);
+                    $('[name=invoiceCustomerId]').val(invoice.client.id);
+                    $('[name=invoiceCustomerName]').val(invoice.client.name);
+
                     return invoice.invoiceNumberFormatted;
-//                    if(Array.isArray(customer.tradeName))
-//                    {
-//                        $('[name=customerName]').val(customer.companyCode + ' ' + customer.name)
-//                        return customer.companyCode + ' ' + customer.name
-//                    }
-//                    else
-//                    {
-//                        $('[name=customerName]').val(customer.companyCode + ' ' + customer.name + ' (' + customer.tradeName + ')')
-//                        return customer.companyCode + ' ' + customer.name + ' (' + customer.tradeName + ')'
-//                    }
                 }
             };
 
@@ -229,12 +260,23 @@
                 'objects' => isset($invoices)? $invoices : null,
                 'idSelect' => 'id',
                 'nameSelect' => 'name',
-                'required' => true,
                 'data' => [
                     'language' => config('app.locale'),
                     'width' => '100%',
                     'error-placement' => 'select2-customerId-outer-container'
                 ]
+            ])
+            @include('pulsar::includes.html.form_hidden', [
+                'name' => 'invoiceCode',
+                'value' => old('invoiceCode', isset($object->invoice_code_226)? $object->invoice_code_226 : null),
+            ])
+            @include('pulsar::includes.html.form_hidden', [
+                'name' => 'invoiceCustomerId',
+                'value' => old('invoiceCustomerId', isset($object->invoice_customer_id_226)? $object->invoice_customer_id_226 : null),
+            ])
+            @include('pulsar::includes.html.form_hidden', [
+                'name' => 'invoiceCustomerName',
+                'value' => old('invoiceCustomerName', isset($object->invoice_customer_name_226)? $object->invoice_customer_name_226 : null),
             ])
         </div>
     </div>
@@ -272,6 +314,13 @@
         'required' => true,
         'readOnly' => true
     ])
+    @include('pulsar::includes.html.form_text_group', [
+        'label' => trans_choice('pulsar::pulsar.bearer', 1),
+        'name' => 'bearer',
+        'value' => old('bearer', isset($object->bearer_226)? $object->bearer_226 : null),
+        'maxLength' => '255',
+        'rangeLength' => '2,255'
+    ])
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 4,
         'label' => trans_choice('market::pulsar.product', 1),
@@ -291,8 +340,6 @@
             'prefix' => 'prefix_222'
         ]
     ])
-
-
     @include('pulsar::includes.html.form_text_group', [
         'label' => trans('pulsar::pulsar.name'),
         'name' => 'name',
@@ -308,34 +355,6 @@
     ])
     <div class="row">
         <div class="col-md-6">
-            @include('pulsar::includes.html.form_datetimepicker_group', [
-                'labelSize' => 4,
-                'fieldSize' => 8,
-                'label' => trans('booking::pulsar.used_date'),
-                'name' => 'usedDate',
-                'data' => [
-                    'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
-                    'locale' => config('app.locale'),
-                    'default-date' => old('usedDate', isset($object->used_date_226)? date('Y-m-d', $object->used_date_226) : null)
-                ]
-            ])
-        </div>
-        <div class="col-md-6">
-            @include('pulsar::includes.html.form_datetimepicker_group', [
-                'labelSize' => 4,
-                'fieldSize' => 8,
-                'label' => trans('pulsar::pulsar.expire_date'),
-                'name' => 'expireDate',
-                'data' => [
-                    'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
-                    'locale' => config('app.locale'),
-                    'default-date' => old('expireDate', isset($object->date_226)? date('Y-m-d', $object->date_226) : null)
-                ]
-            ])
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
             @include('pulsar::includes.html.form_text_group', [
                 'labelSize' => 4,
                 'fieldSize' => 4,
@@ -349,15 +368,16 @@
             ])
         </div>
         <div class="col-md-6">
-            @include('pulsar::includes.html.form_text_group', [
+            @include('pulsar::includes.html.form_datetimepicker_group', [
                 'labelSize' => 4,
-                'fieldSize' => 4,
-                'type' => 'number',
-                'label' => trans_choice('pulsar::pulsar.cost', 1),
-                'name' => 'cost',
-                'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null),
-                'maxLength' => '255',
-                'rangeLength' => '2,255'
+                'fieldSize' => 8,
+                'label' => trans('pulsar::pulsar.expire_date'),
+                'name' => 'expireDate',
+                'data' => [
+                    'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                    'locale' => config('app.locale'),
+                    'default-date' => old('expireDate', isset($object->date_226)? date('Y-m-d', $object->date_226) : date('Y-m-t', strtotime('+1 years')))
+                ]
             ])
         </div>
     </div>
@@ -367,6 +387,79 @@
        'value' => 1,
        'checked' => old('active', isset($object->active_226)? $object->active_226 : true)
    ])
+
+    @if($action == 'update')
+        @include('pulsar::includes.html.form_section_header', [
+            'label' => trans_choice('booking::pulsar.booking', 1),
+            'icon' => 'fa fa-hourglass-end'
+        ])
+        @include('pulsar::includes.html.form_datetimepicker_group', [
+            'fieldSize' => 4,
+            'label' => trans('booking::pulsar.used_date'),
+            'name' => 'usedDate',
+            'data' => [
+                'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                'locale' => config('app.locale'),
+                'default-date' => old('usedDate', isset($object->used_date_226)? date('Y-m-d', $object->used_date_226) : null)
+            ]
+        ])
+        @include('pulsar::includes.html.form_select_group', [
+            'fieldSize' => 4,
+            'label' => trans_choice('booking::pulsar.place', 1),
+            'name' => 'place',
+            'value' => (int)old('place', isset($object->place_id_226)? $object->place_id_226 : null),
+            'objects' => $places,
+            'idSelect' => 'id_220',
+            'nameSelect' => 'name_220',
+            'dataOption' => [
+                'model' => 'model_220'
+            ]
+        ])
+        @include('pulsar::includes.html.form_select_group', [
+            'fieldSize' => 4,
+            'containerId' => 'objectWrapper',
+            'labelId' => 'objectLabel',
+            'name' => 'object',
+            'value' => (int)old('object', isset($object->campaign_id_226)? $object->campaign_id_226 : null),
+            'objects' => $campaigns,
+            'idSelect' => 'id_221',
+            'nameSelect' => 'name_221',
+            'class' => 'select2',
+            'data' => [
+                'language' => config('app.locale'),
+                'width' => '100%',
+                'error-placement' => 'select2-product-outer-container'
+            ],
+            'dataOption' => [
+                'prefix' => 'prefix_221'
+            ]
+        ])
+        @include('pulsar::includes.html.form_text_group', [
+            'fieldSize' => 2,
+            'type' => 'number',
+            'label' => trans_choice('pulsar::pulsar.cost', 1),
+            'name' => 'cost',
+            'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null),
+            'maxLength' => '255',
+            'rangeLength' => '2,255'
+        ])
+
+
+        @include('pulsar::includes.html.form_section_header', [
+            'label' => trans('pulsar::pulsar.paid'),
+            'icon' => 'fa fa-credit-card-alt'
+        ])
+        @include('pulsar::includes.html.form_datetimepicker_group', [
+            'fieldSize' => 4,
+            'label' => trans('pulsar::pulsar.paid'),
+            'name' => 'payoutDate',
+            'data' => [
+                'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                'locale' => config('app.locale'),
+                'default-date' => old('payoutDate', isset($object->place_payout_date_225)? date('Y-m-d', $object->place_payout_date_225) : null)
+            ]
+        ])
+    @endif
 
     @if(isset($bulk) && $bulk == 1)
         @include('pulsar::includes.html.form_section_header', [
