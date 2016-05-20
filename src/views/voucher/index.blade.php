@@ -10,9 +10,9 @@
                 $('.datatable-pulsar').dataTable({
                     'iDisplayStart' : {{ $offset }},
                     'aoColumnDefs': [
-                        { 'bSortable': false, 'aTargets': [3,4]},
-                        { 'sClass': 'checkbox-column', 'aTargets': [3]},
-                        { 'sClass': 'align-center', 'aTargets': [4]}
+                        { 'bSortable': false, 'aTargets': [7,8]},
+                        { 'sClass': 'checkbox-column', 'aTargets': [7]},
+                        { 'sClass': 'align-center', 'aTargets': [5,8]}
                     ],
                     "bProcessing": true,
                     "bServerSide": true,
@@ -34,8 +34,12 @@
     <!-- booking::voucher.index -->
     <tr>
         <th data-hide="phone,tablet">ID.</th>
-        <th data-class="expand">{{ trans('pulsar::pulsar.code') }}</th>
+        <th data-class="expand">{{ trans('pulsar::pulsar.prefix') }}</th>
+        <th>{{ trans_choice('booking::pulsar.campaign', 1) }}</th>
+        <th data-hide="phone">{{ trans_choice('pulsar::pulsar.name', 1) }}</th>
         <th>{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
+        <th>{{ trans('pulsar::pulsar.paid') }}</th>
+        <th>{{ trans_choice('pulsar::pulsar.cost', 1) }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>

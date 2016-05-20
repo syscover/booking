@@ -18,7 +18,6 @@ class BookingCreateTableVoucher extends Migration {
 				$table->engine = 'InnoDB';
 
 				$table->increments('id_226')->unsigned();
-				$table->string('code_226');
 				$table->string('code_prefix_226')->nullable(); //prefix voucher code
 
 				$table->integer('booking_id_226')->nullable()->unsigned(); // booking where this voucher has been used
@@ -30,6 +29,7 @@ class BookingCreateTableVoucher extends Migration {
 				$table->integer('campaign_id_226')->unsigned();
 
 				$table->integer('customer_id_226')->unsigned(); // customer who buy the voucher
+				$table->string('customer_name_226'); // customer who buy the voucher
 				$table->string('bearer_226')->nullable(); // bearer of the voucher, should be nominative
 
 				// invoice data number and customer invoiced
@@ -58,12 +58,12 @@ class BookingCreateTableVoucher extends Migration {
 				$table->integer('place_id_226')->nullable()->unsigned(); // hotel, bodega, spa... foreign key from 011_220_place
 				$table->integer('object_id_226')->nullable()->unsigned(); // ID del hotel, bodega, spa...
 
-				$table->decimal('cost_226', 10, 2); // hotel price
+				$table->decimal('cost_226', 10, 2)->nullable(); // hotel price
 
 				// field to check if voucher is paid
 				$table->boolean('paid_226'); // hotel price
-				$table->integer('place_payout_date_225')->unsigned()->nullable();
-				$table->string('place_payout_date_text_225')->nullable();
+				$table->integer('place_payout_date_226')->unsigned()->nullable();
+				$table->string('place_payout_date_text_226')->nullable();
 				
 
 				$table->foreign('campaign_id_226', 'fk01_011_226_voucher')->references('id_221')->on('011_221_campaign')

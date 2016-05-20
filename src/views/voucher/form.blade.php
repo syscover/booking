@@ -82,11 +82,8 @@
                         }
                         else
                         {
-                            // remove all options
-                            $('[name=object]').find('option').remove();
-
-                            // add empty option
-                            $('[name=object]').append($('<option>', {
+                            // remove all options add empty option
+                            $('[name=object]').find('option').remove().end().append($('<option>', {
                                 value: null,
                                 text : '{{ trans('pulsar::pulsar.select_a') }} ' + data.name
                             })).trigger("change");
@@ -109,7 +106,9 @@
                 });
             });
 
-            $('#objectWrapper').hide();
+            @if(! isset($objects))
+                $('#objectWrapper').hide();
+            @endif
 
             // start invoice ID
             $.formatInvoice = function(invoice) {
@@ -126,8 +125,8 @@
             $.formatInvoiceSelection = function (invoice) {
                 if(invoice.invoiceNumberFormatted == undefined)
                 {
-                    @if(isset($customers))
-                        return '{{ $customers->first()->companyCode . ' ' . $customers->first()->name . (empty($customers->first()->tradeName)? null : ' ('. $customers->first()->tradeName .')') }}'
+                    @if(isset($invoices))
+                        return '{{ $invoices->first()->invoiceNumberFormatted }}'
                     @else
                         return invoice;
                     @endif
@@ -153,7 +152,7 @@
                     url: '{{ route('apiFacturadirectaInvoices') }}',
                     data: function (params) {
                         return {
-                            //invoiceNumberFormatted:  params.term, // search term
+                            invoiceNumberFormatted:  params.term, // search term
                             start: params.page * itemsPerPage,
                             limit: itemsPerPage
                         };
@@ -182,7 +181,34 @@
 
         function relatedCustomer(data)
         {
-            $('[name="customer"]').val(data.name_301 + ' ' + data.surname_301);
+            var value = '';
+            var flag = false;
+
+            if(data.name_301 != 'null')
+            {
+                value += data.name_301;
+                flag = true;
+            }
+
+            if(data.surname_301 != 'null')
+            {
+                if(flag)
+                    value += ' ';
+                else
+                    flag = true;
+
+                value += data.surname_301;
+            }
+
+            if(data.company_301 != 'null')
+            {
+                if(flag)
+                    value += ' (' + data.company_301 + ')';
+                else
+                    value += data.company_301;
+            }
+
+            $('[name="customer"]').val(value);
             $('[name="customerId"]').val(data.id_301);
 
             $.magnificPopup.close();
@@ -195,16 +221,16 @@
             if(productPrefix == undefined || productPrefix == '')
             {
                 if(campaignPrefix == undefined || campaignPrefix == '')
-                    $('[name=prefix]').val('');
+                    $('[name=codePrefix]').val('');
                 else
-                    $('[name=prefix]').val(campaignPrefix);
+                    $('[name=codePrefix]').val(campaignPrefix);
             }
             else
             {
                 if(campaignPrefix == undefined || campaignPrefix == '')
-                    $('[name=prefix]').val(productPrefix);
+                    $('[name=codePrefix]').val(productPrefix);
                 else
-                    $('[name=prefix]').val(campaignPrefix + '-' + productPrefix);
+                    $('[name=codePrefix]').val(campaignPrefix + '-' + productPrefix);
             }
         };
 
@@ -242,8 +268,8 @@
                 'labelSize' => 4,
                 'fieldSize' => 6,
                 'label' => trans('pulsar::pulsar.prefix'),
-                'name' => 'prefix',
-                'value' => old('prefix', isset($object->prefix_226)? $object->prefix_226 : null),
+                'name' => 'codePrefix',
+                'value' => old('codePrefix', isset($object->code_prefix_226)? $object->code_prefix_226 : null),
                 'maxLength' => '255',
                 'rangeLength' => '2,255',
                 'readOnly' => true
@@ -259,7 +285,7 @@
                 'value' => old('customerId', isset($object->invoice_id_226)? $object->invoice_id_226 : null),
                 'objects' => isset($invoices)? $invoices : null,
                 'idSelect' => 'id',
-                'nameSelect' => 'name',
+                'nameSelect' => 'invoiceNumberFormatted',
                 'data' => [
                     'language' => config('app.locale'),
                     'width' => '100%',
@@ -303,8 +329,8 @@
     @include('pulsar::includes.html.form_iframe_select_group', [
         'label' => trans_choice('pulsar::pulsar.customer', 1),
         'name' => 'customer',
-        'value' => old('customer', isset($object->name_076)? $object->name_076 : null),
-        'valueId' => old('customerId', isset($object->customer_226)? $object->customer_226 : null),
+        'value' => old('customer', isset($object->customer_name_226)? $object->customer_name_226 : null),
+        'valueId' => old('customerId', isset($object->customer_id_226)? $object->customer_id_226 : null),
         'maxLength' => '255',
         'rangeLength' => '2,255',
         'modalUrl' => route('crmCustomer', [
@@ -376,7 +402,7 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale'),
-                    'default-date' => old('expireDate', isset($object->date_226)? date('Y-m-d', $object->date_226) : date('Y-m-t', strtotime('+1 years')))
+                    'default-date' => old('expireDate', isset($object->expire_date_226)? date('Y-m-d', $object->expire_date_226) : date('Y-m-t', strtotime('+1 years')))
                 ]
             ])
         </div>
@@ -417,21 +443,19 @@
         ])
         @include('pulsar::includes.html.form_select_group', [
             'fieldSize' => 4,
+            'label' => isset($objectName)? $objectName : null,
             'containerId' => 'objectWrapper',
             'labelId' => 'objectLabel',
             'name' => 'object',
-            'value' => (int)old('object', isset($object->campaign_id_226)? $object->campaign_id_226 : null),
-            'objects' => $campaigns,
-            'idSelect' => 'id_221',
-            'nameSelect' => 'name_221',
+            'value' => (int) old('object', isset($object->object_id_226)? $object->object_id_226 : null),
+            'objects' => isset($objects)? $objects : null,
+            'idSelect' => 'id',
+            'nameSelect' => 'name',
             'class' => 'select2',
             'data' => [
                 'language' => config('app.locale'),
                 'width' => '100%',
                 'error-placement' => 'select2-product-outer-container'
-            ],
-            'dataOption' => [
-                'prefix' => 'prefix_221'
             ]
         ])
         @include('pulsar::includes.html.form_text_group', [
@@ -456,7 +480,7 @@
             'data' => [
                 'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                 'locale' => config('app.locale'),
-                'default-date' => old('payoutDate', isset($object->place_payout_date_225)? date('Y-m-d', $object->place_payout_date_225) : null)
+                'default-date' => old('payoutDate', isset($object->place_payout_date_226)? date('Y-m-d', $object->place_payout_date_226) : null)
             ]
         ])
     @endif
