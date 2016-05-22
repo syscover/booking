@@ -11,6 +11,7 @@ class BookingTableSeeder extends Seeder
 
         $this->call(BookingPackageTableSeeder::class);
         $this->call(BookingResourceTableSeeder::class);
+        $this->call(BookingCronjobTableSeeder::class);
 
         Model::reguard();
     }

@@ -497,7 +497,7 @@
             'name' => 'bulkCreate',
             'value' => old('bulkCreate'),
             'min' => '1',
-            'max' => '1000',
+            'max' => '10000',
             'required' => true
         ])
     @endif

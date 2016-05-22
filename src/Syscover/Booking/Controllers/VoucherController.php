@@ -1,5 +1,6 @@
 <?php namespace Syscover\Booking\Controllers;
 
+use Syscover\Booking\Models\VoucherTask;
 use Syscover\Pulsar\Core\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -47,7 +48,7 @@ class VoucherController extends Controller
 
     public function storeCustomRecord($parameters)
     {
-        Voucher::create([
+        $voucher = Voucher::create([
             'date_226'                  => date('U'),
             'date_text_226'             => date(config('pulsar.datePattern')),
             'code_prefix_226'           => $this->request->has('codePrefix')? $this->request->input('codePrefix') : null,
@@ -67,6 +68,15 @@ class VoucherController extends Controller
             'expire_date_text_226'      => $this->request->has('expireDate')?  $this->request->input('expireDate') : null,
             'active_226'                => $this->request->has('active'),
         ]);
+
+        if($this->request->has('bulkCreate') && (int)$this->request->input('bulkCreate') -1 > 0)
+        {
+            // create task to create vouchers
+            VoucherTask::create([
+                'voucher_id_227'            => $voucher->id_226,
+                'vouchers_to_create_227'    => (int)$this->request->input('bulkCreate') -1
+            ]);
+        }
     }
 
     public function editCustomRecord($parameters)
