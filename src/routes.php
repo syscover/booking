@@ -104,4 +104,12 @@ Route::group(['middleware' => ['web', 'pulsar']], function() {
     Route::put(config('pulsar.appName') . '/booking/places/update/{id}/{offset}',               ['as'=>'updateBookingPlace',             'uses'=>'Syscover\Booking\Controllers\PlaceController@updateRecord',               'resource' => 'booking-place',       'action' => 'edit']);
     Route::get(config('pulsar.appName') . '/booking/places/delete/{id}/{offset}',               ['as'=>'deleteBookingPlace',             'uses'=>'Syscover\Booking\Controllers\PlaceController@deleteRecord',               'resource' => 'booking-place',       'action' => 'delete']);
     Route::delete(config('pulsar.appName') . '/booking/places/delete/select/records',           ['as'=>'deleteSelectBookingPlace',       'uses'=>'Syscover\Booking\Controllers\PlaceController@deleteRecordsSelect',        'resource' => 'booking-place',       'action' => 'delete']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PREFERENCES
+    |--------------------------------------------------------------------------
+    */
+    Route::any(config('pulsar.appName') . '/booking/preferences',                               ['as'=>'bookingPreference',               'uses'=>'Syscover\Booking\Controllers\PreferenceController@index',             'resource' => 'booking-preference',     'action' => 'access']);
+    Route::put(config('pulsar.appName') . '/booking/preferences/update',                        ['as'=>'updateBookingPreference',         'uses'=>'Syscover\Booking\Controllers\PreferenceController@updateRecord',      'resource' => 'booking-preference',     'action' => 'edit']);
 });

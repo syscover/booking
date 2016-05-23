@@ -1,8 +1,9 @@
 <?php namespace Syscover\Booking\Libraries;
 
+use Illuminate\Support\Facades\Mail;
 use Syscover\Booking\Models\Voucher;
 use Syscover\Booking\Models\VoucherTask;
-use Illuminate\Support\Facades\Mail;
+use Syscover\Pulsar\Models\Preference;
 
 class Cron
 {
@@ -12,8 +13,8 @@ class Cron
 
         if(count($voucherTasks) > 0)
         {
-            $limitVouchers = 10;
-            $voucherTask = $voucherTasks->first();
+            $limitVouchers  = (int)Preference::getValue('bookingNVouchersToCreate', 11)->value_018;
+            $voucherTask    = $voucherTasks->first();
 
             // set limit to create vouchers
             if($voucherTask->vouchers_to_create_227 <= $limitVouchers)
