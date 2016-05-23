@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
  * Class VoucherTask
  *
  * Model with properties
- * <br><b>[id, voucher_id, vouchers_to_create]</b>
+ * <br><b>[id, user_id, voucher_id, vouchers_to_create, total_vouchers]</b>
  *
  * @package     Syscover\Booking\Models
  */
@@ -22,7 +22,7 @@ class VoucherTask extends Model
     protected $primaryKey   = 'id_227';
     protected $suffix       = '227';
     public $timestamps      = false;
-    protected $fillable     = ['id_227', 'voucher_id_227', 'vouchers_to_create_227'];
+    protected $fillable     = ['id_227', 'user_id_227','voucher_id_227', 'vouchers_to_create_227', 'total_vouchers_227'];
     protected $maps         = [];
     protected $relationMaps = [];
     private static $rules   = [];
@@ -40,5 +40,10 @@ class VoucherTask extends Model
     public function getVoucher()
     {
         return $this->belongsTo('Syscover\Booking\Models\Voucher', 'voucher_id_227');
+    }
+
+    public function getUser()
+    {
+        return $this->belongsTo('Syscover\Pulsar\Models\User', 'user_id_227');
     }
 }

@@ -26,7 +26,8 @@ class Voucher extends Model
     protected $maps         = [];
     protected $relationMaps = [];
     private static $rules   = [
-        'name'      => 'required|between:2,255'
+        'name'          => 'required|between:2,255',
+        'customerId'    => 'required'
     ];
 
     public static function validate($data)
@@ -37,5 +38,10 @@ class Voucher extends Model
     public function scopeBuilder($query)
     {
         return $query->join('011_221_campaign', '011_226_voucher.campaign_id_226', '=', '011_221_campaign.id_221');
+    }
+
+    public function getCampaign()
+    {
+        return $this->belongsTo('Syscover\Booking\Models\Campaign', 'campaign_id_226');
     }
 }

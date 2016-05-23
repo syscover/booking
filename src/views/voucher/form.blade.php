@@ -399,10 +399,10 @@
                 'fieldSize' => 8,
                 'label' => trans('pulsar::pulsar.expire_date'),
                 'name' => 'expireDate',
+                'value' => old('expireDate', isset($object->expire_date_226)? date(config('pulsar.datePattern'), $object->expire_date_226) : date(str_replace('d', 't', config('pulsar.datePattern')), strtotime('+1 years'))),
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
-                    'locale' => config('app.locale'),
-                    'default-date' => old('expireDate', isset($object->expire_date_226)? date('Y-m-d', $object->expire_date_226) : date('Y-m-t', strtotime('+1 years')))
+                    'locale' => config('app.locale')
                 ]
             ])
         </div>

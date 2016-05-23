@@ -3,6 +3,7 @@
 return [
     'booking'                               => 'Booking|Bookings',
     'booking_draft'                         => 'Booking draft|Booking drafts',
+    'bulk_vouchers_create'                  => 'The creation of :totalVouchers vouchers with ID: :id, finished',
     'campaign'                              => 'Campaign|Campaigns',
     'mail_template'                         => 'Mail template',
     'package_name'                          => 'Booking',
