@@ -23,7 +23,7 @@ class CampaignController extends Controller
     {
         Campaign::create([
             'name_221'      => $this->request->input('name'),
-            'prefix_221'    => $this->request->input('prefix'),
+            'prefix_221'    => $this->request->has('prefix')? $this->request->input('prefix') : null,
             'active_221'    => $this->request->has('active')
         ]);
     }
@@ -32,7 +32,7 @@ class CampaignController extends Controller
     {
         Campaign::where('id_221', $parameters['id'])->update([
             'name_221'      => $this->request->input('name'),
-            'prefix_221'    => $this->request->input('prefix'),
+            'prefix_221'    => $this->request->has('prefix')? $this->request->input('prefix') : null,
             'active_221'    => $this->request->has('active')
         ]);
     }

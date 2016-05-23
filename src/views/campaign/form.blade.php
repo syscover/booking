@@ -23,8 +23,7 @@
         'name' => 'prefix',
         'value' => old('prefix', isset($object->prefix_221)? $object->prefix_221 : null),
         'maxLength' => '255',
-        'rangeLength' => '2,255',
-        'required' => true
+        'rangeLength' => '2,255'
     ])
     @include('pulsar::includes.html.form_checkbox_group', [
         'fieldSize' => 4,
