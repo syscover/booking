@@ -1,10 +1,10 @@
 <li{!! is_current_resource(['booking-place','booking-voucher','booking-campaign','booking-product-prefix','booking-family','booking-preference']) !!}>
     <a href="javascript:void(0)"><i class="fa fa-book"></i>Booking</a>
     <ul class="sub-menu">
-        @if(is_allowed('booking-voucher', 'access'))
+        @if(is_allowed('booking-booking', 'access'))
             <li{!! is_current_resource('booking-booking') !!}><a href="{{ route('bookingBooking') }}"><i class="fa fa-hourglass-end"></i>{{ trans_choice('booking::pulsar.booking', 2) }}</a></li>
         @endif
-        @if(is_allowed('booking-voucher', 'access'))
+        @if(is_allowed('booking-booking-draft', 'access'))
             <li{!! is_current_resource('booking-booking-draft') !!}><a href="{{ route('bookingBookingDraft') }}"><i class="fa fa-hourglass-half"></i>{{ trans_choice('booking::pulsar.booking_draft', 2) }}</a></li>
         @endif
         @if(is_allowed('booking-voucher', 'access'))
