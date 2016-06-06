@@ -258,7 +258,6 @@
                 'label' => trans_choice('pulsar::pulsar.date', 1),
                 'name' => 'date',
                 'value' => isset($object->date_text_226)? $object->date_text_226 : date(config('pulsar.datePattern')),
-                'readOnly' => true,
             ])
         </div>
     </div>
