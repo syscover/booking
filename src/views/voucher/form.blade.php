@@ -387,8 +387,6 @@
                 'label' => trans_choice('pulsar::pulsar.price', 1),
                 'name' => 'price',
                 'value' => old('price', isset($object->price_226)? $object->price_226 : null),
-                'maxLength' => '255',
-                'rangeLength' => '2,255',
                 'required' => true
             ])
         </div>
@@ -462,9 +460,7 @@
             'type' => 'number',
             'label' => trans_choice('pulsar::pulsar.cost', 1),
             'name' => 'cost',
-            'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null),
-            'maxLength' => '255',
-            'rangeLength' => '2,255'
+            'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null)
         ])
 
 

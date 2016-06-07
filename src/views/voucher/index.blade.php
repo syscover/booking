@@ -2,12 +2,17 @@
 
 @section('head')
     @parent
+    <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css') }}">
+
+    <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/moment.min.js') }}"></script>
+    <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+
     <!-- booking::voucher.index -->
     <script>
         $(document).ready(function() {
             if ($.fn.dataTable)
             {
-                $('.datatable-pulsar').dataTable({
+                var tableInstance = $('.datatable-pulsar').dataTable({
                     'displayStart' : {{ $offset }},
                     'columnDefs': [
                         { 'sortable': false, 'targets': [7,8]},
@@ -16,8 +21,32 @@
                     ],
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "{{ route('jsonData' . ucfirst($routeSuffix)) }}"
+                    "ajax": {
+                        "url":  "{{ route('jsonData' . ucfirst($routeSuffix)) }}",
+                        "data": function (parameters) {
+
+                        }
+                    }
                 }).fnSetFilteringDelay();
+
+
+                $('#advancedSearchForm').submit(function (e) {
+                    e.preventDefault();
+                    var that = this;
+                    tableInstance.fnSettings().ajax.data = function (parameters) {
+
+                        var formValues = $(that).serializeArray();
+                        parameters.advancedSerach = true;
+
+                        //set here custom parameters
+                        $(formValues).each(function(index, element){
+                            parameters[element.name]  = element.value;
+                        });
+                    };
+
+                    // call to api datatable
+                    $('.datatable-pulsar').DataTable().ajax.reload();
+                });
             }
 
             $('#advancedSearchContent').hide();
@@ -47,29 +76,33 @@
                     </div>
                 </div>
                 <div class="widget-content">
-                    <form id="recordForm" class="form-horizontal" method="post" action="">
+                    <form id="advancedSearchForm" class="form-horizontal" method="post" action="">
                         <div class="row">
                             <div class="col-md-6">
-                                @include('pulsar::includes.html.form_text_group', [
-                                    'labelSize' => 4,
+                                @include('pulsar::includes.html.form_datetimepicker_group', [
                                     'fieldSize' => 4,
-                                    'label' => 'ID',
-                                    'name' => 'id',
-                                    'value' => null
+                                    'label' => trans('pulsar::pulsar.from'),
+                                    'name' => 'dateFrom',
+                                    'data' => [
+                                        'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                                        'locale' => config('app.locale')
+                                    ]
                                 ])
                             </div>
                             <div class="col-md-6">
-                                @include('pulsar::includes.html.form_text_group', [
-                                    'labelSize' => 4,
-                                    'fieldSize' => 6,
-                                    'label' => trans_choice('pulsar::pulsar.date', 1),
-                                    'name' => 'date',
-                                    'value' => null
+                                @include('pulsar::includes.html.form_datetimepicker_group', [
+                                    'fieldSize' => 4,
+                                    'label' => trans('pulsar::pulsar.to'),
+                                    'name' => 'dateTo',
+                                    'data' => [
+                                        'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                                        'locale' => config('app.locale')
+                                    ]
                                 ])
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn margin-r10">{{ trans('pulsar::pulsar.save') }}</button>
+                            <button type="submit" class="btn margin-r10">{{ trans('pulsar::pulsar.search') }}</button>
                         </div>
                     </form>
                 </div>
