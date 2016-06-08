@@ -14,6 +14,7 @@
             {
                 var tableInstance = $('.datatable-pulsar').dataTable({
                     'displayStart' : {{ $offset }},
+                    'sorting': [[0, 'desc']],
                     'columnDefs': [
                         { 'sortable': false, 'targets': [7,8]},
                         { 'class': 'checkbox-column', 'targets': [7]},
