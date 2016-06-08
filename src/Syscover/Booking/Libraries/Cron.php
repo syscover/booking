@@ -13,6 +13,25 @@ class Cron
 
         if(count($voucherTasks) > 0)
         {
+            // block enter to routine just finish this loop
+            $bookingVouchersBulkCreate = Preference::getValue('bookingVouchersBulkCreate', 11, '0');
+
+            // Comprobación para casos de errores o caídas del servidor, y no dejen bloquedo el envío de emails a la cola de proceso
+            // si en 10 minutos no se ha liberado la variable, damos por hecho que se ha bloqueado y la liberamos
+            $update = \DateTime::createFromFormat('Y-m-d H:i:s', $bookingVouchersBulkCreate->updated_at);
+            if($bookingVouchersBulkCreate->value_018 == '1' && date('U') - $update->getTimestamp() > 600)
+                Preference::setValue('emailServiceSendingEmailsToQueue', 11, '0');
+
+            // en el caso que el estado de envio esté activo, eso siginifica que hay una petición trabajando y enviando
+            // a la tabla de cola de envíos los contactos, cuando termine de hacerlo cambiaremos el estado de envío de emails
+            // para poder aceptar más peticiones, de esa manera nos aseguramos que no hayan
+            // varias peticiones concurrentes insertando mails.
+            if($bookingVouchersBulkCreate->value_018 == '1')
+                exit;
+            else
+                Preference::setValue('bookingVouchersBulkCreate', 11, '1');
+
+            
             $limitVouchers  = (int)Preference::getValue('bookingNVouchersToCreate', 11)->value_018;
             $voucherTask    = $voucherTasks->first();
 
@@ -77,6 +96,9 @@ class Cron
                     'vouchers_to_create_227' => $voucherTask->vouchers_to_create_227 - $limit
                 ]);
             }
+            
+            // unblock loop
+            Preference::setValue('bookingVouchersBulkCreate', 11, '0');
         }
     }
 }
