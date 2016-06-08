@@ -13,19 +13,20 @@
             if ($.fn.dataTable)
             {
                 var tableInstance = $('.datatable-pulsar').dataTable({
-                    'displayStart' : {{ $offset }},
-                    'sorting': [[0, 'desc']],
-                    'columnDefs': [
-                        { 'sortable': false, 'targets': [7,8]},
-                        { 'class': 'checkbox-column', 'targets': [7]},
-                        { 'class': 'align-center', 'targets': [5,8]}
+                    "displayStart": {{ $offset }},
+                    "sorting": [[0, 'desc']],
+                    "columnDefs": [
+                        { "sortable": false, "targets": [7,8]},
+                        { "class": "checkbox-column", "targets": [7]},
+                        { "class": "align-center", "targets": [5,8]}
                     ],
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
-                        "url":  "{{ route('jsonData' . ucfirst($routeSuffix)) }}",
-                        "data": function (parameters) {
-
+                        "url": "{{ route('jsonData' . ucfirst($routeSuffix)) }}",
+                        "type": "POST",
+                        "headers": {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
                         }
                     }
                 }).fnSetFilteringDelay();
@@ -40,8 +41,9 @@
                         parameters.advancedSerach = true;
 
                         //set here custom parameters
+                        parameters.advancedSerachFields = [];
                         $(formValues).each(function(index, element){
-                            parameters[element.name]  = element.value;
+                            parameters.advancedSerachFields.push(element);
                         });
                     };
 
