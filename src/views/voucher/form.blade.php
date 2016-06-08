@@ -181,16 +181,18 @@
 
         function relatedCustomer(data)
         {
+            console.log(data)
+
             var value = '';
             var flag = false;
 
-            if(data.name_301 != 'null')
+            if(data.name_301 != null)
             {
                 value += data.name_301;
                 flag = true;
             }
 
-            if(data.surname_301 != 'null')
+            if(data.surname_301 != null)
             {
                 if(flag)
                     value += ' ';
@@ -200,7 +202,7 @@
                 value += data.surname_301;
             }
 
-            if(data.company_301 != 'null')
+            if(data.company_301 != null)
             {
                 if(flag)
                     value += ' (' + data.company_301 + ')';
