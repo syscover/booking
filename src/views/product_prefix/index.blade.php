@@ -1,4 +1,4 @@
-@extends('pulsar::layouts.index', ['newTrans' => 'new'])
+@extends('pulsar::layouts.index')
 
 @section('head')
     @parent
@@ -27,17 +27,17 @@
             }
         });
     </script>
-    <!-- booking::product_prefix.index -->
+    <!-- /booking::product_prefix.index -->
 @stop
 
 @section('tHead')
     <!-- booking::product_prefix.index -->
     <tr>
         <th data-hide="phone,tablet">ID.</th>
-        <th data-hide="phone">{{ trans_choice('pulsar::pulsar.product', 1) }}</th>
+        <th data-class="expand">{{ trans_choice('pulsar::pulsar.product', 1) }}</th>
         <th>{{ trans('pulsar::pulsar.prefix') }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>
-    <!-- /.booking::product_prefix.index -->
+    <!-- /booking::product_prefix.index -->
 @stop
