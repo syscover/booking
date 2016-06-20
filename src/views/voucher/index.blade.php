@@ -50,8 +50,7 @@
                     if($('#dateToPicker').data("DateTimePicker").date() !== null)
                         $('[name=dateTo]').val($('#dateToPicker').data("DateTimePicker").date().unix());
 
-
-
+                    // reload datatable with new query
                     tableInstance.fnSettings().ajax.data = function (parameters) {
                         //set here custom parameters
                         parameters.searchColumns = $(that).serializeArray();
@@ -121,7 +120,6 @@
                                     'objects' => $campaigns,
                                     'idSelect' => 'id_221',
                                     'nameSelect' => 'name_221',
-                                    'required' => true,
                                     'class' => 'select2',
                                     'data' => [
                                         'language' => config('app.locale'),
@@ -177,7 +175,7 @@
                                 ])
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' =>   'used_column',
-                                    'value' =>  'campaign_id_226'
+                                    'value' =>  'has_used_226'
                                 ])
                             </div>
                         </div>

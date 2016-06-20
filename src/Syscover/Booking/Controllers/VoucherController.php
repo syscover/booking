@@ -33,7 +33,7 @@ class VoucherController extends Controller
         $parameters['campaigns']    = Campaign::builder()->get();
         $parameters['used']         = [
             ['id' => 1, 'name' => trans('pulsar::pulsar.yes')],
-            ['id' => 2, 'name' => trans('pulsar::pulsar.no')]
+            ['id' => 0, 'name' => trans('pulsar::pulsar.no')]
         ];
 
         return $parameters;
