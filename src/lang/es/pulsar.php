@@ -12,5 +12,6 @@ return [
     'voucher'                               => 'Voucher|Vouchers',
     'vouchers_bulk_create'                  => 'Creación masiva de vouchers',
     'vouchers_number'                       => 'Número de vouchers',
+    'used'                                  => 'Usado',
     'used_date'                             => 'Fecha de uso'
 ];

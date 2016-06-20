@@ -3,7 +3,11 @@
 @section('head')
     @parent
     <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/jquery.select2/css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/jquery.select2.custom/css/select2.css') }}">
 
+    <script src="{{ asset('packages/syscover/pulsar/vendor/jquery.select2.custom/js/select2.min.js') }}"></script>
+    <script src="{{ asset('packages/syscover/pulsar/vendor/jquery.select2/js/i18n/' . config('app.locale') . '.js') }}"></script>
     <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/moment.min.js') }}"></script>
     <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
 
@@ -35,16 +39,22 @@
                 $('#advancedSearchForm').submit(function (e) {
                     e.preventDefault();
                     var that = this;
+
+                    // reset value datepicker
+                    $('[name=dateFrom], [name=dateTo]').val('');
+
+                    // get seconds unix timestamp from datetimepicker
+                    if($('#dateFromPicker').data("DateTimePicker").date() !== null)
+                        $('[name=dateFrom]').val($('#dateFromPicker').data("DateTimePicker").date().unix());
+
+                    if($('#dateToPicker').data("DateTimePicker").date() !== null)
+                        $('[name=dateTo]').val($('#dateToPicker').data("DateTimePicker").date().unix());
+
+
+
                     tableInstance.fnSettings().ajax.data = function (parameters) {
-
-                        var formValues = $(that).serializeArray();
-                        parameters.advancedSerach = true;
-
                         //set here custom parameters
-                        parameters.advancedSerachFields = [];
-                        $(formValues).each(function(index, element){
-                            parameters.advancedSerachFields.push(element);
-                        });
+                        parameters.searchColumns = $(that).serializeArray();
                     };
 
                     // call to api datatable
@@ -85,22 +95,89 @@
                                 @include('pulsar::includes.html.form_datetimepicker_group', [
                                     'fieldSize' => 4,
                                     'label' => trans('pulsar::pulsar.from'),
-                                    'name' => 'dateFrom',
+                                    'name' => 'dateFromPicker',
+                                    'id' => 'dateFromPicker',
                                     'data' => [
                                         'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                                         'locale' => config('app.locale')
                                     ]
                                 ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'dateFrom'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'dateFrom_operator',
+                                    'value' => '>'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'dateFrom_column',
+                                    'value' => 'date_226'
+                                ])
+                                @include('pulsar::includes.html.form_select_group', [
+                                    'fieldSize' => 8,
+                                    'label' => trans_choice('booking::pulsar.campaign', 1),
+                                    'name' => 'campaign',
+                                    'value' => null,
+                                    'objects' => $campaigns,
+                                    'idSelect' => 'id_221',
+                                    'nameSelect' => 'name_221',
+                                    'required' => true,
+                                    'class' => 'select2',
+                                    'data' => [
+                                        'language' => config('app.locale'),
+                                        'width' => '100%',
+                                        'error-placement' => 'select2-product-outer-container'
+                                    ]
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'campaign_operator',
+                                    'value' =>  '='
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'campaign_column',
+                                    'value' =>  'campaign_id_226'
+                                ])
+
                             </div>
                             <div class="col-md-6">
                                 @include('pulsar::includes.html.form_datetimepicker_group', [
                                     'fieldSize' => 4,
                                     'label' => trans('pulsar::pulsar.to'),
-                                    'name' => 'dateTo',
+                                    'name' => 'dateToPicker',
+                                    'id' => 'dateToPicker',
                                     'data' => [
                                         'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                                         'locale' => config('app.locale')
                                     ]
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'dateTo'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'dateTo_operator',
+                                    'value' =>  '<'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'dateTo_column',
+                                    'value' =>  'date_226'
+                                ])
+
+                                @include('pulsar::includes.html.form_select_group', [
+                                    'fieldSize' => 4,
+                                    'label' => trans('booking::pulsar.used'),
+                                    'name' => 'used',
+                                    'value' => null,
+                                    'objects' => $used,
+                                    'idSelect' => 'id',
+                                    'nameSelect' => 'name'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'used_operator',
+                                    'value' =>  '='
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'used_column',
+                                    'value' =>  'campaign_id_226'
                                 ])
                             </div>
                         </div>

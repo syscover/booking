@@ -28,6 +28,17 @@ class VoucherController extends Controller
     protected $icon         = 'fa fa-sort-alpha-asc';
     protected $objectTrans  = 'voucher';
 
+    public function customIndex($parameters)
+    {
+        $parameters['campaigns']    = Campaign::builder()->get();
+        $parameters['used']         = [
+            ['id' => 1, 'name' => trans('pulsar::pulsar.yes')],
+            ['id' => 2, 'name' => trans('pulsar::pulsar.no')]
+        ];
+
+        return $parameters;
+    }
+
     public function createCustomRecord($parameters)
     {
         $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
@@ -148,6 +159,7 @@ class VoucherController extends Controller
             'expire_date_226'               => $this->request->has('expireDate')? \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('expireDate'))->getTimestamp() : null,
             'expire_date_text_226'          => $this->request->has('expireDate')?  $this->request->input('expireDate') : null,
             'active_226'                    => $this->request->has('active'),
+            'has_used_226'                  => $this->request->has('usedDate'),
             'used_date_226'                 => $this->request->has('usedDate')? \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('usedDate'))->getTimestamp() : null,
             'used_date_text_226'            => $this->request->has('usedDate')?  $this->request->input('usedDate') : null,
             'place_id_226'                  => $this->request->has('place')?  $this->request->input('place') : null,

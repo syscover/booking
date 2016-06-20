@@ -12,5 +12,6 @@ return [
     'voucher'                               => 'Voucher|Vouchers',
     'vouchers_bulk_create'                  => 'Vouchers bulk create',
     'vouchers_number'                       => 'Vouchers number',
+    'used'                                  => 'Used',
     'used_date'                             => 'Used date',
 ];

@@ -52,6 +52,7 @@ class BookingCreateTableVoucher extends Migration {
 				$table->boolean('active_226');
 
 				// campos ha rellenar durante la reserva
+				$table->boolean('has_used_226')->default(false); // field to know if is set used_date_226 and used_date_text_226
 				$table->integer('used_date_226')->unsigned()->nullable(); // used date
 				$table->string('used_date_text_226')->nullable();
 
