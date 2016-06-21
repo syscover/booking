@@ -80,13 +80,13 @@ class VoucherController extends Controller
             'active_226'                => $this->request->has('active'),
         ]);
 
-        if($this->request->has('bulkCreate') && (int)$this->request->input('bulkCreate') -1 > 0)
+        if($this->request->has('bulkCreate') && (int)$this->request->input('bulkCreate') - 1 > 0)
         {
             // create task to create vouchers
             VoucherTask::create([
                 'user_id_227'               => auth('pulsar')->user()->id_010,
                 'voucher_id_227'            => $voucher->id_226,
-                'vouchers_to_create_227'    => (int)$this->request->input('bulkCreate') -1,
+                'vouchers_to_create_227'    => (int)$this->request->input('bulkCreate') - 1,
                 'total_vouchers_227'        => $this->request->input('bulkCreate')
             ]);
         }
