@@ -37,7 +37,8 @@ class Voucher extends Model
 
     public function scopeBuilder($query)
     {
-        return $query->join('011_221_campaign', '011_226_voucher.campaign_id_226', '=', '011_221_campaign.id_221');
+        return $query->join('011_221_campaign', '011_226_voucher.campaign_id_226', '=', '011_221_campaign.id_221')
+            ->join('009_301_customer', '011_226_voucher.customer_id_226', '=', '009_301_customer.id_301');
     }
 
     public function getCampaign()

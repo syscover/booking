@@ -22,7 +22,7 @@ class VoucherController extends Controller
     protected $routeSuffix  = 'bookingVoucher';
     protected $folder       = 'voucher';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_226', 'code_prefix_226', 'name_221', 'name_226', 'price_226', ['data' => 'paid_226', 'type' => 'active'], 'cost_226'];
+    protected $aColumns     = ['id_226', 'code_prefix_226', 'name_221', 'expire_date_226', 'expire_date_text_226', 'name_226', 'bearer_226', 'customer_name_226', 'price_226', ['data' => 'active_226', 'type' => 'active'], ['data' => 'paid_226', 'type' => 'active'], 'cost_226'];
     protected $nameM        = 'name_226';
     protected $model        = Voucher::class;
     protected $icon         = 'fa fa-sort-alpha-asc';

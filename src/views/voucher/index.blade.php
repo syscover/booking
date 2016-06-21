@@ -20,9 +20,12 @@
                     "displayStart": {{ $offset }},
                     "sorting": [[0, 'desc']],
                     "columnDefs": [
-                        { "sortable": false, "targets": [7,8]},
-                        { "class": "checkbox-column", "targets": [7]},
-                        { "class": "align-center", "targets": [5,8]}
+                        { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
+                        { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
+                        { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
+                        { "sortable": false, "targets": [12,13]},
+                        { "class": "checkbox-column", "targets": [12]},
+                        { "class": "align-center", "targets": [9,10,13]}
                     ],
                     "processing": true,
                     "serverSide": true,
@@ -195,10 +198,15 @@
         <th data-hide="phone,tablet">ID.</th>
         <th data-class="expand">{{ trans('pulsar::pulsar.prefix') }}</th>
         <th>{{ trans_choice('booking::pulsar.campaign', 1) }}</th>
+        <th>{{ trans('pulsar::pulsar.expire_date') }}</th>
+        <th>{{ trans('pulsar::pulsar.expire_date') }}</th>
         <th data-hide="phone">{{ trans_choice('pulsar::pulsar.name', 1) }}</th>
-        <th>{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
+        <th>{{ trans_choice('pulsar::pulsar.bearer', 1) }}</th>
+        <th>{{ trans_choice('pulsar::pulsar.name', 1) }}</th>
+        <th data-hide="phone,tablet">{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
+        <th>{{ trans('pulsar::pulsar.active') }}</th>
         <th>{{ trans('pulsar::pulsar.paid') }}</th>
-        <th>{{ trans_choice('pulsar::pulsar.cost', 1) }}</th>
+        <th data-hide="phone,tablet">{{ trans_choice('pulsar::pulsar.cost', 1) }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>
