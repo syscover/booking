@@ -44,8 +44,10 @@
                     $('#advancedSearchForm').submit();
                 });
 
-                $('#exportSpreadsheet').click(function (e) {
-                    $('[name=target]').val('spreadsheet');
+                $('.export-file').click(function (e) {
+
+                    $('[name=target]').val('export');
+                    $('[name=extensionFile]').val($(this).data('extension-file'));
                     $('#advancedSearchForm').submit();
                 });
 
@@ -105,12 +107,15 @@
                     </div>
                 </div>
                 <div class="widget-content">
-                    <form id="advancedSearchForm" class="form-horizontal" method="post" target="_blank" action="{{ route('exportCsvBookingVoucher') }}">
+                    <form id="advancedSearchForm" class="form-horizontal" method="post" action="{{ route('exportCsvBookingVoucher') }}">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-6">
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'target'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'extensionFile'
                                 ])
                                 @include('pulsar::includes.html.form_datetimepicker_group', [
                                     'fieldSize' => 4,
@@ -202,7 +207,17 @@
                         </div>
                         <div class="form-actions">
                             <button id="advancedSearch" type="button" class="btn margin-r10">{{ trans('pulsar::pulsar.search') }}</button>
-                            <button id="exportSpreadsheet" type="button" class="btn margin-r10">EXCELL</button>
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-upload"></i> {{ trans_choice('pulsar::pulsar.export', 1) }}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="export-file" data-extension-file="csv" href="#"><i class="fa fa-table"></i> CSV</a></li>
+                                    <li><a class="export-file" data-extension-file="xls" href="#"><i class="fa fa-file-excel-o"></i> Excel (.xls)</a></li>
+                                    <li><a class="export-file" data-extension-file="xlsx" href="#"><i class="fa fa-file-excel-o"></i> Excel (.xlsx)</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </form>
                 </div>

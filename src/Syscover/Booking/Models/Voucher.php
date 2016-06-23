@@ -4,6 +4,7 @@ use Syscover\Pulsar\Core\Model;
 use Sofa\Eloquence\Eloquence;
 use Sofa\Eloquence\Mappable;
 use Illuminate\Support\Facades\Validator;
+use Syscover\Crm\Models\Customer;
 
 /**
  * Class Voucher
@@ -18,13 +19,17 @@ class Voucher extends Model
 {
     use Eloquence, Mappable;
 
-	protected $table        = '011_226_voucher';
-    protected $primaryKey   = 'id_226';
-    protected $suffix       = '226';
-    public $timestamps      = false;
-    protected $fillable     = ['id_226', 'code_prefix_226', 'booking_id_226', 'date_226', 'date_text_226', 'campaign_id_226', 'customer_id_226', 'customer_name_226', 'bearer_226', 'place_id_226', 'object_id_226', 'invoice_id_226', 'invoice_code_226', 'invoice_customer_id_226', 'invoice_customer_name_226', 'product_id_226', 'name_226', 'description_226', 'price_226', 'cost_226', 'paid_226', 'place_payout_date_225', 'place_payout_date_text_225', 'expire_date_226', 'expire_date_text_226', 'used_date_226', 'used_date_text_226', 'active_226'];
-    protected $maps         = [];
-    protected $relationMaps = [];
+    protected $package              = 'booking';
+	protected $table                = '011_226_voucher';
+    protected $primaryKey           = 'id_226';
+    protected $suffix               = '226';
+    public $timestamps              = false;
+    protected $fillable             = ['id_226', 'code_prefix_226', 'booking_id_226', 'date_226', 'date_text_226', 'campaign_id_226', 'customer_id_226', 'customer_name_226', 'bearer_226', 'place_id_226', 'object_id_226', 'invoice_id_226', 'invoice_code_226', 'invoice_customer_id_226', 'invoice_customer_name_226', 'product_id_226', 'name_226', 'description_226', 'price_226', 'cost_226', 'paid_226', 'place_payout_date_225', 'place_payout_date_text_225', 'expire_date_226', 'expire_date_text_226', 'used_date_226', 'used_date_text_226', 'active_226'];
+    protected $maps                 = [];
+    protected $relationMaps         = [
+        'campaign_id' => Campaign::class,
+        'customer_id' => Customer::class
+    ];
     private static $rules   = [
         'name'          => 'required|between:2,255',
         'customerId'    => 'required'
