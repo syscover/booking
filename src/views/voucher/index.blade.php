@@ -82,7 +82,7 @@
 
             $('#advancedSearchContent').hide();
             $('.advanced-search').on('click', function(){
-                $('#advancedSearchContent').toggle("slow");
+                $('#advancedSearchContent').slideToggle("slow");
             });
         });
     </script>
@@ -111,6 +111,13 @@
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-6">
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'summaryColumns',
+                                    'value' => json_encode([
+                                            ['column' => 'price_226', 'operation' => 'sum'],
+                                            ['column' => 'cost_226', 'operation' => 'sum']
+                                        ])
+                                ])
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'target'
                                 ])
