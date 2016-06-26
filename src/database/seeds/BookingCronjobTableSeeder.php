@@ -8,7 +8,7 @@ class BookingCronjobTableSeeder extends Seeder {
     public function run()
     {   
         CronJob::insert([
-            ['name_011' => 'Check to create voucher',   'package_011' => 11,    'cron_expression_011' => '*/5 * * * *',     'key_011' => '09',  'last_run_011' => 0,    'next_run_011' => 0,    'active_011' => 1],
+            ['name_011' => 'Check to create voucher', 'package_id_011' => 11, 'cron_expression_011' => '*/5 * * * *', 'key_011' => '09', 'last_run_011' => 0, 'next_run_011' => 0, 'active_011' => 1]
         ]);
     }
 }
