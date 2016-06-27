@@ -55,10 +55,16 @@ class BookingCreateTableBookingDraft extends Migration {
 				$table->text('place_observations_224')->nullable();
 				$table->text('customer_observations_224')->nullable();
 
-				$table->foreign('customer_id_224', 'fk01_011_224_draft_booking')->references('id_301')->on('009_301_customer')
-					->onDelete('restrict')->onUpdate('cascade');
-				$table->foreign('place_id_224', 'fk02_011_224_draft_booking')->references('id_220')->on('011_220_place')
-					->onDelete('restrict')->onUpdate('cascade');
+				$table->foreign('customer_id_224', 'fk01_011_224_draft_booking')
+					->references('id_301')
+					->on('009_301_customer')
+					->onDelete('restrict')
+					->onUpdate('cascade');
+				$table->foreign('place_id_224', 'fk02_011_224_draft_booking')
+					->references('id_220')
+					->on('011_220_place')
+					->onDelete('restrict')
+					->onUpdate('cascade');
 			});
 		}
 	}
@@ -75,5 +81,4 @@ class BookingCreateTableBookingDraft extends Migration {
 			Schema::drop('011_224_booking_draft');
 		}
 	}
-
 }

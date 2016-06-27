@@ -67,16 +67,31 @@ class BookingCreateTableVoucher extends Migration {
 				$table->string('place_payout_date_text_226')->nullable();
 				
 
-				$table->foreign('campaign_id_226', 'fk01_011_226_voucher')->references('id_221')->on('011_221_campaign')
-					->onDelete('restrict')->onUpdate('cascade');
-				$table->foreign('product_id_226', 'fk02_011_226_voucher')->references('id_111')->on('012_111_product')
-					->onDelete('restrict')->onUpdate('cascade');
-				$table->foreign('customer_id_226', 'fk03_011_226_voucher')->references('id_301')->on('009_301_customer')
-					->onDelete('restrict')->onUpdate('cascade');
-				$table->foreign('place_id_226', 'fk04_011_226_voucher')->references('id_220')->on('011_220_place')
-					->onDelete('restrict')->onUpdate('cascade');
-				$table->foreign('booking_id_226', 'fk05_011_226_voucher')->references('id_225')->on('011_225_booking')
-					->onDelete('restrict')->onUpdate('cascade');
+				$table->foreign('campaign_id_226', 'fk01_011_226_voucher')
+					->references('id_221')
+					->on('011_221_campaign')
+					->onDelete('restrict')
+					->onUpdate('cascade');
+				$table->foreign('product_id_226', 'fk02_011_226_voucher')
+					->references('id_111')
+					->on('012_111_product')
+					->onDelete('restrict')
+					->onUpdate('cascade');
+				$table->foreign('customer_id_226', 'fk03_011_226_voucher')
+					->references('id_301')
+					->on('009_301_customer')
+					->onDelete('restrict')
+					->onUpdate('cascade');
+				$table->foreign('place_id_226', 'fk04_011_226_voucher')
+					->references('id_220')
+					->on('011_220_place')
+					->onDelete('restrict')
+					->onUpdate('cascade');
+				$table->foreign('booking_id_226', 'fk05_011_226_voucher')
+					->references('id_225')
+					->on('011_225_booking')
+					->onDelete('restrict')
+					->onUpdate('cascade');
 			});
 		}
 	}

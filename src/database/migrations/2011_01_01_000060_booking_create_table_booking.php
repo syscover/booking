@@ -57,10 +57,16 @@ class BookingCreateTableBooking extends Migration {
 				$table->text('place_observations_225')->nullable();
 				$table->text('customer_observations_225')->nullable();
 
-				$table->foreign('customer_id_225', 'fk01_011_225_booking')->references('id_301')->on('009_301_customer')
-					->onDelete('restrict')->onUpdate('cascade');
-				$table->foreign('place_id_225', 'fk02_011_225_booking')->references('id_220')->on('011_220_place')
-					->onDelete('restrict')->onUpdate('cascade');
+				$table->foreign('customer_id_225', 'fk01_011_225_booking')
+					->references('id_301')
+					->on('009_301_customer')
+					->onDelete('restrict')
+					->onUpdate('cascade');
+				$table->foreign('place_id_225', 'fk02_011_225_booking')
+					->references('id_220')
+					->on('011_220_place')
+					->onDelete('restrict')
+					->onUpdate('cascade');
 			});
 		}
 	}

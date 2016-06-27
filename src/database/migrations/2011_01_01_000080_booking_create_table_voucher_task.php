@@ -23,10 +23,16 @@ class BookingCreateTableVoucherTask extends Migration {
 				$table->smallInteger('vouchers_to_create_227')->unsigned();
 				$table->smallInteger('total_vouchers_227')->unsigned(); // n vouchers to create in total
 				
-				$table->foreign('voucher_id_227', 'fk01_011_227_voucher_task')->references('id_226')->on('011_226_voucher')
-					->onDelete('cascade')->onUpdate('cascade');
-				$table->foreign('user_id_227', 'fk02_011_227_voucher_task')->references('id_010')->on('001_010_user')
-					->onDelete('cascade')->onUpdate('cascade');
+				$table->foreign('voucher_id_227', 'fk01_011_227_voucher_task')
+					->references('id_226')
+					->on('011_226_voucher')
+					->onDelete('cascade')
+					->onUpdate('cascade');
+				$table->foreign('user_id_227', 'fk02_011_227_voucher_task')
+					->references('id_010')
+					->on('001_010_user')
+					->onDelete('cascade')
+					->onUpdate('cascade');
 			});
 		}
 	}

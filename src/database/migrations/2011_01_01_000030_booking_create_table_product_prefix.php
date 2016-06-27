@@ -19,10 +19,14 @@ class BookingCreateTableProductPrefix extends Migration {
 
 				$table->integer('product_id_222')->unsigned();
 				$table->string('prefix_222');
+				
+				$table->foreign('product_id_222', 'fk01_011_222_product_prefix')
+					->references('id_111')
+					->on('012_111_product')
+					->onDelete('cascade')
+					->onUpdate('cascade');
 
 				$table->primary('product_id_222', 'pk01_011_222_product_prefix');
-				$table->foreign('product_id_222', 'fk01_011_222_product_prefix')->references('id_111')->on('012_111_product')
-					->onDelete('cascade')->onUpdate('cascade');
 			});
 		}
 	}
