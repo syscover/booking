@@ -42,7 +42,7 @@ class VoucherController extends Controller
     public function createCustomRecord($parameters)
     {
         $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
-        $parameters['products']     = Product::builder()->where('lang_112', base_lang()->id_001)->get();
+        $parameters['products']     = Product::builder()->where('lang_id_112', base_lang()->id_001)->get();
         $parameters['places']       = Place::builder()->get();
         $productPrefixes            = ProductPrefix::all();
 
@@ -95,7 +95,7 @@ class VoucherController extends Controller
     public function editCustomRecord($parameters)
     {
         $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
-        $parameters['products']     = Product::builder()->where('lang_112', base_lang()->id_001)->get();
+        $parameters['products']     = Product::builder()->where('lang_id_112', base_lang()->id_001)->get();
         $parameters['places']       = Place::builder()->get();
         $productPrefixes            = ProductPrefix::all();
 

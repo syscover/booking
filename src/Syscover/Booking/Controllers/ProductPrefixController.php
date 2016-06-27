@@ -25,7 +25,7 @@ class ProductPrefixController extends Controller
         $productRecords = ProductPrefix::builder()->get(['product_id_222']);
         
         $parameters['products'] = Product::builder()
-            ->where('lang_112', base_lang()->id_001)
+            ->where('lang_id_112', base_lang()->id_001)
             ->whereNotIn('id_111', $productRecords)
             ->get();
         
@@ -43,7 +43,7 @@ class ProductPrefixController extends Controller
     public function editCustomRecord($parameters)
     {
         $parameters['products'] = Product::builder()
-            ->where('lang_112', base_lang()->id_001)
+            ->where('lang_id_112', base_lang()->id_001)
             ->get();
 
         return $parameters;
