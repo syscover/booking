@@ -437,7 +437,7 @@
             'idSelect' => 'id_220',
             'nameSelect' => 'name_220',
             'dataOption' => [
-                'model' => 'model_220'
+                'model' => 'model_id_220'
             ]
         ])
         @include('pulsar::includes.html.form_select_group', [

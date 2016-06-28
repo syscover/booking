@@ -83,5 +83,4 @@ class BookingCreateTableBooking extends Migration {
 			Schema::drop('011_225_booking');
 		}
 	}
-
 }

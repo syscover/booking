@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
  * Class Place
  *
  * Model with properties
- * <br><b>[id, name, model]</b>
+ * <br><b>[id, name, model_id]</b>
  *
  * @package     Syscover\Booking\Models
  */
@@ -22,7 +22,7 @@ class Place extends Model
     protected $primaryKey   = 'id_220';
     protected $suffix       = '220';
     public $timestamps      = false;
-    protected $fillable     = ['id_220', 'name_220', 'model_220'];
+    protected $fillable     = ['id_220', 'name_220', 'model_id_220'];
     protected $maps         = [];
     protected $relationMaps = [];
     private static $rules   = [

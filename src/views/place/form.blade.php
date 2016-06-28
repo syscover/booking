@@ -13,7 +13,7 @@
         'fieldSize' => 4,
         'label' => trans_choice('pulsar::pulsar.model', 1),
         'name' => 'model',
-        'value' => (int)old('model', isset($object->model_220)? $object->model_220 : null),
+        'value' => (int)old('model', isset($object->model_id_220)? $object->model_id_220 : null),
         'objects' => $models,
         'idSelect' => 'id',
         'nameSelect' => 'name',

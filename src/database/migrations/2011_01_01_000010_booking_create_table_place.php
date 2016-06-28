@@ -19,7 +19,7 @@ class BookingCreateTablePlace extends Migration {
 				$table->engine = 'InnoDB';
 				
 				$table->increments('id_220')->unsigned();
-				$table->smallInteger('model_220')->unsigned();	// model to do queries
+				$table->smallInteger('model_id_220')->unsigned();	// model to do queries
 				$table->string('name_220');
 			});
 		}

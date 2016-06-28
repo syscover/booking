@@ -32,8 +32,8 @@ class PlaceController extends Controller
     public function storeCustomRecord($parameters)
     {
         Place::create([
-            'name_220'  => $this->request->input('name'),
-            'model_220' => $this->request->input('model')
+            'name_220'      => $this->request->input('name'),
+            'model_id_220'  => $this->request->input('model')
         ]);
     }
 
@@ -50,8 +50,8 @@ class PlaceController extends Controller
     public function updateCustomRecord($parameters)
     {
         Place::where('id_220', $parameters['id'])->update([
-            'name_220'  => $this->request->input('name'),
-            'model_220' => $this->request->input('model')
+            'name_220'      => $this->request->input('name'),
+            'model_id_220'  => $this->request->input('model')
         ]);
     }
 }
