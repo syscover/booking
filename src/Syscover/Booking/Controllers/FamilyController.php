@@ -13,7 +13,7 @@ class FamilyController extends Controller
     protected $routeSuffix  = 'bookingFamily';
     protected $folder       = 'family';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_223', 'name_223', 'mail_template_223'];
+    protected $indexColumns     = ['id_223', 'name_223', 'mail_template_223'];
     protected $nameM        = 'name_223';
     protected $model        = Family::class;
     protected $icon         = 'fa fa-align-justify';

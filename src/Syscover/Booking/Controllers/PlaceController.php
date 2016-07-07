@@ -13,7 +13,7 @@ class PlaceController extends Controller
     protected $routeSuffix  = 'bookingPlace';
     protected $folder       = 'place';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_220', 'name_220'];
+    protected $indexColumns     = ['id_220', 'name_220'];
     protected $nameM        = 'name_220';
     protected $model        = Place::class;
     protected $icon         = 'fa fa-map-marker';

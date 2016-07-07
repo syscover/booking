@@ -14,7 +14,7 @@ class ProductPrefixController extends Controller
     protected $routeSuffix  = 'bookingProductPrefix';
     protected $folder       = 'product_prefix';
     protected $package      = 'booking';
-    protected $aColumns     = ['product_id_222', 'name_112', 'prefix_222'];
+    protected $indexColumns     = ['product_id_222', 'name_112', 'prefix_222'];
     protected $nameM        = 'name_221';
     protected $model        = ProductPrefix::class;
     protected $icon         = 'fa fa-barcode';

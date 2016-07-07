@@ -13,7 +13,7 @@ class CampaignController extends Controller
     protected $routeSuffix  = 'bookingCampaign';
     protected $folder       = 'campaign';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_221', 'name_221', 'prefix_221', ['data' => 'active_221', 'type' => 'active']];
+    protected $indexColumns     = ['id_221', 'name_221', 'prefix_221', ['data' => 'active_221', 'type' => 'active']];
     protected $nameM        = 'name_221';
     protected $model        = Campaign::class;
     protected $icon         = 'fa fa-bookmark';

@@ -4,6 +4,7 @@ use Syscover\Booking\Models\VoucherTask;
 use Syscover\Pulsar\Core\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Syscover\Pulsar\Libraries\Cron;
 use Syscover\Pulsar\Libraries\Miscellaneous;
 use Syscover\Facturadirecta\Libraries\Facturadirecta;
 use Syscover\Booking\Models\Campaign;
@@ -22,7 +23,7 @@ class VoucherController extends Controller
     protected $routeSuffix  = 'bookingVoucher';
     protected $folder       = 'voucher';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_226', 'code_prefix_226', 'name_221', 'expire_date_226', 'expire_date_text_226', 'name_226', 'bearer_226', 'customer_name_226', 'price_226', ['data' => 'active_226', 'type' => 'active'], ['data' => 'paid_226', 'type' => 'active'], 'cost_226'];
+    protected $indexColumns     = ['id_226', 'code_prefix_226', 'name_221', 'expire_date_226', 'expire_date_text_226', 'name_226', 'bearer_226', 'customer_name_226', 'price_226', ['data' => 'active_226', 'type' => 'active'], ['data' => 'paid_226', 'type' => 'active'], 'cost_226'];
     protected $nameM        = 'name_226';
     protected $model        = Voucher::class;
     protected $icon         = 'fa fa-sort-alpha-asc';
@@ -30,6 +31,8 @@ class VoucherController extends Controller
 
     public function customIndex($parameters)
     {
+        Cron::checkAdvancedSearch();
+
         $parameters['campaigns']    = Campaign::builder()->get();
         $parameters['used']         = [
             ['id' => 1, 'name' => trans('pulsar::pulsar.yes')],

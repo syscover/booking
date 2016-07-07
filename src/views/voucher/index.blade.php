@@ -40,12 +40,13 @@
 
 
                 $('#advancedSearch').click(function (e) {
+                    // set target of request
                     $('[name=target]').val('advancedSearch');
                     $('#advancedSearchForm').submit();
                 });
 
                 $('.export-file').click(function (e) {
-
+                    // set target of request
                     $('[name=target]').val('export');
                     $('[name=extensionFile]').val($(this).data('extension-file'));
                     $('#advancedSearchForm').submit();
@@ -53,20 +54,23 @@
 
                 $('#advancedSearchForm').submit(function (e) {
 
+                    // TODO, check number of rows, if there are not any rows, dont export to excel
+
+                    // reset dates values to set values from datepicker
+                    $('[name=dateFrom], [name=dateTo]').val('');
+
+                    // get seconds unix timestamp from datetimepicker
+                    if($('#dateFromPicker').data("DateTimePicker").date() !== null)
+                        $('[name=dateFrom]').val($('#dateFromPicker').data("DateTimePicker").date().unix());
+
+                    if($('#dateToPicker').data("DateTimePicker").date() !== null)
+                        $('[name=dateTo]').val($('#dateToPicker').data("DateTimePicker").date().unix());
+
+                    // set params an d reload datatable object
                     if($('[name=target]').val() === 'advancedSearch')
                     {
                         e.preventDefault();
                         var that = this;
-
-                        // reset value datepicker
-                        $('[name=dateFrom], [name=dateTo]').val('');
-
-                        // get seconds unix timestamp from datetimepicker
-                        if($('#dateFromPicker').data("DateTimePicker").date() !== null)
-                            $('[name=dateFrom]').val($('#dateFromPicker').data("DateTimePicker").date().unix());
-
-                        if($('#dateToPicker').data("DateTimePicker").date() !== null)
-                            $('[name=dateTo]').val($('#dateToPicker').data("DateTimePicker").date().unix());
 
                         // reload datatable with new query
                         tableInstance.fnSettings().ajax.data = function (parameters) {
@@ -112,10 +116,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 @include('pulsar::includes.html.form_hidden', [
-                                    'name' => 'summaryColumns',
+                                    'name' => 'operationColumns',
                                     'value' => json_encode([
                                             ['column' => 'price_226', 'operation' => 'sum'],
                                             ['column' => 'cost_226', 'operation' => 'sum']
+                                        ])
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'order',
+                                    'value' => json_encode([
+                                            'column' => 'id_226',
+                                            'dir' => 'asc'
                                         ])
                                 ])
                                 @include('pulsar::includes.html.form_hidden', [

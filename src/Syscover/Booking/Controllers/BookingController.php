@@ -13,7 +13,7 @@ class BookingController extends Controller
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';
-    protected $aColumns     = ['id_225', 'name_221', 'prefix_221', ['data' => 'active_221', 'type' => 'active']];
+    protected $indexColumns = ['id_225', 'name_221', 'prefix_221', ['data' => 'active_221', 'type' => 'active']];
     protected $nameM        = 'name_221';
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
