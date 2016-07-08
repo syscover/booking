@@ -31,8 +31,6 @@ class VoucherController extends Controller
 
     public function customIndex($parameters)
     {
-        Cron::checkAdvancedSearchExports();
-
         $parameters['campaigns']    = Campaign::builder()->get();
         $parameters['used']         = [
             ['id' => 1, 'name' => trans('pulsar::pulsar.yes')],
