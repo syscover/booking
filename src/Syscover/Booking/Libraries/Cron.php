@@ -85,7 +85,7 @@ class Cron
                     'voucher'           => $voucher
                 ];
 
-                Mail::send('booking::email.bulk_vouchers_notification', $dataMessage, function($m) use ($dataMessage) {
+                Mail::send('booking::emails.bulk_vouchers_notification', $dataMessage, function($m) use ($dataMessage) {
                     $m->to($dataMessage['emailTo'], $dataMessage['nameTo'])
                         ->subject($dataMessage['subject']);
                 });

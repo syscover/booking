@@ -1,4 +1,4 @@
-@extends('booking::layouts.mail')
+@extends('pulsar::layouts.email')
 
 @section('mainContent')
 <table cellspacing="0" cellpadding="0" width="100%" style="background:#ffffff;margin:0;padding:0;border:0;text-align:left;border-collapse:collapse;border-spacing:0">
