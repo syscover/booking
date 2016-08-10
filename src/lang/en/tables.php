@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // 011_226_voucher
     '011_226_voucher'           => 'Vouchers',
     'id_226'                    => 'Id',
     'code_prefix_226'           => 'Code prefix',
@@ -11,4 +12,8 @@ return [
     'customer_id_226'           => 'Customer Id',
     'customer_name_226'         => 'Customer name',
     'bearer_226'                => 'Bearer',
+
+    'price_226'                 => 'Price',
+    'cost_226'                  => 'Cost',
+    'paid_226'                  => 'Paid',
 ];

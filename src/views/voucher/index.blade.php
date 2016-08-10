@@ -54,7 +54,7 @@
 
                 $('#advancedSearchForm').submit(function (e) {
 
-                    // TODO, check number of rows, if there are not any rows, dont export to excel
+                    // TODO, check number of rows, if there are not any rows, don't export to excel
 
                     // reset dates values to set values from datepicker
                     $('[name=dateFrom], [name=dateTo]').val('');
@@ -66,7 +66,8 @@
                     if($('#dateToPicker').data("DateTimePicker").date() !== null)
                         $('[name=dateTo]').val($('#dateToPicker').data("DateTimePicker").date().unix());
 
-                    // set params an d reload datatable object
+
+                    // set params and reload datatable object
                     if($('[name=target]').val() === 'advancedSearch')
                     {
                         e.preventDefault();
@@ -81,9 +82,45 @@
                         // call to api datatable
                         $('.datatable-pulsar').DataTable().ajax.reload();
                     }
+
+                    // check if there are results with this advanced search to export
+                    if($('[name=target]').val() === 'export')
+                    {
+                        e.preventDefault();
+                        var that = this;
+
+                        // check number results
+                        $.ajax({
+                            dataType:   'json',
+                            type:       'POST',
+                            url:        '{{ route('bookingVoucherAdvancedSearchDataCount') }}',
+                            data:       $(this).serialize(),
+                            headers:  {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            success:  function(data)
+                            {
+                                if(data.success == true && data.nRows > 0)
+                                {
+                                    $(that).unbind('submit').submit()
+                                }
+                                else
+                                {
+                                    new PNotify({
+                                        type:   'error',
+                                        title:  '{{ trans('pulsar::pulsar.action_error') }}',
+                                        text:   '{{ trans('pulsar::pulsar.no_data_advanced_search_to_export') }}',
+                                        opacity: .9,
+                                        styling: 'fontawesome'
+                                    });
+                                }
+                            }
+                        });
+                    }
                 });
             }
 
+            // display advenced search form
             $('#advancedSearchContent').hide();
             $('.advanced-search').on('click', function(){
                 $('#advancedSearchContent').slideToggle("slow");
@@ -115,6 +152,7 @@
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-6">
+                                <!-- set operations columns -->
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'operationColumns',
                                     'value' => json_encode([
@@ -122,6 +160,8 @@
                                             ['column' => 'cost_226', 'operation' => 'sum']
                                         ])
                                 ])
+
+                                <!-- set query order -->
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'order',
                                     'value' => json_encode([
@@ -129,12 +169,18 @@
                                             'dir' => 'asc'
                                         ])
                                 ])
+
+                                <!-- set in javascrit where sent petition, datatable or export file -->
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'target'
                                 ])
+
+                                <!-- set type file to export -->
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'extensionFile'
                                 ])
+
+                                <!-- start form -->
                                 @include('pulsar::includes.html.form_datetimepicker_group', [
                                     'fieldSize' => 4,
                                     'label' => trans('pulsar::pulsar.from'),

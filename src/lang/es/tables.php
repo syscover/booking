@@ -12,4 +12,8 @@ return [
     'customer_id_226'           => 'Customer Id',
     'customer_name_226'         => 'Customer name',
     'bearer_226'                => 'Bearer',
+
+    'price_226'                 => 'Precio',
+    'cost_226'                  => 'Coste',
+    'paid_226'                  => 'Pagado',
 ];
