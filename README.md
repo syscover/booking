@@ -17,7 +17,7 @@ composer install
 **2 - Register service provider, on file config/app.php add to providers array**
 
 ```
-Syscover\Projects\BookingServiceProvider::class,
+Syscover\Booking\BookingServiceProvider::class,
 
 ```
 
