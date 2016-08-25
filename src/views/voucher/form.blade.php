@@ -149,7 +149,7 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     type: 'POST',
-                    url: '{{ route('apiFacturadirectaInvoices') }}',
+                    url: '{{ route('apiFacturaDirectaInvoices') }}',
                     data: function (params) {
                         return {
                             invoiceNumberFormatted:  params.term, // search term

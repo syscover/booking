@@ -4,9 +4,8 @@ use Syscover\Booking\Models\VoucherTask;
 use Syscover\Pulsar\Core\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Syscover\Pulsar\Libraries\Cron;
 use Syscover\Pulsar\Libraries\Miscellaneous;
-use Syscover\Facturadirecta\Libraries\Facturadirecta;
+use Syscover\FacturaDirecta\Facades\FacturaDirecta;
 use Syscover\Booking\Models\Campaign;
 use Syscover\Booking\Models\Place;
 use Syscover\Booking\Models\ProductPrefix;
@@ -108,7 +107,7 @@ class VoucherController extends Controller
             return $item->prefix_222 = $productPrefixes->where('product_id_222', $item->id_111)->first()->prefix_222;
         });
         
-        $response   = Facturadirecta::getInvoice($parameters['object']->invoice_id_226);
+        $response   = FacturaDirecta::getInvoice($parameters['object']->invoice_id_226);
         $collection = collect();
 
         // check that response does not contain httpStatus 404
