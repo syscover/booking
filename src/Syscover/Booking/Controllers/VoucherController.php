@@ -189,6 +189,7 @@ class VoucherController extends Controller
         $name           = trans_choice($result->first()->name, 1);
         $primaryKey     = $model->getKeyName();
         $suffix         = $model->getSuffix();
+
         // use sofa to get lang from lang table of object query
         $objects        = $model->builder()->where('lang_id', base_lang()->id_001)->get();
 

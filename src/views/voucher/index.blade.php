@@ -38,7 +38,6 @@
                     }
                 }).fnSetFilteringDelay();
 
-
                 $('#advancedSearch').click(function (e) {
                     // set target of request
                     $('[name=target]').val('advancedSearch');
@@ -52,9 +51,11 @@
                     $('#advancedSearchForm').submit();
                 });
 
+                // ********************************
+                // when submit advanced search
+                // catch event to manipulate data
+                // ********************************
                 $('#advancedSearchForm').submit(function (e) {
-
-                    // TODO, check number of rows, if there are not any rows, don't export to excel
 
                     // reset dates values to set values from datepicker
                     $('[name=dateFrom], [name=dateTo]').val('');
@@ -66,12 +67,14 @@
                     if($('#dateToPicker').data("DateTimePicker").date() !== null)
                         $('[name=dateTo]').val($('#dateToPicker').data("DateTimePicker").date().unix());
 
+                    var that = this;
 
-                    // set params and reload datatable object
+                    // ****************************************
+                    // routine to reload datatable
+                    // ****************************************
                     if($('[name=target]').val() === 'advancedSearch')
                     {
                         e.preventDefault();
-                        var that = this;
 
                         // reload datatable with new query
                         tableInstance.fnSettings().ajax.data = function (parameters) {
@@ -81,15 +84,18 @@
 
                         // call to api datatable
                         $('.datatable-pulsar').DataTable().ajax.reload();
+
+                        // in this case don't execute submit event of #advancedSearchForm
                     }
 
-                    // check if there are results with this advanced search to export
+                    // ********************************
+                    // routine to export data to file
+                    // ********************************
                     if($('[name=target]').val() === 'export')
                     {
                         e.preventDefault();
-                        var that = this;
 
-                        // check number results
+                        // check number results, to don't export a empty file
                         $.ajax({
                             dataType:   'json',
                             type:       'POST',
@@ -102,6 +108,8 @@
                             {
                                 if(data.success == true && data.nRows > 0)
                                 {
+                                    // if there are any elements,
+                                    // delete catch event and submit form
                                     $(that).unbind('submit').submit()
                                 }
                                 else
@@ -120,7 +128,7 @@
                 });
             }
 
-            // display advenced search form
+            // display advanced search form
             $('#advancedSearchContent').hide();
             $('.advanced-search').on('click', function(){
                 $('#advancedSearchContent').slideToggle("slow");
@@ -159,6 +167,12 @@
                                             ['column' => 'price_226', 'operation' => 'sum'],
                                             ['column' => 'cost_226', 'operation' => 'sum']
                                         ])
+                                ])
+
+                                <!-- set columns to display in export file -->
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' => 'displayColumns',
+                                    'value' => json_encode(['id_226', 'code_prefix_226', 'date_text_226', 'customer_name_226','bearer_226', 'name_226', 'price_226', 'cost_226'])
                                 ])
 
                                 <!-- set query order -->
@@ -225,7 +239,6 @@
                                     'name' =>   'campaign_column',
                                     'value' =>  'campaign_id_226'
                                 ])
-
                             </div>
                             <div class="col-md-6">
                                 @include('pulsar::includes.html.form_datetimepicker_group', [
