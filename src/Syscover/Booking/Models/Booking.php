@@ -18,7 +18,7 @@ class Booking extends Model
 {
     use Eloquence, Mappable;
 
-	protected $table        = '011_225_booking';
+	protected  $table        = '011_225_booking';
     protected $primaryKey   = 'id_225';
     protected $suffix       = '225';
     public $timestamps      = false;
