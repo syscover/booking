@@ -2,7 +2,7 @@
 
 @section('head')
     @parent
-    <!-- booking::voucher.create -->
+    <!-- booking::voucher.form -->
     <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/jquery.magnific-popup/magnific-popup.css') }}">
     <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css') }}">
 
@@ -34,7 +34,6 @@
             });
 
             $('[name=campaign]').on('change', function () {
-
                 $.updateCodePrefix();
             });
 
@@ -181,8 +180,6 @@
 
         function relatedCustomer(data)
         {
-            console.log(data)
-
             var value = '';
             var flag = false;
 
@@ -237,11 +234,11 @@
         };
 
     </script>
-    <!-- /.booking::voucher.create -->
+    <!-- /booking::voucher.form -->
 @stop
 
 @section('rows')
-    <!-- booking::voucher.create -->
+    <!-- booking::voucher.form -->
     <div class="row">
         <div class="col-md-6">
             @include('pulsar::includes.html.form_text_group', [
@@ -498,5 +495,5 @@
             'required' => true
         ])
     @endif
-    <!-- /.booking::voucher.create -->
+    <!-- /booking::voucher.form -->
 @stop

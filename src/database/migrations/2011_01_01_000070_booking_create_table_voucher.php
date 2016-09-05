@@ -29,8 +29,8 @@ class BookingCreateTableVoucher extends Migration {
 				$table->integer('campaign_id_226')->unsigned();
 
 				$table->integer('customer_id_226')->unsigned(); // customer who buy the voucher
-				$table->string('customer_name_226'); // customer who buy the voucher
-				$table->string('bearer_226')->nullable(); // bearer of the voucher, should be nominative
+				$table->string('customer_name_226');            // customer who buy the voucher
+				$table->string('bearer_226')->nullable();       // bearer of the voucher, should be nominative
 
 				// invoice data number and customer invoiced
 				$table->integer('invoice_id_226')->nullable()->unsigned();

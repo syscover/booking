@@ -47,7 +47,7 @@ Route::group(['middleware' => ['web', 'pulsar']], function() {
     Route::any(config('pulsar.appName') . '/booking/vouchers/export/data',                        ['as' => 'exportCsvBookingVoucher',                     'uses' => 'Syscover\Booking\Controllers\VoucherController@exportData',                 'resource' => 'booking-voucher',       'action' => 'access']);
     Route::post(config('pulsar.appName') . '/booking/vouchers/advanced/search/data/count',        ['as' => 'bookingVoucherAdvancedSearchDataCount',       'uses' => 'Syscover\Booking\Controllers\VoucherController@countAdvancedSearchData',    'resource' => 'booking-voucher',       'action' => 'access']);
 
-    Route::any(config('pulsar.appName') . '/booking/customer/modal/{offset}/{modal}',             ['as' => 'modalBookingCustomer',                        'uses' => 'Syscover\Crm\Controllers\CustomerController@index',                         'resource' => 'booking-voucher',       'action' => 'access']);
+    //Route::any(config('pulsar.appName') . '/booking/customer/modal/{offset}/{modal}',             ['as' => 'modalBookingCustomer',                        'uses' => 'Syscover\Crm\Controllers\CustomerController@index',                         'resource' => 'booking-voucher',       'action' => 'access']);
 
 
     /*

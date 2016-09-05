@@ -1,4 +1,4 @@
-<li{!! is_current_resource(['booking-place','booking-voucher','booking-campaign','booking-product-prefix','booking-family','booking-preference']) !!}>
+<li{!! is_current_resource(['booking-booking','booking-place','booking-voucher','booking-campaign','booking-product-prefix','booking-family','booking-preference']) !!}>
     <a href="javascript:void(0)"><i class="fa fa-book"></i>Booking</a>
     <ul class="sub-menu">
         @if(is_allowed('booking-booking', 'access'))
