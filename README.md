@@ -16,6 +16,7 @@ composer update
 **2 - Register service provider, on file config/app.php add to providers array**
 ```
 Syscover\Booking\BookingServiceProvider::class,
+Syscover\FacturaDirecta\FacturaDirectaServiceProvider::class,
 ```
 
 **3 - Execute publish command**
