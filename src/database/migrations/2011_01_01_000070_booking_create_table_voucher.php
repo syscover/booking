@@ -62,7 +62,7 @@ class BookingCreateTableVoucher extends Migration {
 				$table->decimal('cost_226', 10, 2)->nullable(); // hotel price
 
 				// field to check if voucher is paid
-				$table->boolean('paid_226'); // hotel price
+				$table->boolean('paid_226')->default(false); // hotel price
 				$table->integer('place_payout_date_226')->unsigned()->nullable();
 				$table->string('place_payout_date_text_226')->nullable();
 				

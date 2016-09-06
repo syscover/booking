@@ -23,6 +23,7 @@ class BookingCreateTableBookingDraft extends Migration {
 
 				// customer making the reservation
 				$table->integer('customer_id_224')->unsigned();
+                $table->string('customer_name_224');
 				
 				$table->integer('place_id_224')->unsigned(); // hotel, bodega, spa... foreign key from 011_220_place
 				$table->integer('object_id_224')->nullable()->unsigned(); // ID del hotel, bodega, spa...

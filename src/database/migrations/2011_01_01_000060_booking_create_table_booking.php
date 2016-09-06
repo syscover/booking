@@ -25,7 +25,7 @@ class BookingCreateTableBooking extends Migration {
 
 				// customer making the reservation
 				$table->integer('customer_id_225')->unsigned();
-                $table->string('customer_name_225');                    // todo, to create in update
+                $table->string('customer_name_225');
 				
 				$table->integer('place_id_225')->unsigned();            // hotel, bodega, spa... foreign key from 011_220_place
 				$table->integer('object_id_225')->unsigned();           // ID del hotel, bodega, spa...
