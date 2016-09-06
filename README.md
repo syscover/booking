@@ -1,4 +1,4 @@
-# Booking for Laravel 5.2
+# Booking for Laravel 5.3
 
 [![Total Downloads](https://poser.pugx.org/syscover/booking/downloads)](https://packagist.org/packages/syscover/booking)
 
@@ -6,7 +6,7 @@
 
 **1 - After install Laravel framework, insert on file composer.json, inside require object this value**
 ```
-"syscover/booking": "~1.0"
+"syscover/booking": "~2.0"
 ```
 and execute on console:
 ```
