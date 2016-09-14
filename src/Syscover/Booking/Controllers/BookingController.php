@@ -1,5 +1,7 @@
 <?php namespace Syscover\Booking\Controllers;
 
+use Syscover\Booking\Models\Place;
+use Syscover\Hotels\Models\Hotel;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Booking;
 
@@ -18,7 +20,50 @@ class BookingController extends Controller
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
     protected $objectTrans  = 'booking';
-    
+
+    public function createCustomRecord($parameters)
+    {
+        $parameters['statuses'] = array_map(function($object){
+            $object->name = trans($object->name);
+            return $object;
+        }, config('booking.status'));
+
+        $parameters['places']   = Place::builder()->get();
+        $parameters['hotels']   = Hotel::builder()->get();
+
+        $parameters['nRooms']   = range(0, 29);
+        array_walk($parameters['nRooms'], function(&$object, $key) {
+            $object         = new \stdClass();
+            $object->id     = $key + 1;
+            $object->name   = ($key + 1) . ' ' . trans_choice('hotels::pulsar.room', ($key + 1));
+        });
+
+        $parameters['nRooms']   = range(0, 29);
+        array_walk($parameters['nRooms'], function(&$object, $key) {
+            $object         = new \stdClass();
+            $object->id     = $key + 1;
+            $object->name   = ($key + 1) . ' ' . trans_choice('hotels::pulsar.room', ($key + 1));
+        });
+
+        $parameters['nAdults']   = range(0, 29);
+        array_walk($parameters['nAdults'], function(&$object, $key) {
+            $object         = new \stdClass();
+            $object->id     = $key + 1;
+            $object->name   = ($key + 1) . ' ' . trans_choice('pulsar::pulsar.adult', ($key + 1));
+        });
+
+        $parameters['nChildren']   = range(0, 9);
+        array_walk($parameters['nChildren'], function(&$object, $key) {
+            $object         = new \stdClass();
+            $object->id     = $key + 1;
+            $object->name   = ($key + 1) . ' ' . trans_choice('pulsar::pulsar.child', ($key + 1));
+        });
+
+
+
+        return $parameters;
+    }
+
     public function storeCustomRecord($parameters)
     {
 //        Campaign::create([

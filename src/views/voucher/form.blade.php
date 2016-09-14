@@ -178,7 +178,7 @@
             // end invoice ID
         });
 
-        function relatedCustomer(data)
+        $.relatedCustomer = function(data)
         {
             var value = '';
             var flag = false;

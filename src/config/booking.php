@@ -15,7 +15,7 @@ return [
     //***   Status of booking
     //******************************************************************************************************************
     'status'                    => [
-        (object)['id' => 1,    'name' => 'booking::pulsar.cancel'],
-        (object)['id' => 2,    'name' => 'booking::pulsar.confirmed'],
+        (object)['id' => 1,    'name' => 'pulsar::pulsar.cancel'],
+        (object)['id' => 2,    'name' => 'pulsar::pulsar.confirmed'],
     ],
 ];
