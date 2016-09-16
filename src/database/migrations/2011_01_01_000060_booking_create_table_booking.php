@@ -27,20 +27,23 @@ class BookingCreateTableBooking extends Migration {
 				$table->integer('customer_id_225')->unsigned();
                 $table->string('customer_name_225');
 
-                // booking
+                // places
+                $table->integer('place_id_225')->unsigned();            // hotel, bodega, spa... foreign key from 011_220_place
+                $table->integer('object_id_225')->unsigned();           // ID del hotel, bodega, spa...
+                $table->string('object_description_225')->nullable();   // room name of booking or treatment or testing
+
+                // dates
                 $table->integer('check_in_date_225')->unsigned();
                 $table->string('check_in_date_text_225');
 
                 $table->integer('check_out_date_225')->unsigned();
                 $table->string('check_out_date_text_225');
 
+                // people
                 $table->smallInteger('n_adults_225')->unsigned()->nullable();
                 $table->smallInteger('n_children_225')->unsigned()->nullable();
 
-				// places
-				$table->integer('place_id_225')->unsigned();            // hotel, bodega, spa... foreign key from 011_220_place
-				$table->integer('object_id_225')->unsigned();           // ID del hotel, bodega, spa...
-                $table->string('object_description_225')->nullable();   // room name of booking or treatment or testing
+
 
                 // booking to hotel room
                 $table->smallInteger('n_rooms_225')->unsigned()->nullable();
