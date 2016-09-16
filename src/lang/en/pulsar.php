@@ -11,6 +11,8 @@ return [
     'package_name'                          => 'Booking',
     'place'                                 => 'Place|Places',
     'product_prefix'                        => 'Product prefix|Products prefix',
+    'room_type'                             => 'Room type',
+    'temporary_bed'                         => 'Temporary bed',
     'used'                                  => 'Used',
     'used_date'                             => 'Used date',
     'voucher'                               => 'Voucher|Vouchers',

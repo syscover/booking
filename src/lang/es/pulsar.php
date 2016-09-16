@@ -11,6 +11,8 @@ return [
     'package_name'                          => 'Booking',
     'place'                                 => 'Sitio|Sitios',
     'product_prefix'                        => 'Prefijo de producto|Prefijos de productos',
+    'room_type'                             => 'Tipo de habitación',
+    'temporary_bed'                         => 'Cama supletoria',
     'used'                                  => 'Usado',
     'used_date'                             => 'Fecha de uso',
     'voucher'                               => 'Voucher|Vouchers',
