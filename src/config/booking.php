@@ -18,4 +18,12 @@ return [
         (object)['id' => 1,    'name' => 'pulsar::pulsar.cancel'],
         (object)['id' => 2,    'name' => 'pulsar::pulsar.confirmed'],
     ],
+
+    //******************************************************************************************************************
+    //***   Breakfast
+    //******************************************************************************************************************
+    'breakfast'                    => [
+        (object)['id' => 1,    'name' => 'pulsar::pulsar.included'],
+        (object)['id' => 2,    'name' => 'pulsar::pulsar.not_included'],
+    ],
 ];

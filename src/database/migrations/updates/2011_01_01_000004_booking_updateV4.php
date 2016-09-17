@@ -16,7 +16,14 @@ class BookingUpdateV4 extends Migration
         if(! Schema::hasColumn('011_225_booking', 'n_rooms_225'))
         {
             Schema::table('011_225_booking', function ($table) {
-                $table->smallInteger('n_rooms_225')->unsigned()->nullable();
+                $table->smallInteger('n_rooms_225')->unsigned()->nullable()->after('n_children_225');
+            });
+        }
+
+        if(! Schema::hasColumn('011_225_booking', 'nights_225'))
+        {
+            Schema::table('011_225_booking', function ($table) {
+                $table->smallInteger('nights_225')->unsigned()->nullable()->after('check_out_date_text_225');
             });
         }
 
@@ -31,6 +38,13 @@ class BookingUpdateV4 extends Migration
         {
             Schema::table('011_225_booking', function ($table) {
                 $table->renameColumn('n_adult_225', 'n_adults_225');
+            });
+        }
+
+        if(Schema::hasColumn('011_225_booking', 'temporary_bed_225'))
+        {
+            Schema::table('011_225_booking', function ($table) {
+                $table->renameColumn('temporary_bed_225', 'temporary_beds_225');
             });
         }
     }

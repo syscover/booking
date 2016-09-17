@@ -31,20 +31,6 @@ class BookingController extends Controller
         $parameters['places']   = Place::builder()->get();
         $parameters['hotels']   = Hotel::builder()->get();
 
-        $parameters['nRooms']   = range(0, 29);
-        array_walk($parameters['nRooms'], function(&$object, $key) {
-            $object         = new \stdClass();
-            $object->id     = $key + 1;
-            $object->name   = ($key + 1) . ' ' . trans_choice('hotels::pulsar.room', ($key + 1));
-        });
-
-        $parameters['nRooms']   = range(0, 29);
-        array_walk($parameters['nRooms'], function(&$object, $key) {
-            $object         = new \stdClass();
-            $object->id     = $key + 1;
-            $object->name   = ($key + 1) . ' ' . trans_choice('hotels::pulsar.room', ($key + 1));
-        });
-
         $parameters['nAdults']   = range(0, 29);
         array_walk($parameters['nAdults'], function(&$object, $key) {
             $object         = new \stdClass();
@@ -58,6 +44,26 @@ class BookingController extends Controller
             $object->id     = $key + 1;
             $object->name   = ($key + 1) . ' ' . trans_choice('pulsar::pulsar.child', ($key + 1));
         });
+
+        $parameters['nRooms']   = range(0, 29);
+        array_walk($parameters['nRooms'], function(&$object, $key) {
+            $object         = new \stdClass();
+            $object->id     = $key + 1;
+            $object->name   = ($key + 1) . ' ' . trans_choice('hotels::pulsar.room', ($key + 1));
+        });
+
+        $parameters['temporaryBeds']   = range(0, 4);
+        array_walk($parameters['temporaryBeds'], function(&$object, $key) {
+            $object         = new \stdClass();
+            $object->id     = $key + 1;
+            $object->name   = ($key + 1) . ' ' . trans_choice('booking::pulsar.temporary_bed', ($key + 1));
+        });
+
+        $parameters['breakfast']    = array_map(function($object) {
+            $object->name = trans($object->name);
+            return $object;
+        }, config('booking.breakfast'));
+
 
 
 

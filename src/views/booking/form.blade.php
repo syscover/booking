@@ -148,7 +148,11 @@
         'required' => true,
         'readOnly' => true
     ])
-
+    @include('pulsar::includes.html.form_textarea_group', [
+        'label' => trans('booking::pulsar.customer_observations'),
+        'name' => 'customerObservations',
+        'value' => old('customerObservations', isset($object->customer_observations_225)? $object->customer_observations_225 : null)
+    ])
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 4,
         'label' => trans_choice('booking::pulsar.place', 1),
@@ -178,6 +182,7 @@
             'error-placement' => 'select2-product-outer-container'
         ]
     ])
+
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.date', 2), 'icon' => 'fa fa-calendar'])
     <div class="row">
         <div class="col-md-6">
@@ -207,6 +212,14 @@
             ])
         </div>
     </div>
+    @include('pulsar::includes.html.form_text_group', [
+        'fieldSize' => 2,
+        'label' => trans_choice('pulsar::pulsar.night', 2),
+        'name' => 'nights',
+        'value' => old('nights', isset($object->nights_225)? $object->nights_225 : null),
+        'readOnly' => true
+    ])
+
     @include('pulsar::includes.html.form_section_header', ['label' => trans('pulsar::pulsar.people'), 'icon' => 'fa fa-users'])
     <div class="row">
         <div class="col-md-6">
@@ -238,60 +251,93 @@
 
 
 
-
-    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('hotels::pulsar.hotel', 1), 'icon' => 'fa fa-h-square'])
-    @include('pulsar::includes.html.form_text_group', [
-        'label' => trans('booking::pulsar.room_type'),
-        'name' => 'roomDescription',
-        'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
-    ])
-    <div class="row">
-        <div class="col-md-6">
-            @include('pulsar::includes.html.form_select_group', [
-                'labelSize' => 4,
-                'fieldSize' => 8,
-                'label' => trans_choice('hotels::pulsar.room', 2),
-                'name' => 'nRooms',
-                'value' => old('nRooms', isset($object->n_rooms_225)? $object->n_rooms_225 : null),
-                'objects' => $nRooms,
-                'idSelect' => 'id',
-                'nameSelect' => 'name'
-            ])
+    <div id="hotelData">
+        @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('hotels::pulsar.hotel', 1), 'icon' => 'fa fa-h-square'])
+        @include('pulsar::includes.html.form_text_group', [
+            'label' => trans('booking::pulsar.room_type'),
+            'name' => 'roomDescription',
+            'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+        ])
+        <div class="row">
+            <div class="col-md-6">
+                @include('pulsar::includes.html.form_select_group', [
+                    'labelSize' => 4,
+                    'fieldSize' => 8,
+                    'label' => trans_choice('hotels::pulsar.room', 2),
+                    'name' => 'nRooms',
+                    'value' => old('nRooms', isset($object->n_rooms_225)? $object->n_rooms_225 : null),
+                    'objects' => $nRooms,
+                    'idSelect' => 'id',
+                    'nameSelect' => 'name'
+                ])
+                @include('pulsar::includes.html.form_select_group', [
+                    'labelSize' => 4,
+                    'fieldSize' => 8,
+                    'label' => trans('booking::pulsar.breakfast'),
+                    'name' => 'breakfast',
+                    'value' => old('breakfast', isset($object->breakfast_225)? $object->breakfast_225 : null),
+                    'objects' => $breakfast,
+                    'idSelect' => 'id',
+                    'nameSelect' => 'name'
+                ])
+            </div>
+            <div class="col-md-6">
+                @include('pulsar::includes.html.form_select_group', [
+                    'labelSize' => 4,
+                    'fieldSize' => 8,
+                    'label' => trans_choice('booking::pulsar.temporary_bed', 2),
+                    'name' => 'temporaryBeds',
+                    'value' => old('temporaryBeds', isset($object->temporary_beds_225)? $object->temporary_beds_225 : null),
+                    'objects' => $temporaryBeds,
+                    'idSelect' => 'id',
+                    'nameSelect' => 'name'
+                ])
+            </div>
         </div>
-        <div class="col-md-6">
-            @include('pulsar::includes.html.form_select_group', [
-                'labelSize' => 4,
-                'fieldSize' => 8,
-                'label' => trans_choice('pulsar::pulsar.child', 2),
-                'name' => 'nChildren',
-                'value' => old('nChildren', isset($object->n_children_225)? $object->n_children_225 : null),
-                'objects' => $nChildren,
-                'idSelect' => 'id',
-                'nameSelect' => 'name'
-            ])
-        </div>
+        @include('pulsar::includes.html.form_textarea_group', [
+            'label' => trans('booking::pulsar.hotel_observations'),
+            'name' => 'hotelObservations',
+            'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+        ])
     </div>
 
 
+    <div id="spaData">
+        @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('spas::pulsar.spa', 1), 'icon' => 'fa fa-tint'])
+        @include('pulsar::includes.html.form_text_group', [
+            'label' => trans_choice('hotels::pulsar.room', 1),
+            'name' => 'roomDescription',
+            'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+        ])
+        @include('pulsar::includes.html.form_textarea_group', [
+            'label' => trans('booking::pulsar.hotel_observations'),
+            'name' => 'hotelObservations',
+            'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+        ])
+    </div>
 
-    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('spas::pulsar.spa', 1), 'icon' => 'fa fa-tint'])
-    @include('pulsar::includes.html.form_text_group', [
-        'label' => trans_choice('hotels::pulsar.room', 1),
-        'name' => 'roomDescription',
-        'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
-    ])
-
-    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
-    @include('pulsar::includes.html.form_text_group', [
-        'label' => trans_choice('hotels::pulsar.room', 1),
-        'name' => 'roomDescription',
-        'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
-    ])
+    <div id="wineryData">
+        @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
+        @include('pulsar::includes.html.form_text_group', [
+            'label' => trans_choice('hotels::pulsar.room', 1),
+            'name' => 'roomDescription',
+            'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+        ])
+        @include('pulsar::includes.html.form_textarea_group', [
+            'label' => trans('booking::pulsar.hotel_observations'),
+            'name' => 'hotelObservations',
+            'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+        ])
+    </div>
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.booking', 1), 'icon' => 'fa fa-hourglass-end'])
 
+    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.amount', 2), 'icon' => 'fa fa-usd'])
 
-
-
+    @include('pulsar::includes.html.form_textarea_group', [
+        'label' => trans_choice('pulsar::pulsar.observations', 2),
+        'name' => 'observations',
+        'value' => old('observations', isset($object->observations_225)? $object->observations_225 : null)
+    ])
     <!-- /booking::booking.form -->
 @stop
