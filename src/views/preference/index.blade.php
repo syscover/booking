@@ -4,7 +4,7 @@
     @parent
     <!-- booking::preference.index -->
     @include('pulsar::includes.js.messages')
-    <!-- /.booking::preference.index -->
+    <!-- /booking::preference.index -->
 @stop
 
 @section('rows')
@@ -19,5 +19,5 @@
         'max' => '2000',
         'required' => true
     ])
-    <!-- /.booking::preference.index -->
+    <!-- /booking::preference.index -->
 @stop

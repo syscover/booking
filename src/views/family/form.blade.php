@@ -25,5 +25,5 @@
         'rangeLength' => '2,255',
         'required' => true
     ])
-    <!-- /.booking::family.create -->
+    <!-- /booking::family.create -->
 @stop

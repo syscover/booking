@@ -32,5 +32,5 @@
         'value' => 1,
         'checked' => old('active', isset($object->active_221)? $object->active_221 : null),
     ])
-    <!-- /.booking::campaign.create -->
+    <!-- /booking::campaign.create -->
 @stop

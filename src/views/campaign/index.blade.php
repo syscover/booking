@@ -40,5 +40,5 @@
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>
-    <!-- /.booking::campaign.index -->
+    <!-- /booking::campaign.index -->
 @stop

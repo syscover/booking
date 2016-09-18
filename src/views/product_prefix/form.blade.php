@@ -28,5 +28,5 @@
         'rangeLength' => '2,255',
         'required' => true
     ])
-    <!-- /.booking::product_prefix.create -->
+    <!-- /booking::product_prefix.create -->
 @stop

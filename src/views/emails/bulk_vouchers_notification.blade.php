@@ -98,7 +98,7 @@
             <br>
         </td>
     </tr>
-    <!-- /.voucher -->
+    <!-- /voucher -->
     <tr>
         <td colspan="2" width="100%">&nbsp;</td>
     </tr>

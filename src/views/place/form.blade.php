@@ -33,5 +33,5 @@
         'rangeLength' => '2,255',
         'required' => true
     ])
-    <!-- /.booking::place.create -->
+    <!-- /booking::place.create -->
 @stop
