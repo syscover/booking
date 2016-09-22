@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_voucher'                           => 'Add Voucher',
     'booking'                               => 'Booking|Bookings',
     'booking_draft'                         => 'Booking draft|Booking drafts',
     'breakfast'                             => 'Breakfast',
@@ -15,10 +16,12 @@ return [
     'place'                                 => 'Place|Places',
     'product_prefix'                        => 'Product prefix|Products prefix',
     'room_type'                             => 'Room type',
+    'spa_observations'                      => 'Spa observations',
     'temporary_bed'                         => 'Temporary bed|Temporary beds',
     'used'                                  => 'Used',
     'used_date'                             => 'Used date',
     'voucher'                               => 'Voucher|Vouchers',
     'vouchers_bulk_create'                  => 'Vouchers bulk create',
     'vouchers_number'                       => 'Vouchers number',
+    'winery_observations'                   => 'Winery observations',
 ];

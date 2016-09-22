@@ -18,10 +18,12 @@
                 mainClass: 'mfp-fade'
             });
 
-            $('#objectWrapper').hide();
+            $('#objectWrapper, #hotelData, #spaData, #wineryData').hide();
 
             $('[name=place]').on('change', function () {
-                var url = '{{ route('bookingGetDataObjects', ['model' => '%model%']) }}';
+                var url     = '{{ route('bookingGetDataObjects', ['model' => '%model%']) }}';
+                var self    = this;
+
                 $.ajax({
                     type: "POST",
                     url: url.replace('%model%', $(this).children('option:selected').data('model')),
@@ -33,6 +35,13 @@
                         {
                             // hide select with objects
                             $('#objectWrapper').fadeOut();
+
+                            if($('#spaData').is(":visible"))
+                                $('#spaData').slideToggle("slow");
+                            if($('#wineryData').is(":visible"))
+                                $('#wineryData').slideToggle("slow");
+                            if($('#hotelData').is(":visible"))
+                                $('#hotelData').slideToggle("slow");
                         }
                         else
                         {
@@ -55,10 +64,81 @@
 
                             // show select with objects
                             $('#objectWrapper').fadeIn();
+
+                            if($(self).children('option:selected').data('model') == 1)
+                            {
+                                if($('#spaData').is(":visible"))
+                                    $('#spaData').slideToggle("slow");
+                                if($('#wineryData').is(":visible"))
+                                    $('#wineryData').slideToggle("slow");
+
+                                $('#hotelData').slideToggle("slow");
+                            }
+
+                            if($(self).children('option:selected').data('model') == 2)
+                            {
+                                if($('#hotelData').is(":visible"))
+                                    $('#hotelData').slideToggle("slow");
+                                if($('#spaData').is(":visible"))
+                                    $('#spaData').slideToggle("slow");
+
+                                $('#wineryData').slideToggle("slow");
+                            }
+
+                            if($(self).children('option:selected').data('model') == 3)
+                            {
+                                if($('#hotelData').is(":visible"))
+                                    $('#hotelData').slideToggle("slow");
+                                if($('#wineryData').is(":visible"))
+                                    $('#wineryData').slideToggle("slow");
+
+                                $('#spaData').slideToggle("slow");
+                            }
                         }
                     }
                 });
             });
+
+            // *********
+            // * dates *
+            // *********
+            var now = moment()
+            $('[name=checkInDate]')
+                .closest('.datetimepicker')
+                .data("DateTimePicker")
+                .options({
+                    defaultDate: now,
+                    minDate: now
+                });
+
+            $('[name=checkInDate]')
+                .closest('.datetimepicker')
+                .on('dp.change', function(ev) {
+                    var minDate = ev.date.add(1, 'days');
+
+                    $('[name=checkOutDate]')
+                        .closest('.datetimepicker')
+                        .data("DateTimePicker")
+                        .minDate(minDate);
+
+                    if($('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date() < minDate && $('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date() != null)
+                        $('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date(ev.date);
+                });
+
+            $('[name=checkOutDate]')
+                .closest('.datetimepicker')
+                .data("DateTimePicker")
+                .options({
+                    minDate: moment().add(1, 'days'),
+                    useCurrent: true
+                });
+
+            $('[name=checkOutDate]')
+                .closest('.datetimepicker')
+                .on('dp.change', function(ev) {
+                    var days          = ev.date.diff($('[name=checkInDate]').closest('.datetimepicker').data("DateTimePicker").date(), 'days');
+                    $('[name=nights]').val(days);
+                });
         });
 
         $.relatedCustomer = function (data)
@@ -216,7 +296,7 @@
         'fieldSize' => 2,
         'label' => trans_choice('pulsar::pulsar.night', 2),
         'name' => 'nights',
-        'value' => old('nights', isset($object->nights_225)? $object->nights_225 : null),
+        'value' => old('nights', isset($object->nights_225)? $object->nights_225 : 1),
         'readOnly' => true
     ])
 
@@ -248,9 +328,7 @@
         </div>
     </div>
 
-
-
-
+    <!-- HOTEL section -->
     <div id="hotelData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('hotels::pulsar.hotel', 1), 'icon' => 'fa fa-h-square'])
         @include('pulsar::includes.html.form_text_group', [
@@ -301,7 +379,7 @@
         ])
     </div>
 
-
+    <!-- SPA section -->
     <div id="spaData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('spas::pulsar.spa', 1), 'icon' => 'fa fa-tint'])
         @include('pulsar::includes.html.form_text_group', [
@@ -310,12 +388,13 @@
             'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         @include('pulsar::includes.html.form_textarea_group', [
-            'label' => trans('booking::pulsar.hotel_observations'),
+            'label' => trans('booking::pulsar.spa_observations'),
             'name' => 'hotelObservations',
             'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
 
+    <!-- WINERY section -->
     <div id="wineryData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
         @include('pulsar::includes.html.form_text_group', [
@@ -324,16 +403,35 @@
             'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         @include('pulsar::includes.html.form_textarea_group', [
-            'label' => trans('booking::pulsar.hotel_observations'),
+            'label' => trans('booking::pulsar.winery_observations'),
             'name' => 'hotelObservations',
             'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
 
-    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.booking', 1), 'icon' => 'fa fa-hourglass-end'])
+    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.voucher', 2), 'icon' => 'fa fa-sort-alpha-asc'])
+    @include('pulsar::includes.html.form_iframe_multiple_select_group', [
+        'modalUrl' => route('crmCustomer', [
+            'offset' => 0,
+            'modal' => 1
+        ]),
+
+
+
+        'id' => 'forwards',
+        'label' => trans('booking::pulsar.add_voucher'),
+        'icon'  => 'fa fa-share',
+        'dataJson' => isset($forwards)? $forwards : null,
+        'thead' => [(object)['class' => null, 'data' => trans('pulsar::pulsar.id')], (object)['class' => null, 'data' => trans('pulsar::pulsar.prefix')], (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.comment', 2)], (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.state', 2)]],
+        'tbody' => [
+            (object)['include' => 'pulsar::includes.html.form_text_group', 'properties' => ['label' => trans('pulsar::pulsar.name'), 'name' => 'name_402', 'required' => true, 'maxLength' => '100', 'rangeLength' => '2,100']],
+            (object)['include' => 'pulsar::includes.html.form_text_group', 'properties' => ['label' => trans('pulsar::pulsar.email'), 'name' => 'email_402', 'type' => 'email', 'required' => true, 'maxLength' => '50', 'rangeLength' => '2,50', 'fieldSize' => 5]],
+            (object)['include' => 'pulsar::includes.html.form_checkbox_group', 'class' => 'align-center', 'properties' => ['label' => trans_choice('pulsar::pulsar.comment', 2), 'name' => 'comments_402', 'value' => 1]],
+            (object)['include' => 'pulsar::includes.html.form_checkbox_group', 'class' => 'align-center', 'properties' => ['label' => trans_choice('pulsar::pulsar.state', 2), 'name' => 'states_402', 'value' => 1]]
+        ]
+    ])
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.amount', 2), 'icon' => 'fa fa-usd'])
-
     @include('pulsar::includes.html.form_textarea_group', [
         'label' => trans_choice('pulsar::pulsar.observations', 2),
         'name' => 'observations',

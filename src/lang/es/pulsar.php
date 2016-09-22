@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_voucher'                           => 'Añadir Voucher',
     'booking'                               => 'Reserva|Reservas',
     'booking_draft'                         => 'Borrador de Reserva|Borradores de Reserva',
     'breakfast'                             => 'Desayuno',
@@ -15,10 +16,12 @@ return [
     'place'                                 => 'Sitio|Sitios',
     'product_prefix'                        => 'Prefijo de producto|Prefijos de productos',
     'room_type'                             => 'Tipo de habitación',
+    'spa_observations'                      => 'Observaciones para el Spa',
     'temporary_bed'                         => 'Cama supletoria|Camas supletorias',
     'used'                                  => 'Usado',
     'used_date'                             => 'Fecha de uso',
     'voucher'                               => 'Voucher|Vouchers',
     'vouchers_bulk_create'                  => 'Creación masiva de vouchers',
     'vouchers_number'                       => 'Número de vouchers',
+    'winery_observations'                   => 'Observaciones para la bodega',
 ];

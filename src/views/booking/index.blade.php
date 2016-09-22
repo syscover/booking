@@ -33,7 +33,7 @@
 @section('tHead')
     <!-- booking::voucher.index -->
     <tr>
-        <th data-hide="phone,tablet">ID.</th>
+        <th data-hide="phone,tablet">ID</th>
         <th>{{ trans('pulsar::pulsar.code') }}</th>
         <th data-class="expand">{{ trans('pulsar::pulsar.name') }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
