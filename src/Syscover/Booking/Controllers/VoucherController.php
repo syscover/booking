@@ -36,7 +36,19 @@ class VoucherController extends Controller
             ['id' => 0, 'name' => trans('pulsar::pulsar.no')]
         ];
 
+        if(isset($parameters['modal']) && $parameters['modal'] == 1)
+            $this->viewParameters['deleteSelectButton'] = false;
+
         return $parameters;
+    }
+
+    public function customJsonData($parameters)
+    {
+        if($parameters['modal'] == 1)
+        {
+            $this->viewParameters['checkBoxColumn'] = false;
+            $this->viewParameters['relatedButton']  = true;
+        }
     }
 
     public function createCustomRecord($parameters)

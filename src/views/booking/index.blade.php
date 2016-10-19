@@ -27,7 +27,7 @@
             }
         });
     </script>
-    <!-- booking::voucher.index -->
+    <!-- /booking::voucher.index -->
 @stop
 
 @section('tHead')

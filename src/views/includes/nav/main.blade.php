@@ -8,7 +8,7 @@
             <li{!! is_current_resource('booking-booking-draft') !!}><a href="{{ route('bookingBookingDraft') }}"><i class="fa fa-hourglass-half"></i>{{ trans_choice('booking::pulsar.booking_draft', 2) }}</a></li>
         @endif
         @if(is_allowed('booking-voucher', 'access'))
-            <li{!! is_current_resource('booking-voucher') !!}><a href="{{ route('bookingVoucher') }}"><i class="fa fa-sort-alpha-asc"></i>{{ trans_choice('booking::pulsar.voucher', 2) }}</a></li>
+            <li{!! is_current_resource('booking-voucher') !!}><a href="{{ route('bookingVoucher', ['modal' => 0]) }}"><i class="fa fa-sort-alpha-asc"></i>{{ trans_choice('booking::pulsar.voucher', 2) }}</a></li>
         @endif
         @if(is_allowed('booking-master-tables', 'access'))
             <li{!! is_current_resource(['booking-campaign','booking-place','booking-product-prefix','booking-family','booking-preference'], true) !!}>

@@ -40,6 +40,7 @@ class BookingCreateTableBooking extends Migration {
 
                 $table->integer('check_out_date_225')->unsigned();
                 $table->string('check_out_date_text_225');
+
                 $table->smallInteger('nights_225')->unsigned()->nullable();
 
                 // people
@@ -49,7 +50,7 @@ class BookingCreateTableBooking extends Migration {
                 // booking to hotel room
                 $table->smallInteger('n_rooms_225')->unsigned()->nullable();
                 $table->smallInteger('temporary_beds_225')->unsigned()->nullable();
-				$table->boolean('breakfast_225');                       // breakfast include? por defecto SI
+				$table->tinyInteger('breakfast_225')->unsigned()->nullable();
 
 
 

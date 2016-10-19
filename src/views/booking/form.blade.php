@@ -19,6 +19,7 @@
             });
 
             $('#objectWrapper, #hotelData, #spaData, #wineryData').hide();
+            $(window).trigger('resize'); // to calculate new window sice by hide html blocks
 
             $('[name=place]').on('change', function () {
                 var url     = '{{ route('bookingGetDataObjects', ['model' => '%model%']) }}';
@@ -174,7 +175,42 @@
             $('[name="customerId"]').val(data.id_301);
 
             $.magnificPopup.close();
-        }
+        };
+
+        $.setDeleteVoucher = function()
+        {
+            $('.delete-voucher').on('click', function () {
+                $(this).closest('tr').remove();
+            });
+        };
+
+//        $.sumVoucherAmount = function(amount)
+        //        {
+        //            $('[name=vouchersCostAmount]').val($('[name=vouchersCostAmount]').val() + amount);
+        //        };
+
+        $.relatedVoucher = function (data)
+        {
+            $('#vouchers tbody').append(
+                '<tr>' +
+                    '<td>' + data.id_226 + '</td>' +
+                    '<td>' + data.prefix_221 + '</td>' +
+                    '<td>' + data.name_221 + '</td>' +
+                    '<td class="align-center">' + data.price_226 + '</td>' +
+                    '<td class="align-center"><div class="col-md-6 col-md-offset-3">' +
+                        '<input type="number" name="voucher-' + data.id_226 + '" value="" class="form-control">' +
+                        '<input type="hidden" name="vouchers[]" value="' + data.id_226 + '" class="form-control">' +
+                    '</div></td>' +
+                    '<td class="align-center">' +
+                        '<a class="btn btn-xs bs-tooltip delete-voucher"><i class="fa fa-trash"></i></a>' +
+                    '</td>' +
+                '</tr>'
+            );
+
+            $.magnificPopup.close();
+            //$.sumVoucherAmount();
+            $.setDeleteVoucher();
+        };
     </script>
     <!-- /booking::booking.form -->
 @stop
@@ -199,7 +235,8 @@
                 'value' => old('status', isset($object->status_225)? $object->status_225 : null),
                 'objects' => $statuses,
                 'idSelect' => 'id',
-                'nameSelect' => 'name'
+                'nameSelect' => 'name',
+                'required' => true
             ])
         </div>
         <div class="col-md-6">
@@ -333,8 +370,8 @@
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('hotels::pulsar.hotel', 1), 'icon' => 'fa fa-h-square'])
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans('booking::pulsar.room_type'),
-            'name' => 'roomDescription',
-            'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+            'name' => 'objectDescription',
+            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         <div class="row">
             <div class="col-md-6">
@@ -374,61 +411,63 @@
         </div>
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.hotel_observations'),
-            'name' => 'hotelObservations',
-            'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+            'name' => 'placeObservations',
+            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
 
-    <!-- SPA section -->
+    <!-- Spa section -->
     <div id="spaData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('spas::pulsar.spa', 1), 'icon' => 'fa fa-tint'])
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans_choice('hotels::pulsar.room', 1),
-            'name' => 'roomDescription',
-            'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+            'name' => 'objectDescription',
+            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.spa_observations'),
-            'name' => 'hotelObservations',
-            'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+            'name' => 'placeObservations',
+            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
 
-    <!-- WINERY section -->
+    <!-- Winery section -->
     <div id="wineryData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans_choice('hotels::pulsar.room', 1),
-            'name' => 'roomDescription',
-            'value' => old('roomDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+            'name' => 'objectDescription',
+            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.winery_observations'),
-            'name' => 'hotelObservations',
-            'value' => old('hotelObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+            'name' => 'placeObservations',
+            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.voucher', 2), 'icon' => 'fa fa-sort-alpha-asc'])
-    @include('pulsar::includes.html.form_iframe_multiple_select_group', [
-        'modalUrl' => route('crmCustomer', [
+    @include('pulsar::elements.select_multiple_iframe', [
+        'modalUrl' => route('bookingVoucherAvailable', [
             'offset' => 0,
-            'modal' => 1
+            'modal' => 1,
+            'available' => 1
         ]),
-
-
-
-        'id' => 'forwards',
         'label' => trans('booking::pulsar.add_voucher'),
         'icon'  => 'fa fa-share',
-        'dataJson' => isset($forwards)? $forwards : null,
-        'thead' => [(object)['class' => null, 'data' => trans('pulsar::pulsar.id')], (object)['class' => null, 'data' => trans('pulsar::pulsar.prefix')], (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.comment', 2)], (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.state', 2)]],
-        'tbody' => [
-            (object)['include' => 'pulsar::includes.html.form_text_group', 'properties' => ['label' => trans('pulsar::pulsar.name'), 'name' => 'name_402', 'required' => true, 'maxLength' => '100', 'rangeLength' => '2,100']],
-            (object)['include' => 'pulsar::includes.html.form_text_group', 'properties' => ['label' => trans('pulsar::pulsar.email'), 'name' => 'email_402', 'type' => 'email', 'required' => true, 'maxLength' => '50', 'rangeLength' => '2,50', 'fieldSize' => 5]],
-            (object)['include' => 'pulsar::includes.html.form_checkbox_group', 'class' => 'align-center', 'properties' => ['label' => trans_choice('pulsar::pulsar.comment', 2), 'name' => 'comments_402', 'value' => 1]],
-            (object)['include' => 'pulsar::includes.html.form_checkbox_group', 'class' => 'align-center', 'properties' => ['label' => trans_choice('pulsar::pulsar.state', 2), 'name' => 'states_402', 'value' => 1]]
+        'id' => 'vouchers',
+        'dataJson' => isset($vouchers)? $vouchers : null,
+        'thead' => [
+            (object)['class' => null, 'data' => trans_choice('pulsar::pulsar.id', 1)],
+            (object)['class' => null, 'data' => trans('pulsar::pulsar.prefix')],
+            (object)['class' => null, 'data' => trans_choice('booking::pulsar.campaign', 1)],
+            (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.price', 1)],
+            (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.cost', 1)]
         ]
+    ])
+    @include('pulsar::includes.html.form_hidden', [
+        'name' => 'vouchersCostAmount',
+        'value' => 0
     ])
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.amount', 2), 'icon' => 'fa fa-usd'])

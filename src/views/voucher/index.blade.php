@@ -1,7 +1,8 @@
-@extends('pulsar::layouts.index')
+@extends('pulsar::layouts.index', ['callback' => 'relatedVoucher'])
 
 @section('head')
     @parent
+    <!-- booking::voucher.index -->
     <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/jquery.select2/css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('packages/syscover/pulsar/vendor/jquery.select2.custom/css/select2.css') }}">
@@ -11,7 +12,6 @@
     <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/moment.min.js') }}"></script>
     <script src="{{ asset('packages/syscover/pulsar/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
 
-    <!-- booking::voucher.index -->
     <script>
         $(document).ready(function() {
             if ($.fn.dataTable)
@@ -20,18 +20,38 @@
                     "displayStart": {{ $offset }},
                     "sorting": [[0, 'desc']],
                     "columnDefs": [
-                        { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
-                        { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
-                        { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
-                        { "sortable": false, "targets": [12,13]},
-                        { "class": "checkbox-column", "targets": [12]},
-                        { "class": "align-center", "targets": [9,10,13]}
+                        @if(isset($modal) && $modal)
+                            { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
+                            { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
+                            { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
+                            { "sortable": false, "targets": [12]},
+
+                            { "class": "align-center", "targets": [9,10,12]}
+                        @else
+                            { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
+                            { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
+                            { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
+                            { "sortable": false, "targets": [12,13]},
+                            { "class": "checkbox-column", "targets": [12]},
+                            { "class": "align-center", "targets": [9,10,13]}
+                        @endif
                     ],
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
-                        "url": "{{ route('jsonData' . ucfirst($routeSuffix)) }}",
+                        "url": "{{ route('jsonData' . ucfirst($routeSuffix), ['modal' => $modal? 1 : 0]) }}",
                         "type": "POST",
+                        @if(isset($available) && $available)
+                        // set values to filter vouchers without use
+                        "data": {
+                            searchColumns: [
+                                {name: 'cost', value: 'NULL'},
+                                {name: 'cost_operator', value: '='},
+                                {name: 'cost_column', value: 'cost_226'},
+
+                            ]
+                        },
+                        @endif
                         "headers": {
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
                         }
@@ -140,7 +160,7 @@
 
 @section('headButtons')
     @if($viewParameters['newButton'])
-        <a class="btn margin-b10 margin-l10" href="{{ route('createBookingVoucher', ['offset' => 0, 'bulk' => 1]) }}"><i class="fa fa-bolt"></i> {{ trans('booking::pulsar.vouchers_bulk_create') }}</a>
+        <a class="btn margin-b10 margin-l10" href="{{ route('createBookingVoucher', ['offset' => 0, 'modal' => $modal? 1 : 0, 'bulk' => 1]) }}"><i class="fa fa-bolt"></i> {{ trans('booking::pulsar.vouchers_bulk_create') }}</a>
     @endif
     <a class="btn margin-b10 margin-l10 advanced-search"><i class="fa fa-search"></i> {{ trans('pulsar::pulsar.advanced_search') }}</a>
 
@@ -161,6 +181,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <!-- set operations columns -->
+                                <!-- this columns define that columns has arithmetic operations when export to excel -->
                                 @include('pulsar::includes.html.form_hidden', [
                                     'name' => 'operationColumns',
                                     'value' => json_encode([
@@ -318,7 +339,9 @@
         <th>{{ trans('pulsar::pulsar.active') }}</th>
         <th>{{ trans('pulsar::pulsar.paid') }}</th>
         <th data-hide="phone,tablet">{{ trans_choice('pulsar::pulsar.cost', 1) }}</th>
-        <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
+        @if(! isset($modal) || isset($modal) && !$modal)
+            <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
+        @endif
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>
     </tr>
     <!-- /booking::voucher.index -->
