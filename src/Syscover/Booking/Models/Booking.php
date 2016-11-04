@@ -26,7 +26,8 @@ class Booking extends Model
     protected $maps         = [];
     protected $relationMaps = [];
     private static $rules   = [
-
+        'status'        => 'required',
+        'customerId'    => 'required'
     ];
 
     public static function validate($data)

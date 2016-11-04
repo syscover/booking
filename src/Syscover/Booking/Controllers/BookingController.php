@@ -73,16 +73,19 @@ class BookingController extends Controller
     public function storeCustomRecord($parameters)
     {
 
+        $vouchersPaidAmount = 0;
         $vouchersCostAmount = 0;
         $vouchers = $this->request->input('vouchers');
         foreach ($vouchers as $voucher)
         {
-
+            $vouchersPaidAmount += (float)$this->request->input('voucherPaid-' . $voucher);
+            $vouchersCostAmount += (float)$this->request->input('voucherCost-' . $voucher);
         }
+        
+    
+        dd($vouchersPaidAmount);
 
-        dd($vouchers);
 
-        /**
         Booking::create([
             'date_225'                  => date('U'),
             'date_text_225'             => date(config('pulsar.datePattern')),
@@ -109,12 +112,15 @@ class BookingController extends Controller
             'n_rooms_225'               => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
             'temporary_beds_225'        => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
             'breakfast_225'             => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
+             
 
-
-            //**********
-            'vouchers_cost_amount_225'  => $this->request->input('vouchersCostAmount'),
-            'customer_place_amount_225' => $this->request->input('customerPlaceAmount'),
+            // TODO: - revisar campos de tabla !! han cambiado
+            'vouchers_paid_amount_225'  => $vouchersPaidAmount,
+            'vouchers_cost_amount_225'  => $vouchersCostAmount,
+            'direct_payment_amount_225' => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
             'total_amount_225'          => $this->request->input('totalAmount'),
+            
+            //**********
             'commission_percentage_225' => $this->request->input('commissionPercentage'),
             'amount_on_commission_225'  => $this->request->input('amountOnCommission'),
             'commission_amount_225'     => $this->request->input('commissionAmount'),
@@ -122,7 +128,6 @@ class BookingController extends Controller
 
             'observations_225'          => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
-         */
     }
 
     public function updateCustomRecord($parameters)

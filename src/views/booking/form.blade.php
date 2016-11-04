@@ -21,6 +21,7 @@
             $('#objectWrapper, #hotelData, #spaData, #wineryData').hide();
             $(window).trigger('resize'); // to calculate new window sice by hide html blocks
 
+            // load kind place to do booking
             $('[name=place]').on('change', function () {
                 var url     = '{{ route('bookingGetDataObjects', ['model' => '%model%']) }}';
                 var self    = this;
@@ -140,6 +141,10 @@
                     var days          = ev.date.diff($('[name=checkInDate]').closest('.datetimepicker').data("DateTimePicker").date(), 'days');
                     $('[name=nights]').val(days);
                 });
+
+            $('[name=directPaymenAmount]').on('change', function(){
+                $.sumTotalAmount();
+            })
         });
 
         $.relatedCustomer = function (data)
@@ -171,36 +176,62 @@
                     value += data.company_301;
             }
 
-            $('[name="customer"]').val(value);
-            $('[name="customerId"]').val(data.id_301);
+            $('[name=customer]').val(value);
+            $('[name=customerId]').val(data.id_301);
 
             $.magnificPopup.close();
         };
 
-        $.setDeleteVoucher = function()
-        {
+        $.sumVoucherPaidAmount = function() {
+            // sum vouchers value
+            var voucherPaidAmount = 0;
+            $('input[name="vouchers[]"]').each(function(index, voucher) {
+                voucherPaidAmount += parseFloat($('[name=voucherPaid-' + $(voucher).val() + ']').val());
+            });
+            $('[name=voucherPaidAmount]').val(voucherPaidAmount);
+        };
+
+        $.sumVoucherCostAmount = function() {
+            // sum vouchers value
+            var voucherCostAmount = 0;
+            $('input[name="vouchers[]"]').each(function(index, voucher) {
+                voucherCostAmount += parseFloat($('[name=voucherCost-' + $(voucher).val() + ']').val());
+            });
+            $('[name=voucherCostAmount]').val(voucherCostAmount);
+        };
+
+        $.sumTotalAmount = function() {
+            var totalAmount = parseFloat($('[name=directPaymenAmount]').val()) + parseFloat($('[name=voucherPaidAmount]').val());
+            $('[name=totalAmount]').val(totalAmount);
+        }
+
+        $.setEventVoucherRow = function() {
             $('.delete-voucher').on('click', function () {
                 $(this).closest('tr').remove();
+                $.sumVoucherPaidAmount();
+                $.sumVoucherCostAmount();
+                $.sumTotalAmount();
+            });
+
+            $('.voucher-cost').on('change', function() {
+                $.sumVoucherCostAmount();
             });
         };
 
-//        $.sumVoucherAmount = function(amount)
-        //        {
-        //            $('[name=vouchersCostAmount]').val($('[name=vouchersCostAmount]').val() + amount);
-        //        };
-
-        $.relatedVoucher = function (data)
-        {
+        $.relatedVoucher = function (data) {
             $('#vouchers tbody').append(
                 '<tr>' +
                     '<td>' + data.id_226 + '</td>' +
                     '<td>' + data.prefix_221 + '</td>' +
                     '<td>' + data.name_221 + '</td>' +
                     '<td class="align-center">' + data.price_226 + '</td>' +
-                    '<td class="align-center"><div class="col-md-6 col-md-offset-3">' +
-                        '<input type="number" name="voucher-' + data.id_226 + '" value="" class="form-control">' +
-                        '<input type="hidden" name="vouchers[]" value="' + data.id_226 + '" class="form-control">' +
-                    '</div></td>' +
+                    '<td class="align-center">'+
+                        '<div class="col-md-6 col-md-offset-3">' +
+                            '<input type="number" name="voucherCost-' + data.id_226 + '" value="0" class="form-control voucher-cost">' +
+                            '<input type="hidden" name="vouchers[]" value="' + data.id_226 + '" class="form-control">' +
+                            '<input type="hidden" name="voucherPaid-' + data.id_226 + '" value="' + data.price_226 + '" class="form-control">' +
+                        '</div>'+
+                    '</td>' +
                     '<td class="align-center">' +
                         '<a class="btn btn-xs bs-tooltip delete-voucher"><i class="fa fa-trash"></i></a>' +
                     '</td>' +
@@ -208,8 +239,9 @@
             );
 
             $.magnificPopup.close();
-            //$.sumVoucherAmount();
-            $.setDeleteVoucher();
+            $.sumVoucherPaidAmount();
+            $.sumTotalAmount();
+            $.setEventVoucherRow();
         };
     </script>
     <!-- /booking::booking.form -->
@@ -365,7 +397,7 @@
         </div>
     </div>
 
-    <!-- HOTEL section -->
+    <!-- hotel section -->
     <div id="hotelData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('hotels::pulsar.hotel', 1), 'icon' => 'fa fa-h-square'])
         @include('pulsar::includes.html.form_text_group', [
@@ -416,7 +448,7 @@
         ])
     </div>
 
-    <!-- Spa section -->
+    <!-- spa section -->
     <div id="spaData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('spas::pulsar.spa', 1), 'icon' => 'fa fa-tint'])
         @include('pulsar::includes.html.form_text_group', [
@@ -431,7 +463,7 @@
         ])
     </div>
 
-    <!-- Winery section -->
+    <!-- winery section -->
     <div id="wineryData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
         @include('pulsar::includes.html.form_text_group', [
@@ -465,14 +497,54 @@
             (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.cost', 1)]
         ]
     ])
-    @include('pulsar::includes.html.form_hidden', [
-        'name' => 'vouchersCostAmount',
-        'value' => 0
-    ])
+    
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.amount', 2), 'icon' => 'fa fa-usd'])
+    <div class="row">
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans('booking::pulsar.vouchers_paid_amount'),
+                'name' => 'voucherPaidAmount',
+                'value' => old('voucherPaidAmount', isset($object->vouchers_paid_amount_225)? $object->vouchers_paid_amount_225 : 0),
+                'readOnly' => true
+            ])
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans('booking::pulsar.direct_payment_amount'),
+                'name' => 'directPaymenAmount',
+                'value' => old('nights', isset($object->direct_payment_amount_225)? $object->direct_payment_amount_225 : 0)
+            ])
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans('booking::pulsar.total_amount'),
+                'name' => 'totalAmount',
+                'value' => old('nights', isset($object->total_amount_225)? $object->total_amount_225 : 0),
+                'readOnly' => true
+            ])
+        </div>
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans('booking::pulsar.vouchers_cost_amount'),
+                'name' => 'voucherCostAmount',
+                'value' => old('nights', isset($object->vouchers_cost_amount_225)? $object->vouchers_cost_amount_225 : 0),
+                'readOnly' => true
+            ])
+        </div>
+    </div>
+
+    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.description', 1), 'icon' => 'fa fa-file-text-o'])
     @include('pulsar::includes.html.form_textarea_group', [
-        'label' => trans_choice('pulsar::pulsar.observations', 2),
+        'label' => trans_choice('pulsar::pulsar.observations', 2), 
         'name' => 'observations',
         'value' => old('observations', isset($object->observations_225)? $object->observations_225 : null)
     ])
