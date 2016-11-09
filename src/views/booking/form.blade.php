@@ -144,7 +144,12 @@
 
             $('[name=directPaymenAmount]').on('change', function(){
                 $.sumTotalAmount();
-            })
+            });
+
+            $('[name=commissionPercentage], [name=commissionCalculation]').on('change', function(){
+                var percentage = parseFloat($('[name=commissionPercentage]').val());
+                var commissionCalculation = parseFloat($('[name=commissionCalculation]').val());
+            });
         });
 
         $.relatedCustomer = function (data)
@@ -538,6 +543,41 @@
                 'name' => 'voucherCostAmount',
                 'value' => old('nights', isset($object->vouchers_cost_amount_225)? $object->vouchers_cost_amount_225 : 0),
                 'readOnly' => true
+            ])
+        </div>
+    </div>
+
+    @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.commission', 2), 'icon' => 'fa fa-pie-chart'])
+    <div class="row">
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_select_group', [
+                'labelSize' => 4,
+                'fieldSize' => 8,
+                'label' => trans_choice('booking::pulsar.commission', 2) . ' %',
+                'name' => 'commissionPercentage',
+                'value' => old('commissionPercentage', isset($object->commission_percentage_225)? $object->commission_percentage_225 : null),
+                'objects' => $commissions,
+                'idSelect' => 'id',
+                'nameSelect' => 'name'
+            ])
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans_choice('booking::pulsar.commission', 1),
+                'name' => 'commissionAmount',
+                'value' => old('commissionAmount', isset($object->commission_amount_225)? $object->commission_amount_225 : 0),
+                'readOnly' => true
+            ])
+        </div>
+        <div class="col-md-6">
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans('booking::pulsar.commission_calculation'),
+                'name' => 'commissionCalculation',
+                'value' => old('commissionCalculation', isset($object->commission_calculation_225)? $object->commission_calculation_225 : 0)
             ])
         </div>
     </div>

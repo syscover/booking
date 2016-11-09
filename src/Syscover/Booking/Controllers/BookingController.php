@@ -64,8 +64,10 @@ class BookingController extends Controller
             return $object;
         }, config('booking.breakfast'));
 
-
-
+        $parameters['commissions'] = array_map(function($object) {
+            $object->name = trans($object->name);
+            return $object;
+        }, config('booking.commissions'));
 
         return $parameters;
     }

@@ -52,19 +52,16 @@ class BookingCreateTableBooking extends Migration {
                 $table->smallInteger('temporary_beds_225')->unsigned()->nullable();
 				$table->tinyInteger('breakfast_225')->unsigned()->nullable();
 
+				// amounts
 				$table->decimal('vouchers_paid_amount_225', 10, 2);     // sum of total amount paid in vouchers
 				$table->decimal('vouchers_cost_amount_225', 10, 2);     // sum of total amount cost in vouchers
 				$table->decimal('direct_payment_amount_225', 10, 2);    // amount must paid customer in site
 				$table->decimal('total_amount_225', 10, 2);				// total amount, vouchers amount plus customer payment
 
-
-                // ***************
-				// comisiones
+				// commissions
 				$table->integer('commission_percentage_225');
-				$table->decimal('amount_on_commission_225', 10, 2);     // quantity on which commission
+				$table->decimal('commission_calculation_225', 10, 2);     // quantity on which commission
 				$table->decimal('commission_amount_225', 10, 2);        // commission
-                // ***************
-
 
 				$table->text('observations_225')->nullable();
 

@@ -9,6 +9,8 @@ return [
     'campaign'                              => 'Campaña|Campañas',
     'check_in_date'                         => 'Fecha entrada',
     'check_out_date'                        => 'Fecha salida',
+    'commission'                            => 'Comisión|Comisiones',
+    'commission_calculation'                => 'Commisión calculada sobre',
     'customer_observations'                 => 'Observationes para el cliente',
     'direct_payment_amount'                 => 'Importe pago directo',
     'hotel_observations'                    => 'Observationes para el hotel',
