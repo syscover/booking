@@ -10,10 +10,8 @@ class BookingCreateTableBooking extends Migration {
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		if(! Schema::hasTable('011_225_booking')) 
-		{
+	public function up() {
+		if(! Schema::hasTable('011_225_booking')) {
 			Schema::create('011_225_booking', function (Blueprint $table) {
 				$table->engine = 'InnoDB';
 
@@ -59,8 +57,8 @@ class BookingCreateTableBooking extends Migration {
 				$table->decimal('total_amount_225', 10, 2);				// total amount, vouchers amount plus customer payment
 
 				// commissions
-				$table->integer('commission_percentage_225');
-				$table->decimal('commission_calculation_225', 10, 2);     // quantity on which commission
+				$table->tinyInteger('commission_percentage_225');
+				$table->decimal('commission_calculation_225', 10, 2);  	// quantity on which commission
 				$table->decimal('commission_amount_225', 10, 2);        // commission
 
 				$table->text('observations_225')->nullable();
@@ -84,10 +82,8 @@ class BookingCreateTableBooking extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		if(Schema::hasTable('011_225_booking')) 
-		{
+	public function down() {
+		if(Schema::hasTable('011_225_booking')) {
 			Schema::drop('011_225_booking');
 		}
 	}

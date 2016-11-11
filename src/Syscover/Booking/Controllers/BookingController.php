@@ -4,25 +4,24 @@ use Syscover\Booking\Models\Place;
 use Syscover\Hotels\Models\Hotel;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Booking;
+use Syscover\Booking\Models\Voucher;
 
 /**
  * Class BookingController
  * @package Syscover\Booking\Controllers
  */
 
-class BookingController extends Controller
-{
+class BookingController extends Controller {
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';
-    protected $indexColumns = ['id_225', 'name_221', 'prefix_221', ['data' => 'active_221', 'type' => 'active']];
+    protected $indexColumns = ['id_225', 'date_text_225','customer_name_225'];
     protected $nameM        = 'name_221';
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
     protected $objectTrans  = 'booking';
 
-    public function createCustomRecord($parameters)
-    {
+    private function commonCustomRecord($parameters) {
         $parameters['statuses'] = array_map(function($object){
             $object->name = trans($object->name);
             return $object;
@@ -72,72 +71,84 @@ class BookingController extends Controller
         return $parameters;
     }
 
-    public function storeCustomRecord($parameters)
-    {
+    public function createCustomRecord($parameters) {
+        return $this->commonCustomRecord($parameters);
+    }
+
+    public function storeCustomRecord($parameters) {
 
         $vouchersPaidAmount = 0;
         $vouchersCostAmount = 0;
-        $vouchers = $this->request->input('vouchers');
-        foreach ($vouchers as $voucher)
-        {
-            $vouchersPaidAmount += (float)$this->request->input('voucherPaid-' . $voucher);
-            $vouchersCostAmount += (float)$this->request->input('voucherCost-' . $voucher);
+        if($this->request->has('vouchers')) {
+            $vouchers = $this->request->input('vouchers');
+            foreach ($vouchers as $voucher) {
+                $vouchersPaidAmount += (float)$this->request->input('voucherPaid-' . $voucher);
+                $vouchersCostAmount += (float)$this->request->input('voucherCost-' . $voucher);
+            }
         }
-        
-    
-        dd($vouchersPaidAmount);
+                
+        $booking = Booking::create([
+            'date_225'                      => date('U'),
+            'date_text_225'                 => date(config('pulsar.datePattern')),
+            'status_225'                    => $this->request->input('status'),
 
+            'customer_id_225'               => $this->request->input('customerId'),
+            'customer_name_225'             => $this->request->input('customer'),
+            'customer_observations_225'     => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
 
-        Booking::create([
-            'date_225'                  => date('U'),
-            'date_text_225'             => date(config('pulsar.datePattern')),
-            'status_225'                => $this->request->input('status'),
+            'place_id_225'                  => $this->request->input('place'),
+            'object_id_225'                 => $this->request->input('object'),
+            'object_description_225'        => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
+            'place_observations_225'        => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
 
-            'customer_id_225'           => $this->request->input('customerId'),
-            'customer_name_225'         => $this->request->input('customer'),
-            'customer_observations_225' => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
+            'check_in_date_225'             => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
+            'check_in_date_text_225'        => $this->request->input('checkInDate'),
+            'check_out_date_225'            => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
+            'check_out_date_text_225'       => $this->request->input('checkOutDate'),
 
-            'place_id_225'              => $this->request->input('place'),
-            'object_id_225'             => $this->request->input('object'),
-            'object_description_225'    => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
-            'place_observations_225'    => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
+            'nights_225'                    => $this->request->input('nights'),
 
-            'check_in_date_225'         => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
-            'check_in_date_text_225'    => $this->request->input('checkInDate'),
-            'check_out_date_225'        => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
-            'check_out_date_text_225'   => $this->request->input('checkOutDate'),
-
-            'nights_225'                => $this->request->input('nights'),
-
-            'n_adults_225'              => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
-            'n_children_225'            => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
-            'n_rooms_225'               => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
-            'temporary_beds_225'        => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
-            'breakfast_225'             => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
-             
-
-            // TODO: - revisar campos de tabla !! han cambiado
-            'vouchers_paid_amount_225'  => $vouchersPaidAmount,
-            'vouchers_cost_amount_225'  => $vouchersCostAmount,
-            'direct_payment_amount_225' => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
-            'total_amount_225'          => $this->request->input('totalAmount'),
+            'n_adults_225'                  => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
+            'n_children_225'                => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
+            'n_rooms_225'                   => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
+            'temporary_beds_225'            => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
+            'breakfast_225'                 => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
             
-            //**********
-            'commission_percentage_225' => $this->request->input('commissionPercentage'),
-            'amount_on_commission_225'  => $this->request->input('amountOnCommission'),
-            'commission_amount_225'     => $this->request->input('commissionAmount'),
-            //****************
+            'vouchers_paid_amount_225'      => $vouchersPaidAmount,
+            'vouchers_cost_amount_225'      => $vouchersCostAmount,
+            'direct_payment_amount_225'     => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
+            'total_amount_225'              => $this->request->input('totalAmount'),
+            
+            'commission_percentage_225'     => $this->request->input('commissionPercentage'),
+            'commission_calculation_225'    => $this->request->input('commissionCalculation'),
+            'commission_amount_225'         => $this->request->input('commissionAmount'),
 
-            'observations_225'          => $this->request->has('observations')? $this->request->input('observations') : null,
+            'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
+
+        // update vouchers with booking
+        /*foreach ($vouchers as $voucher)
+        {
+            Voucher::where('id_226', voucher)->update([
+                'has_used_226'      => true,
+                'used_date_226'             ?? esta fecha es el pirmer días que entra día de la reserva día de uso....
+                'used_date_text_226'
+                'booking_id_226'    => $booking->id_225,
+                'place_id_226'      => $this->request->input('place'),
+                'object_id_226'     => $this->request->input('object'),
+                'cost_2260'         => (float)$this->request->input('voucherCost-' . $voucher),
+                'paid_226'                          ?? esto que era???
+                'place_payout_date_226'
+                'place_payout_date_text_226'
+            ]);
+        }*/
     }
 
-    public function updateCustomRecord($parameters)
-    {
-//        Campaign::where('id_221', $parameters['id'])->update([
-//            'name_221'      => $this->request->input('name'),
-//            'prefix_221'    => $this->request->input('prefix'),
-//            'active_221'    => $this->request->has('active')
-//        ]);
+    public function editCustomRecord($parameters) {
+        return $this->commonCustomRecord($parameters);
+    }
+
+    public function updateCustomRecord($parameters) {
+
     }
 }

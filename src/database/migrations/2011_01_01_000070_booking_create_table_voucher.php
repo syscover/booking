@@ -7,13 +7,10 @@ class BookingCreateTableVoucher extends Migration {
 
 	/**
 	 * Run the migrations.
-	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		if(! Schema::hasTable('011_226_voucher')) 
-		{
+	public function up() {
+		if(! Schema::hasTable('011_226_voucher')) {
 			Schema::create('011_226_voucher', function (Blueprint $table) {
 				$table->engine = 'InnoDB';
 
@@ -101,10 +98,8 @@ class BookingCreateTableVoucher extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		if(Schema::hasTable('011_226_voucher')) 
-		{
+	public function down() {
+		if(Schema::hasTable('011_226_voucher')) {
 			Schema::drop('011_226_voucher');
 		}
 	}

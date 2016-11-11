@@ -149,6 +149,10 @@
             $('[name=commissionPercentage], [name=commissionCalculation]').on('change', function(){
                 var percentage = parseFloat($('[name=commissionPercentage]').val());
                 var commissionCalculation = parseFloat($('[name=commissionCalculation]').val());
+                
+                var commissionAmount = ((commissionCalculation * percentage) / 100).toFixed(2);
+
+                $('[name=commissionAmount]').val(commissionAmount);
             });
         });
 
@@ -208,6 +212,8 @@
         $.sumTotalAmount = function() {
             var totalAmount = parseFloat($('[name=directPaymenAmount]').val()) + parseFloat($('[name=voucherPaidAmount]').val());
             $('[name=totalAmount]').val(totalAmount);
+            // set value to calculate commission
+            $('[name=commissionCalculation]').val(totalAmount);
         }
 
         $.setEventVoucherRow = function() {
@@ -558,7 +564,8 @@
                 'value' => old('commissionPercentage', isset($object->commission_percentage_225)? $object->commission_percentage_225 : null),
                 'objects' => $commissions,
                 'idSelect' => 'id',
-                'nameSelect' => 'name'
+                'nameSelect' => 'name',
+                'required' => true
             ])
             @include('pulsar::includes.html.form_text_group', [
                 'type' => 'number',
@@ -567,7 +574,8 @@
                 'label' => trans_choice('booking::pulsar.commission', 1),
                 'name' => 'commissionAmount',
                 'value' => old('commissionAmount', isset($object->commission_amount_225)? $object->commission_amount_225 : 0),
-                'readOnly' => true
+                'readOnly' => true,
+                'required' => true
             ])
         </div>
         <div class="col-md-6">
