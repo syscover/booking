@@ -18,8 +18,22 @@
                 mainClass: 'mfp-fade'
             });
 
-            $('#objectWrapper, #hotelData, #spaData, #wineryData').hide();
             $(window).trigger('resize'); // to calculate new window sice by hide html blocks
+
+            $('#recordForm').on('submit', function() {
+                if($('[name=place]').val() === '1') {
+                    $('[name=objectDescription]').val($('[name=hotelObjectDescription]').val());
+                    $('[name=placeObservations]').val($('[name=hotelPlaceObservations]').val());
+                } 
+                else if($('[name=place]').val() === '1') {
+                    $('[name=objectDescription]').val($('[name=spaObjectDescription]').val());
+                    $('[name=placeObservations]').val($('[name=spaPlaceObservations]').val());
+                }
+                else if($('[name=place]').val() === '1') {
+                    $('[name=objectDescription]').val($('[name=wineryObjectDescription]').val());
+                    $('[name=placeObservations]').val($('[name=wineryPlaceObservations]').val());
+                }
+            });
 
             // load kind place to do booking
             $('[name=place]').on('change', function () {
@@ -154,6 +168,11 @@
 
                 $('[name=commissionAmount]').val(commissionAmount);
             });
+
+            $('#hotelData, #spaData, #wineryData').hide();
+            @if(! isset($objects))
+                $('#objectWrapper').hide();
+            @endif
         });
 
         $.relatedCustomer = function (data)
@@ -317,7 +336,7 @@
         'fieldSize' => 4,
         'label' => trans_choice('booking::pulsar.place', 1),
         'name' => 'place',
-        'value' => (int)old('place', isset($object->place_id_226)? $object->place_id_226 : null),
+        'value' => (int)old('place', isset($object->place_id_225)? $object->place_id_225 : null),
         'objects' => $places,
         'idSelect' => 'id_220',
         'nameSelect' => 'name_220',
@@ -325,13 +344,14 @@
             'model' => 'model_id_220'
         ]
     ])
+
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 4,
         'label' => isset($objectName)? $objectName : null,
         'containerId' => 'objectWrapper',
         'labelId' => 'objectLabel',
         'name' => 'object',
-        'value' => (int) old('object', isset($object->object_id_226)? $object->object_id_226 : null),
+        'value' => (int) old('object', isset($object->object_id_225)? $object->object_id_225 : null),
         'objects' => isset($objects)? $objects : null,
         'idSelect' => 'id',
         'nameSelect' => 'name',
@@ -408,12 +428,21 @@
         </div>
     </div>
 
+    @include('pulsar::includes.html.form_hidden', [
+        'name' => 'objectDescription',
+        'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+    ])
+    @include('pulsar::includes.html.form_hidden', [
+        'name' => 'placeObservations',
+        'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+    ])
+
     <!-- hotel section -->
     <div id="hotelData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('hotels::pulsar.hotel', 1), 'icon' => 'fa fa-h-square'])
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans('booking::pulsar.room_type'),
-            'name' => 'objectDescription',
+            'name' => 'hotelObjectDescription',
             'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         <div class="row">
@@ -454,7 +483,7 @@
         </div>
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.hotel_observations'),
-            'name' => 'placeObservations',
+            'name' => 'hotelPlaceObservations',
             'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
@@ -463,13 +492,13 @@
     <div id="spaData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('spas::pulsar.spa', 1), 'icon' => 'fa fa-tint'])
         @include('pulsar::includes.html.form_text_group', [
-            'label' => trans_choice('hotels::pulsar.room', 1),
-            'name' => 'objectDescription',
+            'label' => trans_choice('spas::pulsar.treatment', 1),
+            'name' => 'spaObjectDescription',
             'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.spa_observations'),
-            'name' => 'placeObservations',
+            'name' => 'spaPlaceObservations',
             'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>
@@ -478,13 +507,13 @@
     <div id="wineryData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
         @include('pulsar::includes.html.form_text_group', [
-            'label' => trans_choice('hotels::pulsar.room', 1),
-            'name' => 'objectDescription',
+            'label' => trans_choice('winery::pulsar.activity', 1),
+            'name' => 'wineryObjectDescription',
             'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
         ])
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.winery_observations'),
-            'name' => 'placeObservations',
+            'name' => 'wineryPlaceObservations',
             'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
         ])
     </div>

@@ -111,27 +111,21 @@
 
             // start invoice ID
             $.formatInvoice = function(invoice) {
-                if(invoice.invoiceNumberFormatted == undefined)
-                {
+                if(invoice.invoiceNumberFormatted == undefined) {
                     return '{{ trans('pulsar::pulsar.searching') }}...';
-                }
-                else
-                {
+                } else {
                     return invoice.invoiceNumberFormatted;
                 }
             };
 
             $.formatInvoiceSelection = function (invoice) {
-                if(invoice.invoiceNumberFormatted == undefined)
-                {
+                if(invoice.invoiceNumberFormatted == undefined) {
                     @if(isset($invoices))
                         return '{{ $invoices->first()->invoiceNumberFormatted }}'
                     @else
                         return invoice;
                     @endif
-                }
-                else
-                {
+                } else {
                     // save data in input hidden to save in controller
                     $('[name=invoiceCode]').val(invoice.invoiceNumberFormatted);
                     $('[name=invoiceCustomerId]').val(invoice.client.id);
@@ -178,19 +172,16 @@
             // end invoice ID
         });
 
-        $.relatedCustomer = function(data)
-        {
+        $.relatedCustomer = function(data) {
             var value = '';
             var flag = false;
 
-            if(data.name_301 != null)
-            {
+            if(data.name_301 != null) {
                 value += data.name_301;
                 flag = true;
             }
 
-            if(data.surname_301 != null)
-            {
+            if(data.surname_301 != null) {
                 if(flag)
                     value += ' ';
                 else
@@ -199,8 +190,7 @@
                 value += data.surname_301;
             }
 
-            if(data.company_301 != null)
-            {
+            if(data.company_301 != null) {
                 if(flag)
                     value += ' (' + data.company_301 + ')';
                 else
@@ -213,19 +203,16 @@
             $.magnificPopup.close();
         }
 
-        $.updateCodePrefix = function(){
+        $.updateCodePrefix = function() {
             var productPrefix = $('[name=product]').children('option:selected').data('prefix');
             var campaignPrefix = $('[name=campaign]').children('option:selected').data('prefix');
 
-            if(productPrefix == undefined || productPrefix == '')
-            {
+            if(productPrefix == undefined || productPrefix == '') {
                 if(campaignPrefix == undefined || campaignPrefix == '')
                     $('[name=codePrefix]').val('');
                 else
                     $('[name=codePrefix]').val(campaignPrefix);
-            }
-            else
-            {
+            } else {
                 if(campaignPrefix == undefined || campaignPrefix == '')
                     $('[name=codePrefix]').val(productPrefix);
                 else

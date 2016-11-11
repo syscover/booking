@@ -1,7 +1,7 @@
 <?php namespace Syscover\Booking\Controllers;
 
+use Illuminate\Support\Facades\App;
 use Syscover\Booking\Models\Place;
-use Syscover\Hotels\Models\Hotel;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\Booking;
 use Syscover\Booking\Models\Voucher;
@@ -15,7 +15,7 @@ class BookingController extends Controller {
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';
-    protected $indexColumns = ['id_225', 'date_text_225','customer_name_225'];
+    protected $indexColumns = ['id_225', 'check_out_date_225', 'check_out_date_text_225', 'email_301', 'customer_name_225'];
     protected $nameM        = 'name_221';
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
@@ -28,7 +28,6 @@ class BookingController extends Controller {
         }, config('booking.status'));
 
         $parameters['places']   = Place::builder()->get();
-        $parameters['hotels']   = Hotel::builder()->get();
 
         $parameters['nAdults']   = range(0, 29);
         array_walk($parameters['nAdults'], function(&$object, $key) {
@@ -86,7 +85,7 @@ class BookingController extends Controller {
                 $vouchersCostAmount += (float)$this->request->input('voucherCost-' . $voucher);
             }
         }
-                
+
         $booking = Booking::create([
             'date_225'                      => date('U'),
             'date_text_225'                 => date(config('pulsar.datePattern')),
@@ -127,25 +126,45 @@ class BookingController extends Controller {
         ]);
 
         // update vouchers with booking
-        /*foreach ($vouchers as $voucher)
-        {
-            Voucher::where('id_226', voucher)->update([
-                'has_used_226'      => true,
-                'used_date_226'             ?? esta fecha es el pirmer días que entra día de la reserva día de uso....
-                'used_date_text_226'
-                'booking_id_226'    => $booking->id_225,
-                'place_id_226'      => $this->request->input('place'),
-                'object_id_226'     => $this->request->input('object'),
-                'cost_2260'         => (float)$this->request->input('voucherCost-' . $voucher),
-                'paid_226'                          ?? esto que era???
-                'place_payout_date_226'
-                'place_payout_date_text_226'
-            ]);
-        }*/
+        if($this->request->has('vouchers')) {
+            foreach ($vouchers as $voucher) {
+                Voucher::where('id_226', $voucher)->update([
+                    'has_used_226'          => true,
+                    'used_date_226'         => $booking->check_in_date_225,
+                    'used_date_text_226'    => $booking->check_in_date_text_225,
+                    'booking_id_226'        => $booking->id_225,
+                    'place_id_226'          => $booking->place_id_225,
+                    'object_id_226'         => $booking->object_id_225,
+                    'cost_226'              => (float) $this->request->input('voucherCost-' . $voucher)
+                ]);
+            }
+        }
     }
 
     public function editCustomRecord($parameters) {
-        return $this->commonCustomRecord($parameters);
+        $parameters = $this->commonCustomRecord($parameters);
+
+        // objects from place
+        if(isset($parameters['object']->place_id_225)) {
+            $result = collect(config('booking.models'))->where('id', $parameters['object']->place_id_225);
+
+            if (count($result) === 0)
+                return response()->json([
+                    'status'    => 'error',
+                    'code'      => 404,
+                    'message'   => 'Records not found'
+                ]);
+
+            // model constructor
+            $model                      = App::make($result->first()->model);
+
+            // use sofa to get lang from lang table of object query
+            $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+            $parameters['objectName']   = trans_choice($result->first()->name, 1);
+            $parameters['objectKey']    = $model->getKeyName();
+        }
+
+        return $parameters;
     }
 
     public function updateCustomRecord($parameters) {

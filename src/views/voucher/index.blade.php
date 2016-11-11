@@ -25,7 +25,6 @@
                             { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
                             { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
                             { "sortable": false, "targets": [12]},
-
                             { "class": "align-center", "targets": [9,10,12]}
                         @else
                             { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
@@ -42,15 +41,14 @@
                         "url": "{{ route('jsonData' . ucfirst($routeSuffix), ['modal' => $modal? 1 : 0]) }}",
                         "type": "POST",
                         @if(isset($available) && $available)
-                        // set values to filter vouchers without use
-                        "data": {
-                            searchColumns: [
-                                {name: 'cost', value: 'NULL'},
-                                {name: 'cost_operator', value: '='},
-                                {name: 'cost_column', value: 'cost_226'},
-
-                            ]
-                        },
+                            // set values to filter vouchers without use
+                            "data": {
+                                searchColumns: [
+                                    {name: 'cost', value: 'NULL'},
+                                    {name: 'cost_operator', value: '='},
+                                    {name: 'cost_column', value: 'cost_226'}
+                                ]
+                            },
                         @endif
                         "headers": {
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"

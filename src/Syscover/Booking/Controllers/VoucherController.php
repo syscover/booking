@@ -1,15 +1,15 @@
 <?php namespace Syscover\Booking\Controllers;
 
-use Syscover\Booking\Models\VoucherTask;
-use Syscover\Pulsar\Core\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Syscover\Pulsar\Libraries\Miscellaneous;
-use Syscover\FacturaDirecta\Facades\FacturaDirecta;
+use Syscover\Pulsar\Core\Controller;
+use Syscover\Booking\Models\VoucherTask;
 use Syscover\Booking\Models\Campaign;
 use Syscover\Booking\Models\Place;
 use Syscover\Booking\Models\ProductPrefix;
 use Syscover\Booking\Models\Voucher;
+use Syscover\FacturaDirecta\Facades\FacturaDirecta;
 use Syscover\Market\Models\Product;
 
 /**
@@ -123,16 +123,14 @@ class VoucherController extends Controller
         $collection = collect();
 
         // check that response does not contain httpStatus 404
-        if(! isset($response['httpStatus']))
-        {
+        if(! isset($response['httpStatus'])) {
             // set id like integer, to compare in select
             $response['id']             = (int) $response['id'];
             $parameters['invoices']     = $collection->push(Miscellaneous::arrayToObject($response));
         }
 
         // objects from place
-        if(isset($parameters['object']->place_id_226))
-        {
+        if(isset($parameters['object']->place_id_226)) {
             $result = collect(config('booking.models'))->where('id', $parameters['object']->place_id_226);
 
             if (count($result) === 0)
@@ -144,6 +142,7 @@ class VoucherController extends Controller
 
             // model constructor
             $model                      = App::make($result->first()->model);
+            
             // use sofa to get lang from lang table of object query
             $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
             $parameters['objectName']   = trans_choice($result->first()->name, 1);
