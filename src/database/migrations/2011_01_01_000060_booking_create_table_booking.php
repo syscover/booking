@@ -57,7 +57,7 @@ class BookingCreateTableBooking extends Migration {
 				$table->decimal('total_amount_225', 10, 2);				// total amount, vouchers amount plus customer payment
 
 				// commissions
-				$table->tinyInteger('commission_percentage_225');
+				$table->tinyInteger('commission_percentage_225')->unsigned();
 				$table->decimal('commission_calculation_225', 10, 2);  	// quantity on which commission
 				$table->decimal('commission_amount_225', 10, 2);        // commission
 
