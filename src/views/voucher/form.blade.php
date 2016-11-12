@@ -295,6 +295,7 @@
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 4,
         'label' => trans_choice('booking::pulsar.campaign', 1),
+        'id' => 'campaign',
         'name' => 'campaign',
         'value' => (int)old('campaign', isset($object->campaign_id_226)? $object->campaign_id_226 : null),
         'objects' => $campaigns,
@@ -305,7 +306,7 @@
         'data' => [
             'language' => config('app.locale'),
             'width' => '100%',
-            'error-placement' => 'select2-product-outer-container'
+            'error-placement' => 'select2-campaign-outer-container'
         ],
         'dataOption' => [
             'prefix' => 'prefix_221'
@@ -335,6 +336,7 @@
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 4,
         'label' => trans_choice('market::pulsar.product', 1),
+        'id' => 'product',
         'name' => 'product',
         'value' => (int)old('product', isset($object->product_id_226)? $object->product_id_226 : null),
         'objects' => $products,
@@ -342,6 +344,7 @@
         'nameSelect' => 'name_112',
         'required' => true,
         'class' => 'select2',
+        'style' => 'width:100%',
         'data' => [
             'language' => config('app.locale'),
             'width' => '100%',

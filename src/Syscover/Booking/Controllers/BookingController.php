@@ -149,6 +149,7 @@ class BookingController extends Controller {
 
         $parameters['vouchers'] = Voucher::builder()->where('booking_id_226', $parameters['object']->id_225)->get();
 
+        $parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" href="#">' . trans('booking::pulsar.save_resend') . '</a>';
         return $parameters;
     }
 
@@ -194,11 +195,12 @@ class BookingController extends Controller {
             'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
 
-        $vouchersToReset    = $oldVouchers->diff($vouchersProperties['vouchersId']);
-        $vouchersToRegister = $vouchersProperties['vouchersId']->diff($oldVouchers);
+        $booking = Booking::builder()->where('id_225', $parameters['id'])->first();
+
+        $vouchersToReset = $oldVouchers->diff($vouchersProperties['vouchersId']);
 
         $this->setVouchersToReset($vouchersToReset);
-        $this->setVouchersToRegister($vouchersToRegister);
+        $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
     }
 
     private function getVouchersProperties()
@@ -231,27 +233,26 @@ class BookingController extends Controller {
         ];
     }
 
-    private function setVouchersToRegister($vouchersProperties, $booking)
+    private function setVouchersToRegister($vouchers, $booking)
     {
-        foreach ($vouchersProperties['vouchersId'] as $voucher)
-        {
+        foreach ($vouchers as $voucher) {
             Voucher::where('id_226', $voucher)->update([
-                'has_used_226'          => true,
-                'used_date_226'         => $booking->check_in_date_225,
-                'used_date_text_226'    => $booking->check_in_date_text_225,
-                'booking_id_226'        => $booking->id_225,
-                'place_id_226'          => $booking->place_id_225,
-                'object_id_226'         => $booking->object_id_225,
-                'cost_226'              => (float)$this->request->input('voucherCost-' . $voucher)
+                'has_used_226' => true,
+                'used_date_226' => $booking->check_in_date_225,
+                'used_date_text_226' => $booking->check_in_date_text_225,
+                'booking_id_226' => $booking->id_225,
+                'place_id_226' => $booking->place_id_225,
+                'object_id_226' => $booking->object_id_225,
+                'cost_226' => (float)$this->request->input('voucherCost-' . $voucher)
             ]);
         }
     }
 
-    private function setVouchersToReset($vouchersProperties)
+    private function setVouchersToReset($vouchers)
     {
-        if($vouchersProperties['vouchersId']->count() > 0)
+        if($vouchers->count() > 0)
         {
-            Voucher::whereIn('id_226', $vouchersProperties['vouchersId'])->update([
+            Voucher::whereIn('id_226', $vouchers)->update([
                 'has_used_226'          => false,
                 'used_date_226'         => null,
                 'used_date_text_226'    => null,

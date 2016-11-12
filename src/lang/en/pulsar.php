@@ -19,6 +19,7 @@ return [
     'place'                                 => 'Place|Places',
     'product_prefix'                        => 'Product prefix|Products prefix',
     'room_type'                             => 'Room type',
+    'save_resend'                           => 'Save and resend emails',
     'spa_observations'                      => 'Spa observations',
     'temporary_bed'                         => 'Temporary bed|Temporary beds',
     'total_amount'                          => 'Total amount',

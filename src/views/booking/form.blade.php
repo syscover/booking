@@ -68,7 +68,7 @@
                             })).trigger("change");
 
                             // add label text
-                            $('#objectLabel').html(data.name);
+                            $('#objectLabel').html(data.name + ' <span class="required" aria-required="true">*</span>');
 
                             // add options values
                             $.each(data.objects, function (i, item) {
@@ -336,7 +336,7 @@
         'value' => old('customerObservations', isset($object->customer_observations_225)? $object->customer_observations_225 : null)
     ])
     @include('pulsar::includes.html.form_select_group', [
-        'fieldSize' => 4,
+        'fieldSize' => 5,
         'label' => trans_choice('booking::pulsar.place', 1),
         'name' => 'place',
         'value' => (int)old('place', isset($object->place_id_225)? $object->place_id_225 : null),
@@ -345,16 +345,18 @@
         'nameSelect' => 'name_220',
         'dataOption' => [
             'model' => 'model_id_220'
-        ]
+        ],
+        'required' => true
     ])
 
     @include('pulsar::includes.html.form_select_group', [
-        'fieldSize' => 4,
+        'fieldSize' => 5,
         'label' => isset($objectName)? $objectName : null,
         'containerId' => 'objectWrapper',
         'labelId' => 'objectLabel',
         'name' => 'object',
-        'value' => (int) old('object', isset($object->object_id_225)? $object->object_id_225 : null),
+        'id' => 'object',
+        'value' => (int)old('object', isset($object->object_id_225)? $object->object_id_225 : null),
         'objects' => isset($objects)? $objects : null,
         'idSelect' => 'id',
         'nameSelect' => 'name',
@@ -362,8 +364,9 @@
         'data' => [
             'language' => config('app.locale'),
             'width' => '100%',
-            'error-placement' => 'select2-product-outer-container'
-        ]
+            'error-placement' => 'select2-object-outer-container'
+        ],
+        'required' => true
     ])
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.date', 2), 'icon' => 'fa fa-calendar'])

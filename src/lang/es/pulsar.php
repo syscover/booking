@@ -19,6 +19,7 @@ return [
     'place'                                 => 'Sitio|Sitios',
     'product_prefix'                        => 'Prefijo de producto|Prefijos de productos',
     'room_type'                             => 'Tipo de habitación',
+    'save_resend'                           => 'Guardar y reenviar emails',
     'spa_observations'                      => 'Observaciones para el Spa',
     'temporary_bed'                         => 'Cama supletoria|Camas supletorias',
     'total_amount'                          => 'Total',
