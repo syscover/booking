@@ -21,8 +21,9 @@ class BookingController extends Controller {
     protected $icon         = 'fa fa-hourglass-end';
     protected $objectTrans  = 'booking';
 
-    private function commonCustomRecord($parameters) {
-        $parameters['statuses'] = array_map(function($object){
+    private function commonCustomRecord($parameters) 
+    {
+        $parameters['statuses'] = array_map(function($object) {
             $object->name = trans($object->name);
             return $object;
         }, config('booking.status'));
@@ -70,21 +71,14 @@ class BookingController extends Controller {
         return $parameters;
     }
 
-    public function createCustomRecord($parameters) {
+    public function createCustomRecord($parameters) 
+    {
         return $this->commonCustomRecord($parameters);
     }
 
-    public function storeCustomRecord($parameters) {
-
-        $vouchersPaidAmount = 0;
-        $vouchersCostAmount = 0;
-        if($this->request->has('vouchers')) {
-            $vouchers = $this->request->input('vouchers');
-            foreach ($vouchers as $voucher) {
-                $vouchersPaidAmount += (float)$this->request->input('voucherPaid-' . $voucher);
-                $vouchersCostAmount += (float)$this->request->input('voucherCost-' . $voucher);
-            }
-        }
+    public function storeCustomRecord($parameters) 
+    {
+        $vouchersProperties = $this->getVouchersProperties();
 
         $booking = Booking::create([
             'date_225'                      => date('U'),
@@ -113,8 +107,8 @@ class BookingController extends Controller {
             'temporary_beds_225'            => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
             'breakfast_225'                 => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
             
-            'vouchers_paid_amount_225'      => $vouchersPaidAmount,
-            'vouchers_cost_amount_225'      => $vouchersCostAmount,
+            'vouchers_paid_amount_225'      => $vouchersProperties['vouchersPaidAmount'],
+            'vouchers_cost_amount_225'      => $vouchersProperties['vouchersCostAmount'],
             'direct_payment_amount_225'     => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
             'total_amount_225'              => $this->request->input('totalAmount'),
             
@@ -125,27 +119,16 @@ class BookingController extends Controller {
             'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
 
-        // update vouchers with booking
-        if($this->request->has('vouchers')) {
-            foreach ($vouchers as $voucher) {
-                Voucher::where('id_226', $voucher)->update([
-                    'has_used_226'          => true,
-                    'used_date_226'         => $booking->check_in_date_225,
-                    'used_date_text_226'    => $booking->check_in_date_text_225,
-                    'booking_id_226'        => $booking->id_225,
-                    'place_id_226'          => $booking->place_id_225,
-                    'object_id_226'         => $booking->object_id_225,
-                    'cost_226'              => (float) $this->request->input('voucherCost-' . $voucher)
-                ]);
-            }
-        }
+        $this->setVouchersToRegister($vouchersProperties, $booking);
     }
 
-    public function editCustomRecord($parameters) {
+    public function editCustomRecord($parameters) 
+    {
         $parameters = $this->commonCustomRecord($parameters);
 
         // objects from place
-        if(isset($parameters['object']->place_id_225)) {
+        if(isset($parameters['object']->place_id_225))
+        {
             $result = collect(config('booking.models'))->where('id', $parameters['object']->place_id_225);
 
             if (count($result) === 0)
@@ -164,10 +147,119 @@ class BookingController extends Controller {
             $parameters['objectKey']    = $model->getKeyName();
         }
 
+        $parameters['vouchers'] = Voucher::builder()->where('booking_id_226', $parameters['object']->id_225)->get();
+
         return $parameters;
     }
 
-    public function updateCustomRecord($parameters) {
+    public function updateCustomRecord($parameters)
+    {
+        $oldVouchers        = collect(json_decode($this->request->input('oldVouchers')));
+        $vouchersProperties = $this->getVouchersProperties();
 
+        Booking::where('id_225', $parameters['id'])->update([
+            'status_225'                    => $this->request->input('status'),
+
+            'customer_id_225'               => $this->request->input('customerId'),
+            'customer_name_225'             => $this->request->input('customer'),
+            'customer_observations_225'     => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
+
+            'place_id_225'                  => $this->request->input('place'),
+            'object_id_225'                 => $this->request->input('object'),
+            'object_description_225'        => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
+            'place_observations_225'        => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
+
+            'check_in_date_225'             => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
+            'check_in_date_text_225'        => $this->request->input('checkInDate'),
+            'check_out_date_225'            => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
+            'check_out_date_text_225'       => $this->request->input('checkOutDate'),
+
+            'nights_225'                    => $this->request->input('nights'),
+
+            'n_adults_225'                  => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
+            'n_children_225'                => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
+            'n_rooms_225'                   => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
+            'temporary_beds_225'            => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
+            'breakfast_225'                 => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
+
+            'vouchers_paid_amount_225'      => $vouchersProperties['vouchersPaidAmount'],
+            'vouchers_cost_amount_225'      => $vouchersProperties['vouchersCostAmount'],
+            'direct_payment_amount_225'     => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
+            'total_amount_225'              => $this->request->input('totalAmount'),
+
+            'commission_percentage_225'     => $this->request->input('commissionPercentage'),
+            'commission_calculation_225'    => $this->request->input('commissionCalculation'),
+            'commission_amount_225'         => $this->request->input('commissionAmount'),
+
+            'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
+        ]);
+
+        $vouchersToReset    = $oldVouchers->diff($vouchersProperties['vouchersId']);
+        $vouchersToRegister = $vouchersProperties['vouchersId']->diff($oldVouchers);
+
+        $this->setVouchersToReset($vouchersToReset);
+        $this->setVouchersToRegister($vouchersToRegister);
+    }
+
+    private function getVouchersProperties()
+    {
+        $vouchersPaidAmount = 0;
+        $vouchersCostAmount = 0;
+        if($this->request->has('vouchers'))
+        {
+            $vouchers = collect($this->request->input('vouchers'));
+            $vouchers->transform(function ($item, $key) {
+                return (int)$item;
+            });
+
+            foreach ($vouchers as $voucher)
+            {
+                $vouchersPaidAmount += (float)$this->request->input('voucherPaid-' . $voucher);
+                $vouchersCostAmount += (float)$this->request->input('voucherCost-' . $voucher);
+            }
+        }
+        else
+        {
+            // if there aren't vouchers, create empty vouchers
+            $vouchers = collect();
+        }
+
+        return [
+            'vouchersPaidAmount'    => $vouchersPaidAmount,
+            'vouchersCostAmount'    => $vouchersCostAmount,
+            'vouchersId'            => $vouchers
+        ];
+    }
+
+    private function setVouchersToRegister($vouchersProperties, $booking)
+    {
+        foreach ($vouchersProperties['vouchersId'] as $voucher)
+        {
+            Voucher::where('id_226', $voucher)->update([
+                'has_used_226'          => true,
+                'used_date_226'         => $booking->check_in_date_225,
+                'used_date_text_226'    => $booking->check_in_date_text_225,
+                'booking_id_226'        => $booking->id_225,
+                'place_id_226'          => $booking->place_id_225,
+                'object_id_226'         => $booking->object_id_225,
+                'cost_226'              => (float)$this->request->input('voucherCost-' . $voucher)
+            ]);
+        }
+    }
+
+    private function setVouchersToReset($vouchersProperties)
+    {
+        if($vouchersProperties['vouchersId']->count() > 0)
+        {
+            Voucher::whereIn('id_226', $vouchersProperties['vouchersId'])->update([
+                'has_used_226'          => false,
+                'used_date_226'         => null,
+                'used_date_text_226'    => null,
+                'booking_id_226'        => null,
+                'place_id_226'          => null,
+                'object_id_226'         => null,
+                'cost_226'              => null
+            ]);
+        }
     }
 }

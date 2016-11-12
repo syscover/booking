@@ -170,7 +170,10 @@
             });
 
             $('#hotelData, #spaData, #wineryData').hide();
-            @if(! isset($objects))
+
+            @if($action === 'update')
+                $.setEventVoucherRow();
+            @else
                 $('#objectWrapper').hide();
             @endif
         });
@@ -519,24 +522,44 @@
     </div>
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.voucher', 2), 'icon' => 'fa fa-sort-alpha-asc'])
-    @include('pulsar::elements.select_multiple_iframe', [
-        'modalUrl' => route('bookingVoucherAvailable', [
-            'offset' => 0,
-            'modal' => 1,
-            'available' => 1
-        ]),
-        'label' => trans('booking::pulsar.add_voucher'),
-        'icon'  => 'fa fa-share',
-        'id' => 'vouchers',
-        'dataJson' => isset($vouchers)? $vouchers : null,
-        'thead' => [
-            (object)['class' => null, 'data' => trans_choice('pulsar::pulsar.id', 1)],
-            (object)['class' => null, 'data' => trans('pulsar::pulsar.prefix')],
-            (object)['class' => null, 'data' => trans_choice('booking::pulsar.campaign', 1)],
-            (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.price', 1)],
-            (object)['class' => 'align-center', 'data' => trans_choice('pulsar::pulsar.cost', 1)]
-        ]
-    ])
+    <a class="btn btn-info margin-b10 magnific-popup" href="{{ route('bookingVoucherAvailable', ['offset' => 0,  'modal' => 1, 'available' => 1])}}"><i class="fa fa-share"></i> {{ trans('booking::pulsar.add_voucher') }}</a>
+    <!-- vouchers -->
+    <table id="vouchers" class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>{{ trans_choice('pulsar::pulsar.id', 1) }}</th>
+            <th>{{ trans('pulsar::pulsar.prefix') }}</th>
+            <th>{{ trans_choice('booking::pulsar.campaign', 1) }}</th>
+            <th class="align-center">{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
+            <th class="align-center">{{ trans_choice('pulsar::pulsar.cost', 1) }}</th>
+            <th class="align-center">{{ trans_choice("pulsar::pulsar.action", 2) }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if(isset($vouchers))
+            <input type="hidden" name="oldVouchers" value="{{ $vouchers->pluck('id_226')->toJson() }}" class="form-control">
+            @foreach($vouchers as $voucher)
+                <tr>
+                    <td>{{ $voucher->id_226 }}</td>
+                    <td>{{ $voucher->prefix_221 }}</td>
+                    <td>{{ $voucher->name_221 }}</td>
+                    <td class="align-center">{{ $voucher->price_226 }}</td>
+                    <td class="align-center">
+                        <div class="col-md-6 col-md-offset-3">
+                            <input type="number" name="voucherCost-{{ $voucher->id_226 }}" value="{{ $voucher->cost_226 }}" class="form-control voucher-cost">
+                            <input type="hidden" name="vouchers[]" value="{{ $voucher->id_226 }}" class="form-control">
+                            <input type="hidden" name="voucherPaid-{{ $voucher->id_226 }}" value="{{ $voucher->price_226 }}" class="form-control">
+                        </div>
+                    </td>
+                    <td class="align-center">
+                        <a class="btn btn-xs bs-tooltip delete-voucher"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+        </tbody>
+    </table>
+    <!-- /vouchers -->
     
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.amount', 2), 'icon' => 'fa fa-usd'])
