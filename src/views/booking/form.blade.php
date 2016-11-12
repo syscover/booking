@@ -115,9 +115,7 @@
                 });
             });
 
-            // *********
-            // * dates *
-            // *********
+            // START DATES
             var now = moment()
             $('[name=checkInDate]')
                 .closest('.datetimepicker')
@@ -139,22 +137,26 @@
 
                     if($('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date() < minDate && $('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date() != null)
                         $('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date(ev.date);
+
+                    var days = $('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date().diff(ev.date, 'days') + 1;
+                    $('[name=nights]').val(days);
                 });
 
             $('[name=checkOutDate]')
                 .closest('.datetimepicker')
                 .data("DateTimePicker")
                 .options({
-                    minDate: moment().add(1, 'days'),
-                    useCurrent: true
+                    minDate: moment().add(1, 'days')
                 });
 
             $('[name=checkOutDate]')
                 .closest('.datetimepicker')
                 .on('dp.change', function(ev) {
-                    var days          = ev.date.diff($('[name=checkInDate]').closest('.datetimepicker').data("DateTimePicker").date(), 'days');
+                    var days = ev.date.diff($('[name=checkInDate]').closest('.datetimepicker').data("DateTimePicker").date(), 'days');
                     $('[name=nights]').val(days);
                 });
+            // END DATES
+
 
             $('[name=directPaymenAmount]').on('change', function(){
                 $.sumTotalAmount();
