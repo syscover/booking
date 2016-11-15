@@ -119,7 +119,7 @@ class BookingController extends Controller {
             'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
 
-        $this->setVouchersToRegister($vouchersProperties, $booking);
+        $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
     }
 
     public function editCustomRecord($parameters) 
@@ -235,7 +235,8 @@ class BookingController extends Controller {
 
     private function setVouchersToRegister($vouchers, $booking)
     {
-        foreach ($vouchers as $voucher) {
+        foreach ($vouchers as $voucher)
+        {
             Voucher::where('id_226', $voucher)->update([
                 'has_used_226' => true,
                 'used_date_226' => $booking->check_in_date_225,

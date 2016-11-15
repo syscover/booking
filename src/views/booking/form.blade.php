@@ -231,10 +231,11 @@
                 voucherCostAmount += parseFloat($('[name=voucherCost-' + $(voucher).val() + ']').val());
             });
             $('[name=voucherCostAmount]').val(voucherCostAmount);
+            $.sumTotalAmount();
         };
 
         $.sumTotalAmount = function() {
-            var totalAmount = parseFloat($('[name=directPaymenAmount]').val()) + parseFloat($('[name=voucherPaidAmount]').val());
+            var totalAmount = parseFloat($('[name=directPaymenAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
             $('[name=totalAmount]').val(totalAmount);
             // set value to calculate commission
             $('[name=commissionCalculation]').val(totalAmount);
@@ -419,7 +420,8 @@
                 'value' => old('nAdults', isset($object->n_adults_225)? $object->n_adults_225 : null),
                 'objects' => $nAdults,
                 'idSelect' => 'id',
-                'nameSelect' => 'name'
+                'nameSelect' => 'name',
+                'required' => true
             ])
         </div>
         <div class="col-md-6">
@@ -528,6 +530,7 @@
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.voucher', 2), 'icon' => 'fa fa-sort-alpha-asc'])
     <a class="btn btn-info margin-b10 magnific-popup" href="{{ route('bookingVoucherAvailable', ['offset' => 0,  'modal' => 1, 'available' => 1])}}"><i class="fa fa-share"></i> {{ trans('booking::pulsar.add_voucher') }}</a>
+
     <!-- vouchers -->
     <table id="vouchers" class="table table-hover table-striped">
         <thead>
@@ -564,21 +567,15 @@
         @endif
         </tbody>
     </table>
+    @include('pulsar::includes.html.form_hidden', [
+        'name' => 'voucherPaidAmount',
+        'value' => old('voucherPaidAmount', isset($object->vouchers_paid_amount_225)? $object->vouchers_paid_amount_225 : 0)
+    ])
     <!-- /vouchers -->
-    
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.amount', 2), 'icon' => 'fa fa-usd'])
     <div class="row">
         <div class="col-md-6">
-            @include('pulsar::includes.html.form_text_group', [
-                'type' => 'number',
-                'labelSize' => 4,
-                'fieldSize' => 4,
-                'label' => trans('booking::pulsar.vouchers_paid_amount'),
-                'name' => 'voucherPaidAmount',
-                'value' => old('voucherPaidAmount', isset($object->vouchers_paid_amount_225)? $object->vouchers_paid_amount_225 : 0),
-                'readOnly' => true
-            ])
             @include('pulsar::includes.html.form_text_group', [
                 'type' => 'number',
                 'labelSize' => 4,
@@ -606,6 +603,16 @@
                 'name' => 'voucherCostAmount',
                 'value' => old('nights', isset($object->vouchers_cost_amount_225)? $object->vouchers_cost_amount_225 : 0),
                 'readOnly' => true
+            ])
+            @include('pulsar::includes.html.form_select_group', [
+                'labelSize' => 4,
+                'fieldSize' => 8,
+                'label' => trans_choice('pulsar::pulsar.tax', 2),
+                'name' => 'breakfast',
+                'value' => old('breakfast', isset($object->breakfast_225)? $object->breakfast_225 : null),
+                'objects' => $breakfast,
+                'idSelect' => 'id',
+                'nameSelect' => 'name'
             ])
         </div>
     </div>

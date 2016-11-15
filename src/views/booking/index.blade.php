@@ -9,6 +9,7 @@
             {
                 $('.datatable-pulsar').dataTable({
                     "displayStart": {{ $offset }},
+                    "sorting": [[0, 'desc']],
                     "columnDefs": [
                         { "visible": false, "targets": [1]}, // hidden column 1 and prevents search on column 1
                         { "dataSort": 1, "targets": [2] }, // sort column 2 according hidden column 1 data
