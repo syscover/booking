@@ -31,4 +31,5 @@ return [
     'vouchers_paid_amount'                  => 'Importe en vouchers',
     'vouchers_number'                       => 'Número de vouchers',
     'winery_observations'                   => 'Observaciones para la bodega',
+    'without_tax'                           => 'Sin impuestos'
 ];

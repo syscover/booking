@@ -31,4 +31,5 @@ return [
     'vouchers_paid_amount'                  => 'Amount paid with vouchers',
     'vouchers_number'                       => 'Vouchers number',
     'winery_observations'                   => 'Winery observations',
+    'without_tax'                           => 'Without tax'
 ];

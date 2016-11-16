@@ -171,6 +171,10 @@
                 $('[name=commissionAmount]').val(commissionAmount);
             });
 
+            $('[name=taxPercentage]').on('change', function(){
+                $.setCommissionCalculation();
+            });
+
             $('#hotelData, #spaData, #wineryData').hide();
 
             @if($action === 'update')
@@ -180,8 +184,7 @@
             @endif
         });
 
-        $.relatedCustomer = function (data)
-        {
+        $.relatedCustomer = function (data) {
             var value = '';
             var flag = false;
 
@@ -237,9 +240,23 @@
         $.sumTotalAmount = function() {
             var totalAmount = parseFloat($('[name=directPaymenAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
             $('[name=totalAmount]').val(totalAmount);
+
             // set value to calculate commission
             $('[name=commissionCalculation]').val(totalAmount);
-        }
+            $.setCommissionCalculation();
+        };
+
+        $.setCommissionCalculation  = function () {
+            var totalAmount     = parseFloat($('[name=totalAmount]').val());
+            var taxPercentage   = 0;
+
+            if($('[name=taxPercentage]').val() !== '')
+                taxPercentage = parseFloat($('[name=taxPercentage]').val());
+
+            var commissionCalculation = (totalAmount * 100 / (taxPercentage + 100)).toFixed(2);
+
+            $('[name=commissionCalculation]').val(commissionCalculation);
+        };
 
         $.setEventVoucherRow = function() {
             $('.delete-voucher').on('click', function () {
@@ -608,11 +625,12 @@
                 'labelSize' => 4,
                 'fieldSize' => 8,
                 'label' => trans_choice('pulsar::pulsar.tax', 2),
-                'name' => 'breakfast',
-                'value' => old('breakfast', isset($object->breakfast_225)? $object->breakfast_225 : null),
-                'objects' => $breakfast,
+                'name' => 'taxPercentage',
+                'value' => old('taxPercentage', isset($object->tax_percentage_225)? $object->tax_percentage_225 : 10),
+                'objects' => $taxes,
                 'idSelect' => 'id',
-                'nameSelect' => 'name'
+                'nameSelect' => 'name',
+                'required' => true
             ])
         </div>
     </div>

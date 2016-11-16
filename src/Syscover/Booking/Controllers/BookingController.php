@@ -68,6 +68,12 @@ class BookingController extends Controller {
             return $object;
         }, config('booking.commissions'));
 
+        $parameters['taxes'] = array_map(function($object) {
+            if(trans_has($object->name))
+                $object->name = trans($object->name);
+            return $object;
+        }, config('booking.taxes'));
+
         return $parameters;
     }
 
