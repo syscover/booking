@@ -21,6 +21,7 @@
             $(window).trigger('resize'); // to calculate new window sice by hide html blocks
 
             $('#recordForm').on('submit', function() {
+                // get descriptions fron input hidden
                 if($('[name=place]').val() === '1') {
                     $('[name=objectDescription]').val($('[name=hotelObjectDescription]').val());
                     $('[name=placeObservations]').val($('[name=hotelPlaceObservations]').val());
@@ -296,6 +297,13 @@
             $.sumTotalAmount();
             $.setEventVoucherRow();
         };
+
+        $.saveBookingDraft = function () {
+            $('#recordForm').attr('action', '{{ route('storeBookingBookingDraft', ['offset' => 0]) }}');
+            $('[name=status], [name=place], [name=nAdults], [name=commissionPercentage]').removeAttr('required');
+            //$('#recordForm').submit();
+        };
+
     </script>
     <!-- /booking::booking.form -->
 @stop
@@ -489,10 +497,11 @@
                     'fieldSize' => 8,
                     'label' => trans('booking::pulsar.breakfast'),
                     'name' => 'breakfast',
-                    'value' => old('breakfast', isset($object->breakfast_225)? $object->breakfast_225 : null),
+                    'value' => old('breakfast', isset($object->breakfast_225)? $object->breakfast_225 : 1),
                     'objects' => $breakfast,
                     'idSelect' => 'id',
-                    'nameSelect' => 'name'
+                    'nameSelect' => 'name',
+                    'required' => true
                 ])
             </div>
             <div class="col-md-6">

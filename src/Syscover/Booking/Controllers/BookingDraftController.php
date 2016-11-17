@@ -7,11 +7,11 @@ use Syscover\Booking\Models\Booking;
 use Syscover\Booking\Models\Voucher;
 
 /**
- * Class BookingController
+ * Class BookingDraftController
  * @package Syscover\Booking\Controllers
  */
 
-class BookingController extends Controller {
+class BookingDraftController extends Controller {
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';

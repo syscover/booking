@@ -11,7 +11,8 @@ class BookingCreateTableBooking extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		if(! Schema::hasTable('011_225_booking')) {
+		if(! Schema::hasTable('011_225_booking'))
+		{
 			Schema::create('011_225_booking', function (Blueprint $table) {
 				$table->engine = 'InnoDB';
 
