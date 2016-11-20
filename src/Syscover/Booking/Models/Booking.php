@@ -32,6 +32,9 @@ class Booking extends Model
         'object'        => 'required',
         'taxPercentage' => 'required'
     ];
+    protected $casts = [
+        'tax_percentage_225' => 'float',
+    ];
 
     public static function validate($data)
     {

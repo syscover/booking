@@ -1,8 +1,11 @@
 <?php namespace Syscover\Booking\Controllers;
 
 use Illuminate\Support\Facades\App;
-use Syscover\Booking\Models\Place;
+use Illuminate\Support\Facades\Mail;
 use Syscover\Pulsar\Core\Controller;
+use Syscover\Pulsar\Models\Attachment;
+use Syscover\Booking\Libraries\CustomerBookingEmail;
+use Syscover\Booking\Models\Place;
 use Syscover\Booking\Models\Booking;
 use Syscover\Booking\Models\Voucher;
 
@@ -131,6 +134,8 @@ class BookingController extends Controller {
         ]);
 
         $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
+
+        $this->sendEmails($booking);
     }
 
     public function editCustomRecord($parameters) 
@@ -160,7 +165,8 @@ class BookingController extends Controller {
 
         $parameters['vouchers'] = Voucher::builder()->where('booking_id_226', $parameters['object']->id_225)->get();
 
-        $parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" href="#">' . trans('booking::pulsar.save_resend') . '</a>';
+        $parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" onclick="$.saveResendEmails()">' . trans('booking::pulsar.save_resend') . '</a>';
+
         return $parameters;
     }
 
@@ -198,6 +204,7 @@ class BookingController extends Controller {
             'vouchers_cost_amount_225'      => $vouchersProperties['vouchersCostAmount'],
             'direct_payment_amount_225'     => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
             'total_amount_225'              => $this->request->input('totalAmount'),
+            'tax_percentage_225'            => $this->request->input('taxPercentage'),
 
             'commission_percentage_225'     => $this->request->input('commissionPercentage'),
             'commission_calculation_225'    => $this->request->input('commissionCalculation'),
@@ -212,6 +219,11 @@ class BookingController extends Controller {
 
         $this->setVouchersToReset($vouchersToReset);
         $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
+
+        if($this->request->input('resendEmails') === '1')
+        {
+            $this->sendEmails($booking);
+        }
     }
 
     private function getVouchersProperties()
@@ -273,6 +285,42 @@ class BookingController extends Controller {
                 'object_id_226'         => null,
                 'cost_226'              => null
             ]);
+        }
+    }
+
+    private function sendEmails(Booking $booking)
+    {
+        // objects from place
+        if(isset($booking->place_id_225))
+        {
+            $result = collect(config('booking.models'))->where('id', $booking->place_id_225);
+
+            if (count($result) === 0)
+                return response()->json([
+                    'status'    => 'error',
+                    'code'      => 404,
+                    'message'   => 'Records not found'
+                ]);
+
+            // model constructor
+            $model              = App::make($result->first()->model);
+
+            // use sofa to get lang from lang table of object query
+            $establishment      = $model->builder()->where('lang_id', base_lang()->id_001)->where('id', $booking->place_id_225)->first();
+
+            $attachment = Attachment::builder()
+                ->where('lang_id_016', base_lang()->id_001)
+                ->where('resource_id_016', 'hotels-hotel')
+                ->where('object_id_016', $establishment->id)
+                ->where('family_id_016', 1) // config('ruralka.idAttachmentsFamily.hotelSheet')
+                ->orderBy('sorting', 'asc')
+                ->first();
+
+            $vouchers = Voucher::builder()->where('booking_id_226', $booking->id_225)->get();
+
+            Mail::to('cpalacin@syscover.com')
+                ->bcc('info@syscover.com')
+                ->send(new CustomerBookingEmail($booking, $establishment, $vouchers, $attachment));
         }
     }
 }

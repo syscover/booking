@@ -82,35 +82,7 @@
                             // show select with objects
                             $('#objectWrapper').fadeIn();
 
-                            if($(self).children('option:selected').data('model') == 1)
-                            {
-                                if($('#spaData').is(":visible"))
-                                    $('#spaData').slideToggle("slow");
-                                if($('#wineryData').is(":visible"))
-                                    $('#wineryData').slideToggle("slow");
-
-                                $('#hotelData').slideToggle("slow");
-                            }
-
-                            if($(self).children('option:selected').data('model') == 2)
-                            {
-                                if($('#hotelData').is(":visible"))
-                                    $('#hotelData').slideToggle("slow");
-                                if($('#spaData').is(":visible"))
-                                    $('#spaData').slideToggle("slow");
-
-                                $('#wineryData').slideToggle("slow");
-                            }
-
-                            if($(self).children('option:selected').data('model') == 3)
-                            {
-                                if($('#hotelData').is(":visible"))
-                                    $('#hotelData').slideToggle("slow");
-                                if($('#wineryData').is(":visible"))
-                                    $('#wineryData').slideToggle("slow");
-
-                                $('#spaData').slideToggle("slow");
-                            }
+                            $.openObjectCustomElements();
                         }
                     }
                 });
@@ -180,6 +152,7 @@
 
             @if($action === 'update')
                 $.setEventVoucherRow();
+                $.openObjectCustomElements();
             @else
                 $('#objectWrapper').hide();
             @endif
@@ -217,6 +190,38 @@
             $('[name=customerId]').val(data.id_301);
 
             $.magnificPopup.close();
+        };
+
+        $.openObjectCustomElements = function() {
+            if($('[name=place]').children('option:selected').data('model') == 1)
+            {
+                if($('#spaData').is(":visible"))
+                    $('#spaData').slideToggle("slow");
+                if($('#wineryData').is(":visible"))
+                    $('#wineryData').slideToggle("slow");
+
+                $('#hotelData').slideToggle("slow");
+            }
+
+            if($('[name=place]').children('option:selected').data('model') == 2)
+            {
+                if($('#hotelData').is(":visible"))
+                    $('#hotelData').slideToggle("slow");
+                if($('#spaData').is(":visible"))
+                    $('#spaData').slideToggle("slow");
+
+                $('#wineryData').slideToggle("slow");
+            }
+
+            if($('[name=place]').children('option:selected').data('model') == 3)
+            {
+                if($('#hotelData').is(":visible"))
+                    $('#hotelData').slideToggle("slow");
+                if($('#wineryData').is(":visible"))
+                    $('#wineryData').slideToggle("slow");
+
+                $('#spaData').slideToggle("slow");
+            }
         };
 
         $.sumVoucherPaidAmount = function() {
@@ -302,6 +307,12 @@
             $('#recordForm').attr('action', '{{ route('storeBookingBookingDraft', ['offset' => 0]) }}');
             $('[name=status], [name=place], [name=nAdults], [name=commissionPercentage]').removeAttr('required');
             //$('#recordForm').submit();
+        };
+
+        $.saveResendEmails = function () {
+            // function to resend again emails
+            $('[name=resendEmails]').val(1);
+            $('#recordForm').submit();
         };
 
     </script>
@@ -686,6 +697,10 @@
         'label' => trans_choice('pulsar::pulsar.observations', 2), 
         'name' => 'observations',
         'value' => old('observations', isset($object->observations_225)? $object->observations_225 : null)
+    ])
+    @include('pulsar::includes.html.form_hidden', [
+        'name' => 'resendEmails',
+        'value' => 0
     ])
     <!-- /booking::booking.form -->
 @stop

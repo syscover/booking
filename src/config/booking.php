@@ -42,9 +42,9 @@ return [
     //***   Taxes
     //******************************************************************************************************************
     'taxes'                    => [
-        (object)['id' => 0,     'name' => 'booking::pulsar.without_tax'],
-        (object)['id' => 4,     'name' => '4%'],
-        (object)['id' => 10,    'name' => '10%'],
-        (object)['id' => 21,    'name' => '21%']
+        (object)['id' => 0.00,     'name' => 'booking::pulsar.without_tax'],
+        (object)['id' => 4.00,     'name' => '4%'],
+        (object)['id' => 10.00,    'name' => '10%'],
+        (object)['id' => 21.00,    'name' => '21%']
     ],
 ];
