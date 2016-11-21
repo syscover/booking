@@ -306,7 +306,7 @@ class BookingController extends Controller {
             $model              = App::make($result->first()->model);
 
             // use sofa to get lang from lang table of object query
-            $establishment      = $model->builder()->where('lang_id', base_lang()->id_001)->where('id', $booking->place_id_225)->first();
+            $establishment      = $model->builder()->where('lang_id', base_lang()->id_001)->where('id', $booking->object_id_225)->first();
 
             $attachment = Attachment::builder()
                 ->where('lang_id_016', base_lang()->id_001)
@@ -320,6 +320,7 @@ class BookingController extends Controller {
 
             Mail::to('cpalacin@syscover.com')
                 ->bcc('info@syscover.com')
+                ->cc('cristina@ruralka.com')
                 ->send(new CustomerBookingEmail($booking, $establishment, $vouchers, $attachment));
         }
     }
