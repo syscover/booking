@@ -321,12 +321,12 @@ class BookingController extends Controller {
 
             Mail::to('cpalacin@syscover.com')
                 ->bcc('info@syscover.com')
-                //->cc('cristina@ruralka.com')
+                ->cc('cristina@ruralka.com')
                 ->send(new CustomerBookingEmail(trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]) ,$booking, $establishment, $vouchers, $attachment));
 
             Mail::to('cpalacin@syscover.com')
                 ->bcc('info@syscover.com')
-               // ->cc('cristina@ruralka.com')
+                ->cc('cristina@ruralka.com')
                 ->send(new HotelBookingEmail(trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]), $booking, $establishment, $vouchers, $attachment));
         }
     }
