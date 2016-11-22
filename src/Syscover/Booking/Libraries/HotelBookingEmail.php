@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Syscover\Booking\Models\Booking;
 
-class CustomerBookingEmail extends Mailable
+class HotelBookingEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -27,12 +27,12 @@ class CustomerBookingEmail extends Mailable
 
     public function build()
     {
-        return $this->view('booking::emails.customer_booking_notification')
+        return $this->view('booking::emails.hotel_booking_notification')
             ->with([
-                'booking'           => $this->booking,
-                'establishment'     => $this->establishment,
-                'vouchers'          => $this->vouchers,
-                'attachment'        => $this->attachment
+                'booking'       => $this->booking,
+                'establishment' => $this->establishment,
+                'vouchers'      => $this->vouchers,
+                'attachment'    => $this->attachment
             ]);
     }
 }

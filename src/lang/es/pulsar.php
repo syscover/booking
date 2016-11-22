@@ -22,6 +22,8 @@ return [
     'save_draft'                            => 'Guardar como borrador',
     'save_resend'                           => 'Guardar y reenviar emails',
     'spa_observations'                      => 'Observaciones para el Spa',
+    'subject_customer_booking_email'        => 'Ruralka, confirmación de reserva :bookingId',
+    'subject_hotel_booking_email'           => 'Ruralka, confirmación de reserva :bookingId',
     'temporary_bed'                         => 'Cama supletoria|Camas supletorias',
     'total_amount'                          => 'Total',
     'used'                                  => 'Usado',

@@ -22,6 +22,8 @@ return [
     'save_draft'                            => 'Save as draft',
     'save_resend'                           => 'Save and resend emails',
     'spa_observations'                      => 'Spa observations',
+    'subject_customer_booking_email'        => 'Ruralka, booking confirmation :bookingId',
+    'subject_hotel_booking_email'           => 'Ruralka, booking confirmation :bookingId',
     'temporary_bed'                         => 'Temporary bed|Temporary beds',
     'total_amount'                          => 'Total amount',
     'used'                                  => 'Used',
