@@ -85,7 +85,7 @@ class BookingController extends Controller {
     {
         $parameters = $this->commonCustomRecord($parameters);
 
-        $parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" onclick="$.saveBookingDraft()" href="#">' . trans('booking::pulsar.save_draft') . '</a>';
+        //$parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" onclick="$.saveBookingDraft()" href="#">' . trans('booking::pulsar.save_draft') . '</a>';
 
         return $parameters;
     }
@@ -135,6 +135,9 @@ class BookingController extends Controller {
         ]);
 
         $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
+
+        // overwrite variable with relation data
+        $booking = Booking::builder()->where('id_225', $booking->id_225)->first();
 
         $this->sendEmails($booking);
     }
@@ -262,13 +265,13 @@ class BookingController extends Controller {
         foreach ($vouchers as $voucher)
         {
             Voucher::where('id_226', $voucher)->update([
-                'has_used_226' => true,
-                'used_date_226' => $booking->check_in_date_225,
-                'used_date_text_226' => $booking->check_in_date_text_225,
-                'booking_id_226' => $booking->id_225,
-                'place_id_226' => $booking->place_id_225,
-                'object_id_226' => $booking->object_id_225,
-                'cost_226' => (float)$this->request->input('voucherCost-' . $voucher)
+                'has_used_226'          => true,
+                'used_date_226'         => $booking->check_in_date_225,
+                'used_date_text_226'    => $booking->check_in_date_text_225,
+                'booking_id_226'        => $booking->id_225,
+                'place_id_226'          => $booking->place_id_225,
+                'object_id_226'         => $booking->object_id_225,
+                'cost_226'              => (float)$this->request->input('voucherCost-' . $voucher)
             ]);
         }
     }
