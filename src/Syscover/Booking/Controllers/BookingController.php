@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
-use Syscover\Booking\Libraries\HotelBookingEmail;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Pulsar\Models\Attachment;
-use Syscover\Booking\Libraries\CustomerBookingEmail;
+use Syscover\Pulsar\Models\CustomField;
+use Syscover\Booking\Libraries\BookingEmail;
 use Syscover\Booking\Models\Place;
 use Syscover\Booking\Models\Booking;
 use Syscover\Booking\Models\Voucher;
@@ -317,17 +317,50 @@ class BookingController extends Controller {
                 ->orderBy('sorting', 'asc')
                 ->first();
 
-            $vouchers = Voucher::builder()->where('booking_id_226', $booking->id_225)->get();
+            //****************************
+            // get values to Master Card
+            //****************************
+            $customFields = CustomField::where('group_id_026', 4)->get();
+
+            if(isset($customFields) && $customFields->where('name_026', 'master_card_feature')->count() > 0)
+                $masterCardFeatures = $customFields->where('name_026', 'master_card_feature')
+                    ->first()
+                    ->getResults()
+                    ->where('object_id_028', $establishment->id_170)
+                    ->where('lang_id_028', 'es')
+                    ->get()
+                    ->first();
+            else
+                $masterCardFeatures         = null;
+
+            // get vouchers
+            $vouchers                       = Voucher::builder()->where('booking_id_226', $booking->id_225)->get();
 
             Mail::to('cpalacin@syscover.com')
                 ->bcc('info@syscover.com')
-                ->cc('cristina@ruralka.com')
-                ->send(new CustomerBookingEmail(trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]) ,$booking, $establishment, $vouchers, $attachment));
+                //->cc('cristina@ruralka.com')
+                ->send(new BookingEmail(
+                    'booking::emails.customer_booking_notification',
+                    trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
+                    $booking,
+                    $establishment,
+                    $vouchers,
+                    $attachment,
+                    $masterCardFeatures
+                ));
 
             Mail::to('cpalacin@syscover.com')
                 ->bcc('info@syscover.com')
-                ->cc('cristina@ruralka.com')
-                ->send(new HotelBookingEmail(trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]), $booking, $establishment, $vouchers, $attachment));
+                //->cc('cristina@ruralka.com')
+                ->send(new BookingEmail(
+                    'booking::emails.hotel_booking_notification',
+                    trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
+                    $booking,
+                    $establishment,
+                    $vouchers,
+                    $attachment,
+                    $masterCardFeatures
+                ));
         }
     }
 }
