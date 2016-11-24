@@ -20,7 +20,9 @@
 
             $(window).trigger('resize'); // to calculate new window sice by hide html blocks
 
-            $('#recordForm').on('submit', function() {
+            $('#recordForm').on('submit', function(event) {
+                event.preventDefault();
+
                 // get descriptions fron input hidden
                 if($('[name=place]').val() === '1') {
                     $('[name=objectDescription]').val($('[name=hotelObjectDescription]').val());
@@ -34,6 +36,25 @@
                     $('[name=objectDescription]').val($('[name=wineryObjectDescription]').val());
                     $('[name=placeObservations]').val($('[name=wineryPlaceObservations]').val());
                 }
+
+                $('#modalUpdateRecord').modal('show');
+            });
+
+            $('#confirmModalButton').on('click', function() {
+
+                if($('[name=resendEmails]').val() === '1')
+                {
+                    $('#modalUpdateRecord').modal('hide');
+
+                    $('#veilMsg').html('Un momento por favor, estamos enviando correos...');
+                    $('#statusVeil').fadeIn();
+                }
+
+                $('#recordForm').off('submit').submit();
+            });
+
+            $('#cancelModalButton').on('click', function() {
+                $('button[type=submit]').prop("disabled", false);
             });
 
             // load kind place to do booking
@@ -131,7 +152,7 @@
             // END DATES
 
 
-            $('[name=directPaymenAmount]').on('change', function(){
+            $('[name=directPaymenAmount]').on('change', function() {
                 $.sumTotalAmount();
             });
 
@@ -252,7 +273,7 @@
             $.setCommissionCalculation();
         };
 
-        $.setCommissionCalculation  = function () {
+        $.setCommissionCalculation = function () {
             var totalAmount     = parseFloat($('[name=totalAmount]').val());
             var taxPercentage   = 0;
 
@@ -703,4 +724,26 @@
         'value' => 0
     ])
     <!-- /booking::booking.form -->
+@stop
+
+@section('endBody')
+    <!-- Modal -->
+    <div class="modal fade" id="modalUpdateRecord" tabindex="-1" role="dialog" aria-labelledby="updateRecordLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="updateRecordLabel">{{ trans('pulsar::pulsar.request_title_update_record') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ trans('pulsar::pulsar.request_update_record') }}
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelModalButton" type="button" class="btn btn-default" data-dismiss="modal">{{ trans('pulsar::pulsar.cancel') }}</button>
+                    <button id="confirmModalButton" type="button" class="btn btn-primary">{{ trans('pulsar::pulsar.save') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ Modal -->
 @stop
