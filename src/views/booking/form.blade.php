@@ -37,18 +37,24 @@
                     $('[name=placeObservations]').val($('[name=wineryPlaceObservations]').val());
                 }
 
-                $('#modalUpdateRecord').modal('show');
+                if($('#recordForm').valid())
+                    $('#modalUpdateRecord').modal('show');
             });
 
             $('#confirmModalButton').on('click', function() {
 
-                if($('[name=resendEmails]').val() === '1')
-                {
+                @if($action === 'update')
+                    if($('[name=resendEmails]').val() === '1')
+                    {
+                        $('#modalUpdateRecord').modal('hide');
+                        $('#veilMsg').html('Un momento por favor, estamos enviando correos...');
+                        $('#statusVeil').fadeIn();
+                    }
+                @else
                     $('#modalUpdateRecord').modal('hide');
-
                     $('#veilMsg').html('Un momento por favor, estamos enviando correos...');
                     $('#statusVeil').fadeIn();
-                }
+                @endif
 
                 $('#recordForm').off('submit').submit();
             });
@@ -733,10 +739,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="updateRecordLabel">{{ trans('pulsar::pulsar.request_title_update_record') }}</h4>
+                    <h4 class="modal-title" id="updateRecordLabel">
+                        @if($action === 'update')
+                            {{ trans('pulsar::pulsar.request_title_update_record') }}
+                        @else
+                            {{ trans('pulsar::pulsar.request_title_store_record') }}
+                        @endif
+                    </h4>
                 </div>
                 <div class="modal-body">
-                    {{ trans('pulsar::pulsar.request_update_record') }}
+                    @if($action === 'update')
+                        {{ trans('pulsar::pulsar.request_update_record') }}
+                    @else
+                        {{ trans('pulsar::pulsar.request_store_record') }}
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button id="cancelModalButton" type="button" class="btn btn-default" data-dismiss="modal">{{ trans('pulsar::pulsar.cancel') }}</button>
