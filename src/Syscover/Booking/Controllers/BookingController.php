@@ -1,5 +1,6 @@
 <?php namespace Syscover\Booking\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Syscover\Pulsar\Core\Controller;
@@ -19,11 +20,37 @@ class BookingController extends Controller {
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';
-    protected $indexColumns = ['id_225', 'check_out_date_225', 'check_out_date_text_225', 'email_301', 'customer_name_225'];
+    protected $indexColumns = ['id_225', 'check_out_date_225', 'check_out_date_text_225', 'object_name_225', 'customer_name_225'];
     protected $nameM        = 'name_221';
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
     protected $objectTrans  = 'booking';
+
+    function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewParameters['deleteButton']       = false;
+        $this->viewParameters['deleteSelectButton'] = false;
+    }
+
+    public function jsonCustomDataBeforeActions($aObject, $actionUrlParameters, $parameters)
+    {
+        //$actions = $this->request->route()->getAction();
+
+        if($aObject['status_225'] == 3)
+        {
+            $this->viewParameters['editButton']     = false;
+            $this->viewParameters['showButton']     = true;
+        }
+        else
+        {
+            $this->viewParameters['editButton']     = true;
+            $this->viewParameters['showButton']     = false;
+        }
+
+        //return $actions;
+    }
 
     private function commonCustomRecord($parameters) 
     {
@@ -85,6 +112,9 @@ class BookingController extends Controller {
     {
         $parameters = $this->commonCustomRecord($parameters);
 
+        // delete cancel option on create action
+        unset($parameters['statuses'][2]);
+
         //$parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" onclick="$.saveBookingDraft()" href="#">' . trans('booking::pulsar.save_draft') . '</a>';
 
         return $parameters;
@@ -105,6 +135,7 @@ class BookingController extends Controller {
 
             'place_id_225'                  => $this->request->input('place'),
             'object_id_225'                 => $this->request->input('object'),
+            'object_name_225'               => $this->request->input('objectName'),
             'object_description_225'        => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
             'place_observations_225'        => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
 
@@ -142,7 +173,7 @@ class BookingController extends Controller {
         $this->sendEmails($booking);
     }
 
-    public function editCustomRecord($parameters) 
+    public function editCustomRecord($parameters)
     {
         $parameters = $this->commonCustomRecord($parameters);
 
@@ -188,6 +219,7 @@ class BookingController extends Controller {
 
             'place_id_225'                  => $this->request->input('place'),
             'object_id_225'                 => $this->request->input('object'),
+            'object_name_225'               => $this->request->input('objectName'),
             'object_description_225'        => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
             'place_observations_225'        => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
 
@@ -222,12 +254,60 @@ class BookingController extends Controller {
         $vouchersToReset = $oldVouchers->diff($vouchersProperties['vouchersId']);
 
         $this->setVouchersToReset($vouchersToReset);
-        $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
+
+        // cancel booking
+        if($booking->status_225 === 3)
+        {
+            $this->setVouchersToReset($vouchersProperties['vouchersId']);
+        }
+        // register new vouchers
+        else
+        {
+            $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
+        }
 
         if($this->request->input('resendEmails') === '1')
         {
             $this->sendEmails($booking);
         }
+    }
+
+    public function showCustomRecord($parameters)
+    {
+        if(isset($parameters['resendEmails']) && $parameters['resendEmails'] === '1')
+        {
+            $this->sendEmails($parameters['object']);
+            return redirect()->route('bookingBooking', ['offset' => $parameters['offset']]);
+        }
+
+        $parameters = $this->commonCustomRecord($parameters);
+
+        // objects from place
+        if(isset($parameters['object']->place_id_225))
+        {
+            $result = collect(config('booking.models'))->where('id', $parameters['object']->place_id_225);
+
+            if (count($result) === 0)
+                return response()->json([
+                    'status'    => 'error',
+                    'code'      => 404,
+                    'message'   => 'Records not found'
+                ]);
+
+            // model constructor
+            $model                      = App::make($result->first()->model);
+
+            // use sofa to get lang from lang table of object query
+            $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+            $parameters['objectName']   = trans_choice($result->first()->name, 1);
+            $parameters['objectKey']    = $model->getKeyName();
+        }
+
+        $parameters['vouchers']         = Voucher::builder()->where('booking_id_226', $parameters['object']->id_225)->get();
+
+        $parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" onclick="$.resendEmails()">' . trans('booking::pulsar.resend') . '</a>';
+
+        return $parameters;
     }
 
     private function getVouchersProperties()
@@ -339,31 +419,64 @@ class BookingController extends Controller {
             // get vouchers
             $vouchers                       = Voucher::builder()->where('booking_id_226', $booking->id_225)->get();
 
-            Mail::to('cpalacin@syscover.com')
-                ->bcc('info@syscover.com')
-                ->cc('cristina@ruralka.com')
-                ->send(new BookingEmail(
-                    'booking::emails.customer_booking_notification',
-                    trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
-                    $booking,
-                    $establishment,
-                    $vouchers,
-                    $attachment,
-                    $masterCardFeatures
-                ));
+            // status confirmed
+            if($booking->status_225 == 1)
+            {
+                Mail::to('cpalacin@syscover.com')
+                    ->bcc('info@syscover.com')
+                    //->cc('cristina@ruralka.com')
+                    ->send(new BookingEmail(
+                        'booking::emails.customer_booking_notification',
+                        trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
+                        $booking,
+                        $establishment,
+                        $vouchers,
+                        $attachment,
+                        $masterCardFeatures
+                    ));
 
-            Mail::to('cpalacin@syscover.com')
-                ->bcc('info@syscover.com')
-                ->cc('cristina@ruralka.com')
-                ->send(new BookingEmail(
-                    'booking::emails.hotel_booking_notification',
-                    trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
-                    $booking,
-                    $establishment,
-                    $vouchers,
-                    $attachment,
-                    $masterCardFeatures
-                ));
+                Mail::to('cpalacin@syscover.com')
+                    ->bcc('info@syscover.com')
+                    //->cc('cristina@ruralka.com')
+                    ->send(new BookingEmail(
+                        'booking::emails.hotel_booking_notification',
+                        trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
+                        $booking,
+                        $establishment,
+                        $vouchers,
+                        $attachment,
+                        $masterCardFeatures
+                    ));
+            }
+            // status cancel
+            elseif ($booking->status_225 == 3)
+            {
+                Mail::to('cpalacin@syscover.com')
+                    ->bcc('info@syscover.com')
+                    //->cc('cristina@ruralka.com')
+                    ->send(new BookingEmail(
+                        'booking::emails.customer_cancel_booking_notification',
+                        trans('booking::pulsar.subject_customer_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
+                        $booking,
+                        $establishment,
+                        $vouchers,
+                        $attachment,
+                        $masterCardFeatures
+                    ));
+
+                Mail::to('cpalacin@syscover.com')
+                    ->bcc('info@syscover.com')
+                    //->cc('cristina@ruralka.com')
+                    ->send(new BookingEmail(
+                        'booking::emails.hotel_cancel_booking_notification',
+                        trans('booking::pulsar.subject_hotel_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
+                        $booking,
+                        $establishment,
+                        $vouchers,
+                        $attachment,
+                        $masterCardFeatures
+                    ));
+            }
         }
     }
 }

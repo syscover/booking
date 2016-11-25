@@ -91,7 +91,7 @@
                         {
                             // remove all options add empty option
                             $('[name=object]').find('option').remove().end().append($('<option>', {
-                                value: null,
+                                value: '',
                                 text : '{{ trans('pulsar::pulsar.select_a') }} ' + data.name
                             })).trigger("change");
 
@@ -113,6 +113,17 @@
                         }
                     }
                 });
+            });
+
+            $('[name=object]').on('change', function(){
+                if($(this).val() !== '')
+                {
+                    $('[name=objectName]').val($('[name=object] option:selected').text());
+                }
+                else
+                {
+                    $('[name=objectName]').val('');
+                }
             });
 
             // START DATES
@@ -177,7 +188,7 @@
 
             $('#hotelData, #spaData, #wineryData').hide();
 
-            @if($action === 'update')
+            @if($action === 'update' || $action == 'show')
                 $.setEventVoucherRow();
                 $.openObjectCustomElements();
             @else
@@ -342,6 +353,14 @@
             $('#recordForm').submit();
         };
 
+        @if($action == 'show')
+            $.resendEmails = function () {
+                $('#recordForm')
+                        .attr('action', '{{ route('showBookingBookingResendEmails', ['id' => $object->id, 'offset' => 0, 'resendEmails' => 1]) }}')
+                        .submit();
+            };
+        @endif
+
     </script>
     <!-- /booking::booking.form -->
 @stop
@@ -367,7 +386,8 @@
                 'objects' => $statuses,
                 'idSelect' => 'id',
                 'nameSelect' => 'name',
-                'required' => true
+                'required' => true,
+                'disabled' => $action == 'show'
             ])
         </div>
         <div class="col-md-6">
@@ -394,12 +414,14 @@
             'modal' => 1
         ]),
         'required' => true,
-        'readOnly' => true
+        'readOnly' => true,
+        'disabled' => $action == 'show'
     ])
     @include('pulsar::includes.html.form_textarea_group', [
         'label' => trans('booking::pulsar.customer_observations'),
         'name' => 'customerObservations',
-        'value' => old('customerObservations', isset($object->customer_observations_225)? $object->customer_observations_225 : null)
+        'value' => old('customerObservations', isset($object->customer_observations_225)? $object->customer_observations_225 : null),
+        'readOnly' => $action == 'show'
     ])
     @include('pulsar::includes.html.form_select_group', [
         'fieldSize' => 5,
@@ -412,7 +434,8 @@
         'dataOption' => [
             'model' => 'model_id_220'
         ],
-        'required' => true
+        'required' => true,
+        'disabled' => $action == 'show'
     ])
 
     @include('pulsar::includes.html.form_select_group', [
@@ -432,7 +455,12 @@
             'width' => '100%',
             'error-placement' => 'select2-object-outer-container'
         ],
-        'required' => true
+        'required' => true,
+        'disabled' => $action == 'show'
+    ])
+    @include('pulsar::includes.html.form_hidden', [
+        'name' => 'objectName',
+        'value' => old('objectName', isset($object->object_name_225)? $object->object_name_225 : null),
     ])
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('pulsar::pulsar.date', 2), 'icon' => 'fa fa-calendar'])
@@ -447,7 +475,8 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale')
-                ]
+                ],
+                'readOnly' => $action == 'show'
             ])
         </div>
         <div class="col-md-6">
@@ -460,7 +489,8 @@
                 'data' => [
                     'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
                     'locale' => config('app.locale')
-                ]
+                ],
+                'readOnly' => $action == 'show'
             ])
         </div>
     </div>
@@ -484,7 +514,8 @@
                 'objects' => $nAdults,
                 'idSelect' => 'id',
                 'nameSelect' => 'name',
-                'required' => true
+                'required' => true,
+                'disabled' => $action == 'show'
             ])
         </div>
         <div class="col-md-6">
@@ -496,7 +527,8 @@
                 'value' => old('nChildren', isset($object->n_children_225)? $object->n_children_225 : null),
                 'objects' => $nChildren,
                 'idSelect' => 'id',
-                'nameSelect' => 'name'
+                'nameSelect' => 'name',
+                'disabled' => $action == 'show'
             ])
         </div>
     </div>
@@ -516,7 +548,8 @@
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans('booking::pulsar.room_type'),
             'name' => 'hotelObjectDescription',
-            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null),
+            'readOnly' => $action == 'show'
         ])
         <div class="row">
             <div class="col-md-6">
@@ -528,7 +561,8 @@
                     'value' => old('nRooms', isset($object->n_rooms_225)? $object->n_rooms_225 : null),
                     'objects' => $nRooms,
                     'idSelect' => 'id',
-                    'nameSelect' => 'name'
+                    'nameSelect' => 'name',
+                    'disabled' => $action == 'show'
                 ])
                 @include('pulsar::includes.html.form_select_group', [
                     'labelSize' => 4,
@@ -539,7 +573,8 @@
                     'objects' => $breakfast,
                     'idSelect' => 'id',
                     'nameSelect' => 'name',
-                    'required' => true
+                    'required' => true,
+                    'disabled' => $action == 'show'
                 ])
             </div>
             <div class="col-md-6">
@@ -551,14 +586,16 @@
                     'value' => old('temporaryBeds', isset($object->temporary_beds_225)? $object->temporary_beds_225 : null),
                     'objects' => $temporaryBeds,
                     'idSelect' => 'id',
-                    'nameSelect' => 'name'
+                    'nameSelect' => 'name',
+                    'disabled' => $action == 'show'
                 ])
             </div>
         </div>
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.hotel_observations'),
             'name' => 'hotelPlaceObservations',
-            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null),
+            'readOnly' => $action == 'show'
         ])
     </div>
 
@@ -568,12 +605,14 @@
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans_choice('spas::pulsar.treatment', 1),
             'name' => 'spaObjectDescription',
-            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null),
+            'readOnly' => $action == 'show'
         ])
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.spa_observations'),
             'name' => 'spaPlaceObservations',
-            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null),
+            'readOnly' => $action == 'show'
         ])
     </div>
 
@@ -583,17 +622,24 @@
         @include('pulsar::includes.html.form_text_group', [
             'label' => trans_choice('winery::pulsar.activity', 1),
             'name' => 'wineryObjectDescription',
-            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null)
+            'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null),
+            'readOnly' => $action == 'show'
         ])
         @include('pulsar::includes.html.form_textarea_group', [
             'label' => trans('booking::pulsar.winery_observations'),
             'name' => 'wineryPlaceObservations',
-            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null)
+            'value' => old('placeObservations', isset($object->place_observations_225)? $object->place_observations_225 : null),
+            'readOnly' => $action == 'show'
         ])
     </div>
 
     @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('booking::pulsar.voucher', 2), 'icon' => 'fa fa-sort-alpha-asc'])
-    <a class="btn btn-info margin-b10 magnific-popup" href="{{ route('bookingVoucherAvailable', ['offset' => 0,  'modal' => 1, 'available' => 1])}}"><i class="fa fa-share"></i> {{ trans('booking::pulsar.add_voucher') }}</a>
+
+    @if($action != 'show')
+        <a class="btn btn-info margin-b10 magnific-popup" href="{{ route('bookingVoucherAvailable', ['offset' => 0,  'modal' => 1, 'available' => 1])}}">
+            <i class="fa fa-share"></i> {{ trans('booking::pulsar.add_voucher') }}
+        </a>
+    @endif
 
     <!-- vouchers -->
     <table id="vouchers" class="table table-hover table-striped">
@@ -604,7 +650,9 @@
             <th>{{ trans_choice('booking::pulsar.campaign', 1) }}</th>
             <th class="align-center">{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
             <th class="align-center">{{ trans_choice('pulsar::pulsar.cost', 1) }}</th>
-            <th class="align-center">{{ trans_choice("pulsar::pulsar.action", 2) }}</th>
+            @if($action != 'show')
+                <th class="align-center">{{ trans_choice("pulsar::pulsar.action", 2) }}</th>
+            @endif
         </tr>
         </thead>
         <tbody>
@@ -618,14 +666,16 @@
                     <td class="align-center">{{ $voucher->price_226 }}</td>
                     <td class="align-center">
                         <div class="col-md-6 col-md-offset-3">
-                            <input type="number" name="voucherCost-{{ $voucher->id_226 }}" value="{{ $voucher->cost_226 }}" class="form-control voucher-cost">
+                            <input type="number" name="voucherCost-{{ $voucher->id_226 }}" value="{{ $voucher->cost_226 }}" class="form-control voucher-cost" {{ $action != 'show'?:'readonly' }}>
                             <input type="hidden" name="vouchers[]" value="{{ $voucher->id_226 }}" class="form-control">
                             <input type="hidden" name="voucherPaid-{{ $voucher->id_226 }}" value="{{ $voucher->price_226 }}" class="form-control">
                         </div>
                     </td>
-                    <td class="align-center">
-                        <a class="btn btn-xs bs-tooltip delete-voucher"><i class="fa fa-trash"></i></a>
-                    </td>
+                    @if($action != 'show')
+                        <td class="align-center">
+                            <a class="btn btn-xs bs-tooltip delete-voucher"><i class="fa fa-trash"></i></a>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         @endif
@@ -646,7 +696,8 @@
                 'fieldSize' => 4,
                 'label' => trans('booking::pulsar.direct_payment_amount'),
                 'name' => 'directPaymenAmount',
-                'value' => old('nights', isset($object->direct_payment_amount_225)? $object->direct_payment_amount_225 : 0)
+                'value' => old('nights', isset($object->direct_payment_amount_225)? $object->direct_payment_amount_225 : 0),
+                'readOnly' => $action == 'show'
             ])
             @include('pulsar::includes.html.form_text_group', [
                 'type' => 'number',
@@ -677,7 +728,8 @@
                 'objects' => $taxes,
                 'idSelect' => 'id',
                 'nameSelect' => 'name',
-                'required' => true
+                'required' => true,
+                'disabled' => $action == 'show'
             ])
         </div>
     </div>
@@ -694,7 +746,8 @@
                 'objects' => $commissions,
                 'idSelect' => 'id',
                 'nameSelect' => 'name',
-                'required' => true
+                'required' => true,
+                'disabled' => $action == 'show'
             ])
             @include('pulsar::includes.html.form_text_group', [
                 'type' => 'number',
@@ -714,7 +767,8 @@
                 'fieldSize' => 4,
                 'label' => trans('booking::pulsar.commission_calculation'),
                 'name' => 'commissionCalculation',
-                'value' => old('commissionCalculation', isset($object->commission_calculation_225)? $object->commission_calculation_225 : 0)
+                'value' => old('commissionCalculation', isset($object->commission_calculation_225)? $object->commission_calculation_225 : 0),
+                'readOnly' => $action == 'show'
             ])
         </div>
     </div>
@@ -723,7 +777,8 @@
     @include('pulsar::includes.html.form_textarea_group', [
         'label' => trans_choice('pulsar::pulsar.observations', 2), 
         'name' => 'observations',
-        'value' => old('observations', isset($object->observations_225)? $object->observations_225 : null)
+        'value' => old('observations', isset($object->observations_225)? $object->observations_225 : null),
+        'readOnly' => $action == 'show'
     ])
     @include('pulsar::includes.html.form_hidden', [
         'name' => 'resendEmails',
@@ -742,6 +797,8 @@
                     <h4 class="modal-title" id="updateRecordLabel">
                         @if($action === 'update')
                             {{ trans('pulsar::pulsar.request_title_update_record') }}
+                        @elseif($action === 'show')
+                            {{ trans('booking::pulsar.resend') }}
                         @else
                             {{ trans('pulsar::pulsar.request_title_store_record') }}
                         @endif
@@ -750,13 +807,21 @@
                 <div class="modal-body">
                     @if($action === 'update')
                         {{ trans('pulsar::pulsar.request_update_record') }}
+                    @elseif($action === 'show')
+                        {{ trans('booking::pulsar.request_resend_emails') }}
                     @else
                         {{ trans('pulsar::pulsar.request_store_record') }}
                     @endif
                 </div>
                 <div class="modal-footer">
                     <button id="cancelModalButton" type="button" class="btn btn-default" data-dismiss="modal">{{ trans('pulsar::pulsar.cancel') }}</button>
-                    <button id="confirmModalButton" type="button" class="btn btn-primary">{{ trans('pulsar::pulsar.save') }}</button>
+                    <button id="confirmModalButton" type="button" class="btn btn-primary">
+                        @if($action === 'show')
+                            {{ trans('booking::pulsar.resend') }}
+                        @else
+                            {{ trans('pulsar::pulsar.save') }}
+                        @endif
+                    </button>
                 </div>
             </div>
         </div>

@@ -15,6 +15,8 @@ Route::group(['middleware' => ['web', 'pulsar']], function() {
     Route::put(config('pulsar.name') . '/booking/bookings/update/{id}/{offset}',                        ['as' => 'updateBookingBooking',                'uses' => 'Syscover\Booking\Controllers\BookingController@updateRecord',               'resource' => 'booking-booking',       'action' => 'edit']);
     Route::get(config('pulsar.name') . '/booking/bookings/delete/{id}/{offset}',                        ['as' => 'deleteBookingBooking',                'uses' => 'Syscover\Booking\Controllers\BookingController@deleteRecord',               'resource' => 'booking-booking',       'action' => 'delete']);
     Route::delete(config('pulsar.name') . '/booking/bookings/delete/select/records',                    ['as' => 'deleteSelectBookingBooking',          'uses' => 'Syscover\Booking\Controllers\BookingController@deleteRecordsSelect',        'resource' => 'booking-booking',       'action' => 'delete']);
+    Route::get(config('pulsar.name') . '/booking/bookings/{id}/show/{offset}',                          ['as' => 'showBookingBooking',                  'uses' => 'Syscover\Booking\Controllers\BookingController@showRecord',                 'resource' => 'booking-booking',       'action' => 'access']);
+    Route::post(config('pulsar.name') . '/booking/bookings/{id}/show/{offset}/{resendEmails}',          ['as' => 'showBookingBookingResendEmails',      'uses' => 'Syscover\Booking\Controllers\BookingController@showRecord',                 'resource' => 'booking-booking',       'action' => 'access']);
 
     /*
     |--------------------------------------------------------------------------
