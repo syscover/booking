@@ -13,6 +13,7 @@ return [
     'commission_calculation'                => 'Commisión calculada sobre',
     'customer_observations'                 => 'Observationes para el cliente',
     'direct_payment_amount'                 => 'Importe pago directo',
+    'establishment'                         => 'Establecimiento|Establecimientos',
     'hotel_observations'                    => 'Observationes para el hotel',
     'mail_template'                         => 'Plantilla de email',
     'package_name'                          => 'Booking',

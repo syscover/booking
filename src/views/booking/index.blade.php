@@ -39,7 +39,7 @@
         <th data-class="expand">ID</th>
         <th>{{ trans('booking::pulsar.check_in_date') }}</th>
         <th>{{ trans('booking::pulsar.check_in_date') }}</th>
-        <th>{{ trans_choice('hotels::pulsar.hotel', 1) }}</th>
+        <th>{{ trans_choice('booking::pulsar.establishment', 1) }}</th>
         <th data-hide="phone,tablet">{{ trans('pulsar::pulsar.name') }}</th>
         <th class="checkbox-column"><input type="checkbox" class="uniform"></th>
         <th>{{ trans_choice('pulsar::pulsar.action', 2) }}</th>

@@ -424,7 +424,7 @@ class BookingController extends Controller {
             {
                 Mail::to('cpalacin@syscover.com')
                     ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                    //->cc('cristina@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.customer_booking_notification',
                         trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
@@ -437,7 +437,7 @@ class BookingController extends Controller {
 
                 Mail::to('cpalacin@syscover.com')
                     ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                    //->cc('cristina@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.hotel_booking_notification',
                         trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
@@ -453,7 +453,7 @@ class BookingController extends Controller {
             {
                 Mail::to('cpalacin@syscover.com')
                     ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                    //->cc('cristina@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.customer_cancel_booking_notification',
                         trans('booking::pulsar.subject_customer_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
@@ -466,7 +466,7 @@ class BookingController extends Controller {
 
                 Mail::to('cpalacin@syscover.com')
                     ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                    //->cc('cristina@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.hotel_cancel_booking_notification',
                         trans('booking::pulsar.subject_hotel_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),

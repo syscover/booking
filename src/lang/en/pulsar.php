@@ -13,7 +13,7 @@ return [
     'commission_calculation'                => 'Commission calculation',
     'customer_observations'                 => 'Customer observations',
     'direct_payment_amount'                 => 'Direct payment',
-    'establishment'                         => 'Establishment',
+    'establishment'                         => 'Establishment|establishments',
     'hotel_observations'                    => 'Hotel observations',
     'mail_template'                         => 'Mail template',
     'package_name'                          => 'Booking',
