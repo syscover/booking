@@ -15,7 +15,7 @@ class BookingUpdateV6 extends Migration
         if(! Schema::hasColumn('011_225_booking', 'data_225'))
         {
             Schema::table('011_225_booking', function (Blueprint $table) {
-                $table->json('data_225')->nullable()->after('observations_225');
+                $table->string('data_225')->nullable()->after('observations_225');
             });
         }
     }
