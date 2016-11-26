@@ -36,8 +36,6 @@ class BookingController extends Controller {
 
     public function jsonCustomDataBeforeActions($aObject, $actionUrlParameters, $parameters)
     {
-        //$actions = $this->request->route()->getAction();
-
         if($aObject['status_225'] == 3)
         {
             $this->viewParameters['editButton']     = false;
@@ -48,8 +46,6 @@ class BookingController extends Controller {
             $this->viewParameters['editButton']     = true;
             $this->viewParameters['showButton']     = false;
         }
-
-        //return $actions;
     }
 
     private function commonCustomRecord($parameters) 
@@ -163,6 +159,8 @@ class BookingController extends Controller {
             'commission_amount_225'         => $this->request->input('commissionAmount'),
 
             'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
+
+            'data_225'                      => json_encode($vouchersProperties['vouchersId'])
         ]);
 
         $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
@@ -247,6 +245,8 @@ class BookingController extends Controller {
             'commission_amount_225'         => $this->request->input('commissionAmount'),
 
             'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
+
+            'data_225'                      => json_encode($vouchersProperties['vouchersId'])
         ]);
 
         $booking = Booking::builder()->where('id_225', $parameters['id'])->first();
@@ -303,7 +303,7 @@ class BookingController extends Controller {
             $parameters['objectKey']    = $model->getKeyName();
         }
 
-        $parameters['vouchers']         = Voucher::builder()->where('booking_id_226', $parameters['object']->id_225)->get();
+        $parameters['vouchers']         = Voucher::builder()->whereIn('id_226', json_decode($parameters['object']->data_225))->get();
 
         $parameters['afterButtonFooter'] = '<a class="btn btn-info margin-l10" onclick="$.resendEmails()">' . trans('booking::pulsar.resend') . '</a>';
 
@@ -380,11 +380,13 @@ class BookingController extends Controller {
             $result = collect(config('booking.models'))->where('id', $booking->place_id_225);
 
             if (count($result) === 0)
+            {
                 return response()->json([
                     'status'    => 'error',
                     'code'      => 404,
                     'message'   => 'Records not found'
                 ]);
+            }
 
             // model constructor
             $model              = App::make($result->first()->model);
@@ -406,6 +408,7 @@ class BookingController extends Controller {
             $customFields = CustomField::where('group_id_026', 4)->get();
 
             if(isset($customFields) && $customFields->where('name_026', 'master_card_feature')->count() > 0)
+            {
                 $masterCardFeatures = $customFields->where('name_026', 'master_card_feature')
                     ->first()
                     ->getResults()
@@ -413,11 +416,14 @@ class BookingController extends Controller {
                     ->where('lang_id_028', 'es')
                     ->get()
                     ->first();
+            }
             else
+            {
                 $masterCardFeatures         = null;
+            }
 
             // get vouchers
-            $vouchers                       = Voucher::builder()->where('booking_id_226', $booking->id_225)->get();
+            $vouchers                       = Voucher::builder()->whereIn('id_226', json_decode($booking->data_225))->get();
 
             // status confirmed
             if($booking->status_225 == 1)
