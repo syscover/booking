@@ -341,11 +341,11 @@
             $.setEventVoucherRow();
         };
 
-        $.saveBookingDraft = function () {
-            $('#recordForm').attr('action', '{{ route('storeBookingBookingDraft', ['offset' => 0]) }}');
-            $('[name=status], [name=place], [name=nAdults], [name=commissionPercentage]').removeAttr('required');
+        //$.saveBookingDraft = function () {
+            //$('#recordForm').attr('action', '{{ route('storeBookingBookingDraft', ['offset' => 0]) }}');
+            //$('[name=status], [name=place], [name=nAdults], [name=commissionPercentage]').removeAttr('required');
             //$('#recordForm').submit();
-        };
+        //};
 
         $.saveResendEmails = function () {
             // function to resend again emails
@@ -666,7 +666,7 @@
                     <td class="align-center">{{ $voucher->price_226 }}</td>
                     <td class="align-center">
                         <div class="col-md-6 col-md-offset-3">
-                            <input type="number" name="voucherCost-{{ $voucher->id_226 }}" value="{{ $voucher->cost_226 }}" class="form-control voucher-cost" {{ $action != 'show'?:'readonly' }}>
+                            <input type="number" name="voucherCost-{{ $voucher->id_226 }}" value="{{ $voucher->cost_226 }}" min="0" class="form-control voucher-cost" {{ $action != 'show'?:'readonly' }}>
                             <input type="hidden" name="vouchers[]" value="{{ $voucher->id_226 }}" class="form-control">
                             <input type="hidden" name="voucherPaid-{{ $voucher->id_226 }}" value="{{ $voucher->price_226 }}" class="form-control">
                         </div>

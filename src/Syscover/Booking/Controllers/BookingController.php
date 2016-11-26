@@ -20,7 +20,7 @@ class BookingController extends Controller {
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';
-    protected $indexColumns = ['id_225', 'date_225', 'date_text_225', 'check_out_date_225', 'check_out_date_text_225', 'object_name_225', 'customer_name_225'];
+    protected $indexColumns = ['id_225', 'status_text_225', 'date_225', 'date_text_225', 'check_out_date_225', 'check_out_date_text_225', 'object_name_225', 'customer_name_225'];
     protected $nameM        = 'name_221';
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
@@ -124,6 +124,7 @@ class BookingController extends Controller {
             'date_225'                      => date('U'),
             'date_text_225'                 => date(config('pulsar.datePattern')),
             'status_225'                    => $this->request->input('status'),
+            'status_text_225'               => trans(collect(config('booking.status'))->where('id', $this->request->input('status'))->first()->name),
 
             'customer_id_225'               => $this->request->input('customerId'),
             'customer_name_225'             => $this->request->input('customer'),
@@ -210,6 +211,7 @@ class BookingController extends Controller {
 
         Booking::where('id_225', $parameters['id'])->update([
             'status_225'                    => $this->request->input('status'),
+            'status_text_225'               => trans(collect(config('booking.status'))->where('id', $this->request->input('status'))->first()->name),
 
             'customer_id_225'               => $this->request->input('customerId'),
             'customer_name_225'             => $this->request->input('customer'),

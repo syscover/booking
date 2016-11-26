@@ -11,12 +11,12 @@
                     "displayStart": {{ $offset }},
                     "sorting": [[0, 'desc']],
                     "columnDefs": [
-                        { "visible": false, "targets": [1,3]}, // hidden column 1 and prevents search on column 1
-                        { "dataSort": 1, "targets": [2] }, // sort column 2 according hidden column 1 data
-                        { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
-                        { "sortable": false, "targets": [7,8]},
-                        { "class": "checkbox-column", "targets": [7]},
-                        { "class": "align-center", "targets": [8]}
+                        { "visible": false, "targets": [2,4]}, // hidden column 1 and prevents search on column 1
+                        { "dataSort": 2, "targets": [3] }, // sort column 2 according hidden column 1 data
+                        { "dataSort": 4, "targets": [5] }, // sort column 2 according hidden column 1 data
+                        { "sortable": false, "targets": [8,9]},
+                        { "class": "checkbox-column", "targets": [8]},
+                        { "class": "align-center", "targets": [9]}
                     ],
                     "processing": true,
                     "serverSide": true,
@@ -38,6 +38,7 @@
     <!-- booking::voucher.index -->
     <tr>
         <th data-class="expand">ID</th>
+        <th>{{ trans_choice('pulsar::pulsar.status', 1) }}</th>
         <th>{{ trans_choice('pulsar::pulsar.date', 1) }}</th>
         <th>{{ trans_choice('pulsar::pulsar.date', 1) }}</th>
         <th>{{ trans('booking::pulsar.check_in_date') }}</th>

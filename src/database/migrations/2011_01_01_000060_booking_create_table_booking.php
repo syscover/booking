@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class BookingCreateTableBooking extends Migration {
-
+class BookingCreateTableBooking extends Migration
+{
 	/**
 	 * Run the migrations.
 	 *
@@ -21,6 +21,7 @@ class BookingCreateTableBooking extends Migration {
 				$table->string('date_text_225')->nullable();
 				
 				$table->tinyInteger('status_225')->unsigned();          // status: cancel or confirmed
+                $table->string('status_text_225');                      // register status text to do search
 
 				// customer making the reservation
 				$table->integer('customer_id_225')->unsigned();
@@ -66,7 +67,7 @@ class BookingCreateTableBooking extends Migration {
 
 				$table->text('observations_225')->nullable();
 
-                $table->text('data_225')->nullable();
+                $table->json('data_225')->nullable();
 
 				$table->foreign('customer_id_225', 'fk01_011_225_booking')
 					->references('id_301')

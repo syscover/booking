@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class BookingUpdateV6 extends Migration
+class BookingUpdateV7 extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class BookingUpdateV6 extends Migration
      */
     public function up()
     {
-        if(! Schema::hasColumn('011_225_booking', 'data_225'))
+        if(! Schema::hasColumn('011_225_booking', 'status_text_225'))
         {
             Schema::table('011_225_booking', function (Blueprint $table) {
-                $table->json('data_225')->nullable()->after('observations_225');
+                $table->string('status_text_225')->after('status_225');
             });
         }
     }
