@@ -67,7 +67,7 @@ class BookingCreateTableBooking extends Migration
 
 				$table->text('observations_225')->nullable();
 
-                $table->string('data_225')->nullable();
+                $table->text('data_225')->nullable();
 
 				$table->foreign('customer_id_225', 'fk01_011_225_booking')
 					->references('id_301')
