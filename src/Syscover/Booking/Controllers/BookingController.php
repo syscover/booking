@@ -430,9 +430,9 @@ class BookingController extends Controller {
             // status confirmed
             if($booking->status_225 == 1)
             {
-                Mail::to('cpalacin@syscover.com')
-                    ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                // customer
+                Mail::to($booking->email_301)
+                    ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.customer_booking_notification',
                         trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
@@ -443,9 +443,9 @@ class BookingController extends Controller {
                         $masterCardFeatures
                     ));
 
-                Mail::to('cpalacin@syscover.com')
-                    ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                // hotel
+                Mail::to($establishment->email)
+                    ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.hotel_booking_notification',
                         trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
@@ -459,9 +459,9 @@ class BookingController extends Controller {
             // status cancel
             elseif ($booking->status_225 == 3)
             {
-                Mail::to('cpalacin@syscover.com')
-                    ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                // customer
+                Mail::to($booking->email_301)
+                    ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.customer_cancel_booking_notification',
                         trans('booking::pulsar.subject_customer_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
@@ -472,9 +472,9 @@ class BookingController extends Controller {
                         $masterCardFeatures
                     ));
 
-                Mail::to('cpalacin@syscover.com')
-                    ->bcc('info@syscover.com')
-                    ->cc('cristina@ruralka.com')
+                // hotel
+                Mail::to($establishment->email)
+                    ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.hotel_cancel_booking_notification',
                         trans('booking::pulsar.subject_hotel_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
