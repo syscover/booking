@@ -444,7 +444,7 @@ class BookingController extends Controller {
                     ));
 
                 // hotel
-                Mail::to($establishment->email)
+                Mail::to($establishment->booking_email)
                     ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.hotel_booking_notification',
@@ -473,7 +473,7 @@ class BookingController extends Controller {
                     ));
 
                 // hotel
-                Mail::to($establishment->email)
+                Mail::to($establishment->booking_email)
                     ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
                         'booking::emails.hotel_cancel_booking_notification',
