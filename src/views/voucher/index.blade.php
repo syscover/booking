@@ -21,13 +21,13 @@
                     "sorting": [[0, 'desc']],
                     "columnDefs": [
                         @if(isset($modal) && $modal)
-                            { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
+                            { "visible": false, "targets": [6]}, // hidden column 1 and prevents search on column 1
                             { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
                             { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
                             { "sortable": false, "targets": [12]},
                             { "class": "align-center", "targets": [9,10,12]}
                         @else
-                            { "visible": false, "targets": [6,7]}, // hidden column 1 and prevents search on column 1
+                            { "visible": false, "targets": [6]}, // hidden column 1 and prevents search on column 1
                             { "visible": false, "searchable": false, "targets": [3]}, // hidden column 1 and prevents search on column 1
                             { "dataSort": 3, "targets": [4] }, // sort column 2 according hidden column 1 data
                             { "sortable": false, "targets": [12,13]},
@@ -301,6 +301,24 @@
                                 ])
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @include('pulsar::includes.html.form_text_group', [
+                                    'labelSize' => 1,
+                                    'fieldSize' => 11,
+                                    'label' => trans_choice('pulsar::pulsar.customer', 1),
+                                    'name' => 'customer'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'customer_operator',
+                                    'value' =>  'LIKE'
+                                ])
+                                @include('pulsar::includes.html.form_hidden', [
+                                    'name' =>   'customer_column',
+                                    'value' =>  'customer_name_226'
+                                ])
+                            </div>
+                        </div>
                         <div class="form-actions">
                             <button id="advancedSearch" type="button" class="btn margin-r10">{{ trans('pulsar::pulsar.search') }}</button>
                             <div class="btn-group">
@@ -330,7 +348,7 @@
         <th>{{ trans_choice('booking::pulsar.campaign', 1) }}</th>
         <th>{{ trans('pulsar::pulsar.expire_date') }}</th>
         <th>{{ trans('pulsar::pulsar.expire_date') }}</th>
-        <th data-hide="phone">{{ trans_choice('pulsar::pulsar.name', 1) }}</th>
+        <th data-hide="phone">{{ trans_choice('pulsar::pulsar.product', 1) }}</th>
         <th>{{ trans_choice('pulsar::pulsar.bearer', 1) }}</th>
         <th>{{ trans_choice('pulsar::pulsar.name', 1) }}</th>
         <th data-hide="phone,tablet">{{ trans_choice('pulsar::pulsar.price', 1) }}</th>
