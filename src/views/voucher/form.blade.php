@@ -405,53 +405,71 @@
             'label' => trans_choice('booking::pulsar.booking', 1),
             'icon' => 'fa fa-hourglass-end'
         ])
-        @include('pulsar::includes.html.form_datetimepicker_group', [
-            'fieldSize' => 4,
-            'label' => trans('booking::pulsar.used_date'),
-            'name' => 'usedDate',
-            'data' => [
-                'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
-                'locale' => config('app.locale'),
-                'default-date' => old('usedDate', isset($object->used_date_226)? date('Y-m-d', $object->used_date_226) : null)
-            ]
-        ])
-        @include('pulsar::includes.html.form_select_group', [
-            'fieldSize' => 4,
-            'label' => trans_choice('booking::pulsar.place', 1),
-            'name' => 'place',
-            'value' => (int)old('place', isset($object->place_id_226)? $object->place_id_226 : null),
-            'objects' => $places,
-            'idSelect' => 'id_220',
-            'nameSelect' => 'name_220',
-            'dataOption' => [
-                'model' => 'model_id_220'
-            ]
-        ])
-        @include('pulsar::includes.html.form_select_group', [
-            'fieldSize' => 4,
-            'label' => isset($objectName)? $objectName : null,
-            'containerId' => 'objectWrapper',
-            'labelId' => 'objectLabel',
-            'name' => 'object',
-            'value' => (int) old('object', isset($object->object_id_226)? $object->object_id_226 : null),
-            'objects' => isset($objects)? $objects : null,
-            'idSelect' => 'id',
-            'nameSelect' => 'name',
-            'class' => 'select2',
-            'data' => [
-                'language' => config('app.locale'),
-                'width' => '100%',
-                'error-placement' => 'select2-product-outer-container'
-            ]
-        ])
-        @include('pulsar::includes.html.form_text_group', [
-            'fieldSize' => 2,
-            'type' => 'number',
-            'label' => trans_choice('pulsar::pulsar.cost', 1),
-            'name' => 'cost',
-            'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null)
-        ])
-
+        <div class="row">
+            <div class="col-md-6">
+                @include('pulsar::includes.html.form_datetimepicker_group', [
+                    'fieldSize' => 8,
+                    'labelSize' => 4,
+                    'label' => trans('booking::pulsar.used_date'),
+                    'name' => 'usedDate',
+                    'data' => [
+                        'format' => Miscellaneous::convertFormatDate(config('pulsar.datePattern')),
+                        'locale' => config('app.locale'),
+                        'default-date' => old('usedDate', isset($object->used_date_226)? date('Y-m-d', $object->used_date_226) : null)
+                    ]
+                ])
+                @include('pulsar::includes.html.form_select_group', [
+                    'fieldSize' => 8,
+                    'labelSize' => 4,
+                    'label' => trans_choice('booking::pulsar.place', 1),
+                    'name' => 'place',
+                    'value' => (int)old('place', isset($object->place_id_226)? $object->place_id_226 : null),
+                    'objects' => $places,
+                    'idSelect' => 'id_220',
+                    'nameSelect' => 'name_220',
+                    'dataOption' => [
+                        'model' => 'model_id_220'
+                    ]
+                ])
+                @include('pulsar::includes.html.form_select_group', [
+                    'fieldSize' => 8,
+                    'labelSize' => 4,
+                    'label' => isset($objectName)? $objectName : null,
+                    'containerId' => 'objectWrapper',
+                    'labelId' => 'objectLabel',
+                    'name' => 'object',
+                    'value' => (int) old('object', isset($object->object_id_226)? $object->object_id_226 : null),
+                    'objects' => isset($objects)? $objects : null,
+                    'idSelect' => 'id',
+                    'nameSelect' => 'name',
+                    'class' => 'select2',
+                    'data' => [
+                        'language' => config('app.locale'),
+                        'width' => '100%',
+                        'error-placement' => 'select2-product-outer-container'
+                    ]
+                ])
+                @include('pulsar::includes.html.form_text_group', [
+                    'fieldSize' => 8,
+                    'labelSize' => 4,
+                    'type' => 'number',
+                    'label' => trans_choice('pulsar::pulsar.cost', 1),
+                    'name' => 'cost',
+                    'value' => old('cost', isset($object->cost_226)? $object->cost_226 : null)
+                ])
+            </div>
+            @if(isset($object->booking_id_226))
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-4">
+                            <a class="btn btn-info margin-b10" href="{{ route('editBookingBooking', ['id' => $object->booking_id_226, 'offset' => 0]) }}">
+                                <i class="fa fa-hourglass-end"></i> Ver reserva
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
 
         @include('pulsar::includes.html.form_section_header', [
             'label' => trans('pulsar::pulsar.paid'),
