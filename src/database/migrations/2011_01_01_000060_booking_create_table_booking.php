@@ -54,11 +54,12 @@ class BookingCreateTableBooking extends Migration
 				$table->tinyInteger('breakfast_225')->unsigned()->nullable();
 
 				// amounts
-				$table->decimal('vouchers_paid_amount_225', 10, 2);     // sum of total amount paid in vouchers
-				$table->decimal('vouchers_cost_amount_225', 10, 2);     // sum of total amount cost in vouchers
-				$table->decimal('direct_payment_amount_225', 10, 2);    // amount must paid customer in site
-				$table->decimal('total_amount_225', 10, 2);				// total amount, vouchers amount plus customer payment
-                $table->decimal('tax_percentage_225', 10, 2);			// tax that contain total amount
+				$table->decimal('vouchers_paid_amount_225', 10, 2);             // sum of total amount paid in vouchers
+				$table->decimal('vouchers_cost_amount_225', 10, 2);             // sum of total amount cost in vouchers
+                $table->decimal('partner_direct_payment_amount_225', 10, 2);    // amount must paid customer in business or partner of place
+				$table->decimal('place_direct_payment_amount_225', 10, 2);      // amount must paid customer in place
+				$table->decimal('total_amount_225', 10, 2);				        // total amount, vouchers amount plus customer payment
+                $table->decimal('tax_percentage_225', 10, 2);			        // tax that contain total amount
 
 				// commissions
 				$table->tinyInteger('commission_percentage_225')->unsigned();

@@ -91,43 +91,43 @@ class BookingDraftController extends Controller {
         $vouchersProperties = $this->getVouchersProperties();
 
         $booking = Booking::create([
-            'date_225'                      => date('U'),
-            'date_text_225'                 => date(config('pulsar.datePattern')),
-            'status_225'                    => $this->request->input('status'),
+            'date_225'                          => date('U'),
+            'date_text_225'                     => date(config('pulsar.datePattern')),
+            'status_225'                        => $this->request->input('status'),
 
-            'customer_id_225'               => $this->request->input('customerId'),
-            'customer_name_225'             => $this->request->input('customer'),
-            'customer_observations_225'     => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
+            'customer_id_225'                   => $this->request->input('customerId'),
+            'customer_name_225'                 => $this->request->input('customer'),
+            'customer_observations_225'         => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
 
-            'place_id_225'                  => $this->request->input('place'),
-            'object_id_225'                 => $this->request->input('object'),
-            'object_description_225'        => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
-            'place_observations_225'        => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
+            'place_id_225'                      => $this->request->input('place'),
+            'object_id_225'                     => $this->request->input('object'),
+            'object_description_225'            => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
+            'place_observations_225'            => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
 
-            'check_in_date_225'             => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
-            'check_in_date_text_225'        => $this->request->input('checkInDate'),
-            'check_out_date_225'            => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
-            'check_out_date_text_225'       => $this->request->input('checkOutDate'),
+            'check_in_date_225'                 => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
+            'check_in_date_text_225'            => $this->request->input('checkInDate'),
+            'check_out_date_225'                => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
+            'check_out_date_text_225'           => $this->request->input('checkOutDate'),
 
-            'nights_225'                    => $this->request->input('nights'),
+            'nights_225'                        => $this->request->input('nights'),
 
-            'n_adults_225'                  => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
-            'n_children_225'                => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
-            'n_rooms_225'                   => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
-            'temporary_beds_225'            => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
-            'breakfast_225'                 => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
+            'n_adults_225'                      => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
+            'n_children_225'                    => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
+            'n_rooms_225'                       => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
+            'temporary_beds_225'                => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
+            'breakfast_225'                     => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
             
-            'vouchers_paid_amount_225'      => $vouchersProperties['vouchersPaidAmount'],
-            'vouchers_cost_amount_225'      => $vouchersProperties['vouchersCostAmount'],
-            'direct_payment_amount_225'     => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
-            'total_amount_225'              => $this->request->input('totalAmount'),
-            'tax_percentage_225'            => $this->request->input('taxPercentage'),
+            'vouchers_paid_amount_225'          => $vouchersProperties['vouchersPaidAmount'],
+            'vouchers_cost_amount_225'          => $vouchersProperties['vouchersCostAmount'],
+            'place_direct_payment_amount_225'   => $this->request->has('placeDirectPaymentAmount')? $this->request->input('placeDirectPaymentAmount') : 0,
+            'total_amount_225'                  => $this->request->input('totalAmount'),
+            'tax_percentage_225'                => $this->request->input('taxPercentage'),
             
-            'commission_percentage_225'     => $this->request->input('commissionPercentage'),
-            'commission_calculation_225'    => $this->request->input('commissionCalculation'),
-            'commission_amount_225'         => $this->request->input('commissionAmount'),
+            'commission_percentage_225'         => $this->request->input('commissionPercentage'),
+            'commission_calculation_225'        => $this->request->input('commissionCalculation'),
+            'commission_amount_225'             => $this->request->input('commissionAmount'),
 
-            'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
+            'observations_225'                  => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
 
         $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
@@ -170,40 +170,40 @@ class BookingDraftController extends Controller {
         $vouchersProperties = $this->getVouchersProperties();
 
         Booking::where('id_225', $parameters['id'])->update([
-            'status_225'                    => $this->request->input('status'),
+            'status_225'                        => $this->request->input('status'),
 
-            'customer_id_225'               => $this->request->input('customerId'),
-            'customer_name_225'             => $this->request->input('customer'),
-            'customer_observations_225'     => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
+            'customer_id_225'                   => $this->request->input('customerId'),
+            'customer_name_225'                 => $this->request->input('customer'),
+            'customer_observations_225'         => $this->request->has('customerObservations')? $this->request->input('customerObservations') : null,
 
-            'place_id_225'                  => $this->request->input('place'),
-            'object_id_225'                 => $this->request->input('object'),
-            'object_description_225'        => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
-            'place_observations_225'        => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
+            'place_id_225'                      => $this->request->input('place'),
+            'object_id_225'                     => $this->request->input('object'),
+            'object_description_225'            => $this->request->has('objectDescription')? $this->request->input('objectDescription') : null,
+            'place_observations_225'            => $this->request->has('placeObservations')? $this->request->input('placeObservations') : null,
 
-            'check_in_date_225'             => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
-            'check_in_date_text_225'        => $this->request->input('checkInDate'),
-            'check_out_date_225'            => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
-            'check_out_date_text_225'       => $this->request->input('checkOutDate'),
+            'check_in_date_225'                 => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkInDate'))->getTimestamp(),
+            'check_in_date_text_225'            => $this->request->input('checkInDate'),
+            'check_out_date_225'                => \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('checkOutDate'))->getTimestamp(),
+            'check_out_date_text_225'           => $this->request->input('checkOutDate'),
 
-            'nights_225'                    => $this->request->input('nights'),
+            'nights_225'                        => $this->request->input('nights'),
 
-            'n_adults_225'                  => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
-            'n_children_225'                => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
-            'n_rooms_225'                   => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
-            'temporary_beds_225'            => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
-            'breakfast_225'                 => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
+            'n_adults_225'                      => $this->request->has('nAdults')? $this->request->input('nAdults') : null,
+            'n_children_225'                    => $this->request->has('nChildren')? $this->request->input('nChildren') : null,
+            'n_rooms_225'                       => $this->request->has('nRooms')? $this->request->input('nRooms') : null,
+            'temporary_beds_225'                => $this->request->has('temporaryBeds')? $this->request->input('temporaryBeds') : null,
+            'breakfast_225'                     => $this->request->has('breakfast')? $this->request->input('breakfast') : null,
 
-            'vouchers_paid_amount_225'      => $vouchersProperties['vouchersPaidAmount'],
-            'vouchers_cost_amount_225'      => $vouchersProperties['vouchersCostAmount'],
-            'direct_payment_amount_225'     => $this->request->has('directPaymenAmount')? $this->request->input('directPaymenAmount') : 0,
-            'total_amount_225'              => $this->request->input('totalAmount'),
+            'vouchers_paid_amount_225'          => $vouchersProperties['vouchersPaidAmount'],
+            'vouchers_cost_amount_225'          => $vouchersProperties['vouchersCostAmount'],
+            'place_direct_payment_amount_225'   => $this->request->has('placeDirectPaymentAmount')? $this->request->input('placeDirectPaymentAmount') : 0,
+            'total_amount_225'                  => $this->request->input('totalAmount'),
 
-            'commission_percentage_225'     => $this->request->input('commissionPercentage'),
-            'commission_calculation_225'    => $this->request->input('commissionCalculation'),
-            'commission_amount_225'         => $this->request->input('commissionAmount'),
+            'commission_percentage_225'         => $this->request->input('commissionPercentage'),
+            'commission_calculation_225'        => $this->request->input('commissionCalculation'),
+            'commission_amount_225'             => $this->request->input('commissionAmount'),
 
-            'observations_225'              => $this->request->has('observations')? $this->request->input('observations') : null,
+            'observations_225'                  => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
 
         $booking = Booking::builder()->where('id_225', $parameters['id'])->first();

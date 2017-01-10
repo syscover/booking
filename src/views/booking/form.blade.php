@@ -169,7 +169,7 @@
             // END DATES
 
 
-            $('[name=directPaymenAmount]').on('change', function() {
+            $('[name=placeDirectPaymentAmount]').on('change', function() {
                 $.sumTotalAmount();
             });
 
@@ -282,7 +282,7 @@
         };
 
         $.sumTotalAmount = function() {
-            var totalAmount = parseFloat($('[name=directPaymenAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
+            var totalAmount = parseFloat($('[name=placeDirectPaymentAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
             $('[name=totalAmount]').val(totalAmount);
 
             // set value to calculate commission
@@ -694,9 +694,18 @@
                 'type' => 'number',
                 'labelSize' => 4,
                 'fieldSize' => 4,
-                'label' => trans('booking::pulsar.direct_payment_amount'),
-                'name' => 'directPaymenAmount',
-                'value' => old('nights', isset($object->direct_payment_amount_225)? $object->direct_payment_amount_225 : 0),
+                'label' => trans('booking::pulsar.partner_direct_payment_amount'),
+                'name' => 'partnerDirectPaymentAmount',
+                'value' => old('nights', isset($object->partner_direct_payment_amount_225)? $object->partner_direct_payment_amount_225 : 0),
+                'readOnly' => $action == 'show'
+            ])
+            @include('pulsar::includes.html.form_text_group', [
+                'type' => 'number',
+                'labelSize' => 4,
+                'fieldSize' => 4,
+                'label' => trans('booking::pulsar.place_direct_payment_amount'),
+                'name' => 'placeDirectPaymentAmount',
+                'value' => old('nights', isset($object->place_direct_payment_amount_225)? $object->place_direct_payment_amount_225 : 0),
                 'readOnly' => $action == 'show'
             ])
             @include('pulsar::includes.html.form_text_group', [
