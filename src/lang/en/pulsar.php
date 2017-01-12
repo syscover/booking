@@ -16,6 +16,7 @@ return [
     'hotel_observations'                    => 'Hotel observations',
     'mail_template'                         => 'Mail template',
     'package_name'                          => 'Booking',
+    'partner_direct_payment_amount'         => 'Partner direct payment',
     'place'                                 => 'Place|Places',
     'place_direct_payment_amount'           => 'Place direct payment',
     'product_prefix'                        => 'Product prefix|Products prefix',

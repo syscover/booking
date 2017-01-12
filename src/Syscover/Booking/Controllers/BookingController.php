@@ -152,6 +152,7 @@ class BookingController extends Controller
             
             'vouchers_paid_amount_225'          => $vouchersProperties['vouchersPaidAmount'],
             'vouchers_cost_amount_225'          => $vouchersProperties['vouchersCostAmount'],
+            'partner_direct_payment_amount_225' => $this->request->has('partnerDirectPaymentAmount')? $this->request->input('partnerDirectPaymentAmount') : 0,
             'place_direct_payment_amount_225'   => $this->request->has('placeDirectPaymentAmount')? $this->request->input('placeDirectPaymentAmount') : 0,
             'total_amount_225'                  => $this->request->input('totalAmount'),
             'tax_percentage_225'                => $this->request->input('taxPercentage'),
@@ -239,6 +240,7 @@ class BookingController extends Controller
 
             'vouchers_paid_amount_225'          => $vouchersProperties['vouchersPaidAmount'],
             'vouchers_cost_amount_225'          => $vouchersProperties['vouchersCostAmount'],
+            'partner_direct_payment_amount_225' => $this->request->has('partnerDirectPaymentAmount')? $this->request->input('partnerDirectPaymentAmount') : 0,
             'place_direct_payment_amount_225'   => $this->request->has('placeDirectPaymentAmount')? $this->request->input('placeDirectPaymentAmount') : 0,
             'total_amount_225'                  => $this->request->input('totalAmount'),
             'tax_percentage_225'                => $this->request->input('taxPercentage'),

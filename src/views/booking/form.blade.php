@@ -169,7 +169,7 @@
             // END DATES
 
 
-            $('[name=placeDirectPaymentAmount]').on('change', function() {
+            $('[name=partnerDirectPaymentAmount], [name=placeDirectPaymentAmount]').on('change', function() {
                 $.sumTotalAmount();
             });
 
@@ -282,7 +282,7 @@
         };
 
         $.sumTotalAmount = function() {
-            var totalAmount = parseFloat($('[name=placeDirectPaymentAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
+            var totalAmount = parseFloat($('[name=partnerDirectPaymentAmount]').val()) + parseFloat($('[name=placeDirectPaymentAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
             $('[name=totalAmount]').val(totalAmount);
 
             // set value to calculate commission
