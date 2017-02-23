@@ -10,7 +10,8 @@ class BookingCreateTableVoucher extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		if(! Schema::hasTable('011_226_voucher')) {
+		if(! Schema::hasTable('011_226_voucher'))
+		{
 			Schema::create('011_226_voucher', function (Blueprint $table) {
 				$table->engine = 'InnoDB';
 
@@ -47,6 +48,8 @@ class BookingCreateTableVoucher extends Migration {
 				$table->string('expire_date_text_226')->nullable();
 
 				$table->boolean('active_226');
+
+                $table->text('observations_226')->nullable(); // observations from vouchers
 
 				// campos ha rellenar durante la reserva
 				$table->boolean('has_used_226')->default(false); // field to know if is set used_date_226 and used_date_text_226

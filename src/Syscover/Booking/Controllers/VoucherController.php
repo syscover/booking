@@ -90,6 +90,7 @@ class VoucherController extends Controller
             'expire_date_226'           => $this->request->has('expireDate')? \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('expireDate'))->getTimestamp() : null,
             'expire_date_text_226'      => $this->request->has('expireDate')?  $this->request->input('expireDate') : null,
             'active_226'                => $this->request->has('active'),
+            'observations_226'          => $this->request->has('observations')? $this->request->input('observations') : null,
         ]);
 
         if($this->request->has('bulkCreate') && (int)$this->request->input('bulkCreate') - 1 > 0)
@@ -170,6 +171,7 @@ class VoucherController extends Controller
             'expire_date_226'               => $this->request->has('expireDate')? \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('expireDate'))->getTimestamp() : null,
             'expire_date_text_226'          => $this->request->has('expireDate')?  $this->request->input('expireDate') : null,
             'active_226'                    => $this->request->has('active'),
+            'observations_226'              => $this->request->has('observations')? $this->request->input('observations') : null,
             'has_used_226'                  => $this->request->has('usedDate'),
             'used_date_226'                 => $this->request->has('usedDate')? \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('usedDate'))->getTimestamp() : null,
             'used_date_text_226'            => $this->request->has('usedDate')?  $this->request->input('usedDate') : null,
