@@ -399,11 +399,6 @@
        'value' => 1,
        'checked' => old('active', isset($object->active_226)? $object->active_226 : true)
     ])
-    @include('pulsar::includes.html.form_textarea_group', [
-        'label' => trans('pulsar::pulsar.observations'),
-        'name' => 'observations',
-        'value' => old('observations', isset($object->observations_226)? $object->observations_226 : null)
-    ])
 
     @if($action == 'update')
         @include('pulsar::includes.html.form_section_header', [
@@ -491,6 +486,12 @@
             ]
         ])
     @endif
+    
+    @include('pulsar::includes.html.form_textarea_group', [
+        'label' => trans('pulsar::pulsar.observations'),
+        'name' => 'observations',
+        'value' => old('observations', isset($object->observations_226)? $object->observations_226 : null)
+    ])
 
     @if(isset($bulk) && $bulk == 1)
         @include('pulsar::includes.html.form_section_header', [
