@@ -486,7 +486,7 @@
             ]
         ])
     @endif
-    
+
     @include('pulsar::includes.html.form_textarea_group', [
         'label' => trans('pulsar::pulsar.observations'),
         'name' => 'observations',
