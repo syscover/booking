@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'activity'                              => 'Activity|Activities',
     'add_voucher'                           => 'Add Voucher',
     'booking'                               => 'Booking|Bookings',
     'booking_draft'                         => 'Booking draft|Booking drafts',

@@ -620,7 +620,7 @@
     <div id="wineryData">
         @include('pulsar::includes.html.form_section_header', ['label' => trans_choice('wineries::pulsar.winery', 1), 'icon' => 'fa fa-glass'])
         @include('pulsar::includes.html.form_text_group', [
-            'label' => trans_choice('winery::pulsar.activity', 1),
+            'label' => trans_choice('booking::pulsar.activity', 1),
             'name' => 'wineryObjectDescription',
             'value' => old('objectDescription', isset($object->object_description_225)? $object->object_description_225 : null),
             'readOnly' => $action == 'show'

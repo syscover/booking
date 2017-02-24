@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'activity'                              => 'Actividad|Actividades',
     'add_voucher'                           => 'Añadir Voucher',
     'booking'                               => 'Reserva|Reservas',
     'booking_draft'                         => 'Borrador de Reserva|Borradores de Reserva',
