@@ -24,17 +24,20 @@
                 event.preventDefault();
 
                 // get descriptions fron input hidden
-                if($('[name=place]').val() === '1') {
+                if($('[name=place]').val() === '1')
+                {
                     $('[name=objectDescription]').val($('[name=hotelObjectDescription]').val());
                     $('[name=placeObservations]').val($('[name=hotelPlaceObservations]').val());
-                } 
-                else if($('[name=place]').val() === '1') {
-                    $('[name=objectDescription]').val($('[name=spaObjectDescription]').val());
-                    $('[name=placeObservations]').val($('[name=spaPlaceObservations]').val());
                 }
-                else if($('[name=place]').val() === '1') {
+                else if($('[name=place]').val() === '2')
+                {
                     $('[name=objectDescription]').val($('[name=wineryObjectDescription]').val());
                     $('[name=placeObservations]').val($('[name=wineryPlaceObservations]').val());
+                }
+                else if($('[name=place]').val() === '3')
+                {
+                    $('[name=objectDescription]').val($('[name=spaObjectDescription]').val());
+                    $('[name=placeObservations]').val($('[name=spaPlaceObservations]').val());
                 }
 
                 if($('#recordForm').valid())
@@ -56,6 +59,24 @@
                     $('#statusVeil').fadeIn();
                 @endif
 
+                // delete surplus inputs, to avoid insert specific data from each object
+                if($('[name=place]').val() === '1')
+                {
+                    $('#wineryData').remove();
+                    $('#spaData').remove();
+                }
+                else if($('[name=place]').val() === '2')
+                {
+                    $('#hotelData').remove();
+                    $('#spaData').remove();
+                }
+                else if($('[name=place]').val() === '3')
+                {
+                    $('#hotelData').remove();
+                    $('#wineryData').remove();
+                }
+
+                // submit form, desactive events attach to submit and launch form
                 $('#recordForm').off('submit').submit();
             });
 
