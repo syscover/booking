@@ -47,6 +47,11 @@ class Booking extends Model
         return $query->join('009_301_customer', '011_225_booking.customer_id_225', '=', '009_301_customer.id_301');
     }
 
+    public function getPlace()
+    {
+        return $this->hasOne(Place::class, 'id_220', 'place_id_225');
+    }
+
     public static function getCustomReturnIndexRecords($query, $parameters)
     {
         // In laravel 5.3 in MySql drive has parameter strict = true,

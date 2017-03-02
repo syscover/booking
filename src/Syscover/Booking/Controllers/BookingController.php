@@ -417,7 +417,7 @@ class BookingController extends Controller
                 $masterCardFeatures = $customFields->where('name_026', 'master_card_feature')
                     ->first()
                     ->getResults()
-                    ->where('object_id_028', $establishment->id_170)
+                    ->where('object_id_028', $establishment->id)
                     ->where('lang_id_028', 'es')
                     ->get()
                     ->first();
@@ -430,6 +430,9 @@ class BookingController extends Controller
             // get vouchers
             $vouchers                       = Voucher::builder()->whereIn('id_226', json_decode($booking->data_225))->get();
 
+            // get place
+            $place = $booking->getPlace;
+
             // status confirmed
             if($booking->status_225 == 1)
             {
@@ -441,19 +444,21 @@ class BookingController extends Controller
                         trans('booking::pulsar.subject_customer_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
                         $booking,
                         $establishment,
+                        $place,
                         $vouchers,
                         $attachment,
                         $masterCardFeatures
                     ));
 
-                // hotel
+                // establishment
                 Mail::to($establishment->booking_email)
                     ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
-                        'booking::emails.hotel_booking_notification',
+                        'booking::emails.establishment_booking_notification',
                         trans('booking::pulsar.subject_hotel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
                         $booking,
                         $establishment,
+                        $place,
                         $vouchers,
                         $attachment,
                         $masterCardFeatures
@@ -470,19 +475,21 @@ class BookingController extends Controller
                         trans('booking::pulsar.subject_customer_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
                         $booking,
                         $establishment,
+                        $place,
                         $vouchers,
                         $attachment,
                         $masterCardFeatures
                     ));
 
-                // hotel
+                // establishment
                 Mail::to($establishment->booking_email)
                     ->bcc('reservas@ruralka.com')
                     ->send(new BookingEmail(
-                        'booking::emails.hotel_cancel_booking_notification',
+                        'booking::emails.establishment_cancel_booking_notification',
                         trans('booking::pulsar.subject_hotel_cancel_booking_email', ['bookingId' => $booking->id_225 . '/' . date('Y')]),
                         $booking,
                         $establishment,
+                        $place,
                         $vouchers,
                         $attachment,
                         $masterCardFeatures
