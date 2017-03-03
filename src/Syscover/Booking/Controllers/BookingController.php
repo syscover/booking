@@ -382,6 +382,9 @@ class BookingController extends Controller
         // objects from place
         if(isset($booking->place_id_225))
         {
+            // get place
+            $place = $booking->getPlace;
+
             $result = collect(config('booking.models'))->where('id', $booking->place_id_225);
 
             if (count($result) === 0)
@@ -394,18 +397,22 @@ class BookingController extends Controller
             }
 
             // model constructor
-            $model              = App::make($result->first()->model);
+            $model = App::make($result->first()->model);
 
             // use sofa to get lang from lang table of object query
-            $establishment      = $model->builder()->where('lang_id', base_lang()->id_001)->where('id', $booking->object_id_225)->first();
+            $establishment = $model->builder()->where('lang_id', base_lang()->id_001)->where('id', $booking->object_id_225)->first();
 
-            $attachment = Attachment::builder()
-                ->where('lang_id_016', base_lang()->id_001)
-                ->where('resource_id_016', 'hotels-hotel')
-                ->where('object_id_016', $establishment->id)
-                ->where('family_id_016', 1) // config('ruralka.idAttachmentsFamily.hotelSheet')
-                ->orderBy('sorting', 'asc')
-                ->first();
+            $attachment = null;
+            if($place->id_220 == 1) // define attach only with hotels
+            {
+                $attachment = Attachment::builder()
+                    ->where('lang_id_016', base_lang()->id_001)
+                    ->where('resource_id_016', 'hotels-hotel')
+                    ->where('object_id_016', $establishment->id)
+                    ->where('family_id_016', 1) // config('ruralka.idAttachmentsFamily.hotelSheet')
+                    ->orderBy('sorting', 'asc')
+                    ->first();
+            }
 
             //****************************
             // get values to Master Card
@@ -429,9 +436,6 @@ class BookingController extends Controller
 
             // get vouchers
             $vouchers                       = Voucher::builder()->whereIn('id_226', json_decode($booking->data_225))->get();
-
-            // get place
-            $place = $booking->getPlace;
 
             // status confirmed
             if($booking->status_225 == 1)
