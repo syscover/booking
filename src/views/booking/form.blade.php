@@ -153,8 +153,19 @@
                 .closest('.datetimepicker')
                 .data("DateTimePicker")
                 .options({
-                    defaultDate: now,
-                    minDate: now
+                    @if($action === 'create')
+                        defaultDate: now,
+                        minDate: now
+                    @endif
+                });
+
+            $('[name=checkOutDate]')
+                .closest('.datetimepicker')
+                .data("DateTimePicker")
+                .options({
+                    @if($action === 'create')
+                        minDate: moment().add(1, 'days')
+                    @endif
                 });
 
             $('[name=checkInDate]')
@@ -172,13 +183,6 @@
 
                     var days = $('[name=checkOutDate]').closest('.datetimepicker').data("DateTimePicker").date().diff(ev.date, 'days') + 1;
                     $('[name=nights]').val(days);
-                });
-
-            $('[name=checkOutDate]')
-                .closest('.datetimepicker')
-                .data("DateTimePicker")
-                .options({
-                    minDate: moment().add(1, 'days')
                 });
 
             $('[name=checkOutDate]')
