@@ -198,17 +198,30 @@
                 $.sumTotalAmount();
             });
 
-            $('[name=commissionPercentage], [name=commissionCalculation]').on('change', function(){
-                var percentage = parseFloat($('[name=commissionPercentage]').val());
-                var commissionCalculation = parseFloat($('[name=commissionCalculation]').val());
-                
-                var commissionAmount = ((commissionCalculation * percentage) / 100).toFixed(2);
-
-                $('[name=commissionAmount]').val(commissionAmount);
+            $('[name=taxPercentage]').on('change', function(){ // declare first this function before calculate commissionAmount to do correct calculates
+                $.setCommissionCalculation();
             });
 
-            $('[name=taxPercentage]').on('change', function(){
-                $.setCommissionCalculation();
+            $('[name=commissionPercentage], [name=commissionCalculation], [name=taxPercentage]').on('change', function(){
+
+                if($('[name=commissionPercentage]').val() !== '' && $('[name=commissionCalculation]').val() !== '') {
+                    var percentage = parseFloat($('[name=commissionPercentage]').val());
+                    var commissionCalculation = parseFloat($('[name=commissionCalculation]').val());
+
+                    console.log(percentage);
+                    console.log(commissionCalculation);
+
+                    var commissionAmount = ((commissionCalculation * percentage) / 100).toFixed(2);
+
+                    console.log(commissionAmount);
+
+                    $('[name=commissionAmount]').val(commissionAmount);
+                }
+                else
+                {
+                    $('[name=commissionAmount]').val(0);
+                }
+
             });
 
             $('#hotelData, #spaData, #wineryData').hide();
