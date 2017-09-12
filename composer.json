@@ -10,9 +10,9 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "syscover/pulsar": "~2.0",
-        "syscover/factura-directa": "~2.0",
-        "syscover/hotels": "~2.0"
+        "syscover/pulsar": "dev-master",
+        "syscover/factura-directa": "dev-master",
+        "syscover/hotels": "dev-master"
     },
     "autoload": {
         "psr-4": {
