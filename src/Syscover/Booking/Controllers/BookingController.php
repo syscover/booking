@@ -194,7 +194,7 @@ class BookingController extends Controller
             $model                      = App::make($result->first()->model);
 
             // use sofa to get lang from lang table of object query
-            $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+            $parameters['objects']      = $model->builder()->where('lang_id', base_lang2()->id_001)->get();
             $parameters['objectName']   = trans_choice($result->first()->name, 1);
             $parameters['objectKey']    = $model->getKeyName();
         }
@@ -303,7 +303,7 @@ class BookingController extends Controller
             $model                      = App::make($result->first()->model);
 
             // use sofa to get lang from lang table of object query
-            $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+            $parameters['objects']      = $model->builder()->where('lang_id', base_lang2()->id_001)->get();
             $parameters['objectName']   = trans_choice($result->first()->name, 1);
             $parameters['objectKey']    = $model->getKeyName();
         }
@@ -400,13 +400,13 @@ class BookingController extends Controller
             $model = App::make($result->first()->model);
 
             // use sofa to get lang from lang table of object query
-            $establishment = $model->builder()->where('lang_id', base_lang()->id_001)->where('id', $booking->object_id_225)->first();
+            $establishment = $model->builder()->where('lang_id', base_lang2()->id_001)->where('id', $booking->object_id_225)->first();
 
             $attachment = null;
             if($place->id_220 == 1) // define attach only with hotels
             {
                 $attachment = Attachment::builder()
-                    ->where('lang_id_016', base_lang()->id_001)
+                    ->where('lang_id_016', base_lang2()->id_001)
                     ->where('resource_id_016', 'hotels-hotel')
                     ->where('object_id_016', $establishment->id)
                     ->where('family_id_016', 1) // config('ruralka.idAttachmentsFamily.hotelSheet')

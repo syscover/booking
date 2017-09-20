@@ -54,7 +54,7 @@ class VoucherController extends Controller
     public function createCustomRecord($parameters)
     {
         $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
-        $parameters['products']     = Product::builder()->where('lang_id_112', base_lang()->id_001)->get();
+        $parameters['products']     = Product::builder()->where('lang_id_112', base_lang2()->id_001)->get();
         $parameters['places']       = Place::builder()->get();
         $productPrefixes            = ProductPrefix::all();
 
@@ -108,7 +108,7 @@ class VoucherController extends Controller
     public function editCustomRecord($parameters)
     {
         $parameters['campaigns']    = Campaign::builder()->where('active_221', true)->get();
-        $parameters['products']     = Product::builder()->where('lang_id_112', base_lang()->id_001)->get();
+        $parameters['products']     = Product::builder()->where('lang_id_112', base_lang2()->id_001)->get();
         $parameters['places']       = Place::builder()->get();
         $productPrefixes            = ProductPrefix::all();
 
@@ -145,7 +145,7 @@ class VoucherController extends Controller
             $model                      = App::make($result->first()->model);
             
             // use sofa to get lang from lang table of object query
-            $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+            $parameters['objects']      = $model->builder()->where('lang_id', base_lang2()->id_001)->get();
             $parameters['objectName']   = trans_choice($result->first()->name, 1);
         }
 
@@ -204,7 +204,7 @@ class VoucherController extends Controller
         $suffix         = $model->getSuffix();
 
         // use sofa to get lang from lang table of object query
-        $objects        = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+        $objects        = $model->builder()->where('lang_id', base_lang2()->id_001)->get();
 
         return response()->json([
             'status'        => 'success',

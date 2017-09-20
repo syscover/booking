@@ -49,7 +49,7 @@
                 }
                 else
                 {
-                    var url = '{{ route('apiShowMarketProduct', ['lang' => base_lang()->id_001, 'id' => '%id%', 'api' => 1]) }}';
+                    var url = '{{ route('apiShowMarketProduct', ['lang' => base_lang2()->id_001, 'id' => '%id%', 'api' => 1]) }}';
                     $.ajax({
                         type: "POST",
                         url: url.replace('%id%', $(this).val()),

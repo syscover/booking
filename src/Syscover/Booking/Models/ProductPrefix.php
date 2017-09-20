@@ -39,6 +39,6 @@ class ProductPrefix extends Model
         return $query->join('012_111_product', '011_222_product_prefix.product_id_222', '=', '012_111_product.id_111')
             ->join('012_112_product_lang', '012_111_product.id_111', '=', '012_112_product_lang.id_112')
             ->join('001_001_lang', '012_112_product_lang.lang_id_112', '=', '001_001_lang.id_001')
-            ->where('012_112_product_lang.lang_id_112', base_lang()->id_001);
+            ->where('012_112_product_lang.lang_id_112', base_lang2()->id_001);
     }
 }

@@ -154,7 +154,7 @@ class BookingDraftController extends Controller
             $model                      = App::make($result->first()->model);
 
             // use sofa to get lang from lang table of object query
-            $parameters['objects']      = $model->builder()->where('lang_id', base_lang()->id_001)->get();
+            $parameters['objects']      = $model->builder()->where('lang_id', base_lang2()->id_001)->get();
             $parameters['objectName']   = trans_choice($result->first()->name, 1);
             $parameters['objectKey']    = $model->getKeyName();
         }
