@@ -21,7 +21,7 @@ class BookingController extends Controller
     protected $routeSuffix  = 'bookingBooking';
     protected $folder       = 'booking';
     protected $package      = 'booking';
-    protected $indexColumns = ['id_225', 'status_text_225', 'date_225', 'date_text_225', 'check_in_date_225', 'check_in_date_text_225', 'object_name_225', 'customer_name_225', 'id_226'];
+    protected $indexColumns = ['id_225', 'status_text_225', 'date_225', 'date_text_225', 'check_in_date_225', 'check_in_date_text_225', 'object_name_225', 'customer_name_225', 'code_prefix_226', 'id_226'];
     protected $nameM        = 'name_221';
     protected $model        = Booking::class;
     protected $icon         = 'fa fa-hourglass-end';
