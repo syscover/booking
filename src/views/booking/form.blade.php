@@ -699,7 +699,7 @@
             @foreach($vouchers as $voucher)
                 <tr>
                     <td>{{ $voucher->id_226 }}</td>
-                    <td>{{ $voucher->prefix_221 }}</td>
+                    <td>{{ $voucher->code_prefix_226 }}</td>
                     <td>{{ $voucher->name_221 }}</td>
                     <td class="align-center">{{ $voucher->price_226 }}</td>
                     <td class="align-center">
