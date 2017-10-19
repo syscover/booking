@@ -58,7 +58,7 @@ class Booking extends Model
         // this parameter check mode ONLY_FULL_GROUP_BY,
         // than force to define in group by all column than you want view
         return $query
-            ->select('id_225', 'status_text_225', 'date_225', 'date_text_225', 'check_in_date_225', 'check_in_date_text_225', 'object_name_225', 'customer_name_225', DB::raw('GROUP_CONCAT(code_prefix_226, id_226 SEPARATOR \', \') AS id_226'))
+            ->select('id_225', 'status_text_225', 'date_225', 'date_text_225', 'check_in_date_225', 'check_in_date_text_225', 'object_name_225', 'customer_name_225', DB::raw('GROUP_CONCAT(CONCAT(code_prefix_226, \'-\',id_226) SEPARATOR \', \') AS id_226'))
             ->leftJoin('011_226_voucher', '011_225_booking.id_225', '=', '011_226_voucher.booking_id_226')
             ->groupBy('id_225', 'status_text_225', 'date_225', 'date_text_225', 'check_in_date_225', 'check_in_date_text_225', 'object_name_225', 'customer_name_225')
             ->get();
