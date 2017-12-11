@@ -178,7 +178,7 @@ class VoucherController extends Controller
             'place_id_226'                  => $this->request->has('place')?  $this->request->input('place') : null,
             'object_id_226'                 => $this->request->has('object')?  $this->request->input('object') : null,
             'cost_226'                      => $this->request->has('cost')? $this->request->input('cost') : null,
-            'paid_226'                      => $this->request->has('payoutDate'),
+            'paid_226'                      => $this->request->input('payoutDate'),
             'place_payout_date_226'         => $this->request->input('payoutDate')? \DateTime::createFromFormat(config('pulsar.datePattern'), $this->request->input('payoutDate'))->getTimestamp() : null,
             'place_payout_date_text_226'    => $this->request->input('payoutDate')?  $this->request->input('payoutDate') : null,
         ]);
