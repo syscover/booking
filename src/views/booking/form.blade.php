@@ -357,7 +357,7 @@
             $('#vouchers tbody').append(
                 '<tr>' +
                     '<td>' + data.id_226 + '</td>' +
-                    '<td>' + data.prefix_221 + '</td>' +
+                    '<td>' + data.prefix_221 + '-' + data.code_prefix_226 + '</td>' +
                     '<td>' + data.name_221 + '</td>' +
                     '<td class="align-center">' + data.price_226 + '</td>' +
                     '<td class="align-center">'+
