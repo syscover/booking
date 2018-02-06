@@ -2,7 +2,7 @@
 
 use Syscover\Booking\Models\Booking;
 
-class BookingCreated
+class BookingStored
 {
     public $booking;
 

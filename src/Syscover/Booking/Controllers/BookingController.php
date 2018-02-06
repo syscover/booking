@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
-use Syscover\Booking\Events\BookingCreated;
+use Syscover\Booking\Events\BookingStored;
+use Syscover\Booking\Events\BookingUpdated;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Pulsar\Models\Attachment;
 use Syscover\Pulsar\Models\CustomField;
@@ -172,7 +173,7 @@ class BookingController extends Controller
         // overwrite variable with relation data
         $booking = Booking::builder()->where('id_225', $booking->id_225)->first();
 
-        event(new BookingCreated($booking));
+        event(new BookingStored($booking));
 
         $this->sendEmails($booking);
     }
@@ -273,6 +274,8 @@ class BookingController extends Controller
         {
             $this->setVouchersToRegister($vouchersProperties['vouchersId'], $booking);
         }
+
+        event(new BookingUpdated($booking));
 
         if($this->request->input('resendEmails') === '1')
         {
