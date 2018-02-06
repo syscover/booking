@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
+use Syscover\Booking\Events\BookingCreated;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Pulsar\Models\Attachment;
 use Syscover\Pulsar\Models\CustomField;
@@ -170,6 +171,8 @@ class BookingController extends Controller
 
         // overwrite variable with relation data
         $booking = Booking::builder()->where('id_225', $booking->id_225)->first();
+
+        event(new BookingCreated($booking));
 
         $this->sendEmails($booking);
     }
