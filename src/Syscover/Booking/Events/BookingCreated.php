@@ -14,6 +14,6 @@ class BookingCreated
      */
     public function __construct(Booking $booking)
     {
-        $this->$booking = $booking;
+        $this->booking = $booking;
     }
 }
