@@ -20,7 +20,7 @@ class Cron
             // si en 10 minutos no se ha liberado la variable, damos por hecho que se ha bloqueado y la liberamos
             $update = \DateTime::createFromFormat('Y-m-d H:i:s', $bookingVouchersBulkCreate->updated_at);
             if($bookingVouchersBulkCreate->value_018 == '1' && date('U') - $update->getTimestamp() > 600)
-                Preference::setValue('emailServiceSendingEmailsToQueue', 11, '0');
+                Preference::setValue('bookingVouchersBulkCreate', 11, '0');
 
             // en el caso que el estado de envio esté activo, eso siginifica que hay una petición trabajando y enviando
             // a la tabla de cola de envíos los contactos, cuando termine de hacerlo cambiaremos el estado de envío de emails
