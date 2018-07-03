@@ -1,6 +1,6 @@
 <?php namespace Syscover\Booking\Controllers;
 
-use Syscover\Market\Models\Product;
+use Syscover\Market\Old\Models\Product;
 use Syscover\Pulsar\Core\Controller;
 use Syscover\Booking\Models\ProductPrefix;
 

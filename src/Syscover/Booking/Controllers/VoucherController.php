@@ -10,7 +10,7 @@ use Syscover\Booking\Models\Place;
 use Syscover\Booking\Models\ProductPrefix;
 use Syscover\Booking\Models\Voucher;
 use Syscover\FacturaDirecta\Facades\FacturaDirecta;
-use Syscover\Market\Models\Product;
+use Syscover\Market\Old\Models\Product;
 
 /**
  * Class VoucherController
