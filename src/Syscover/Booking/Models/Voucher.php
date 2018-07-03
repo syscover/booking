@@ -4,7 +4,7 @@ use Syscover\Pulsar\Core\Model;
 use Sofa\Eloquence\Eloquence;
 use Sofa\Eloquence\Mappable;
 use Illuminate\Support\Facades\Validator;
-use Syscover\Crm\Models\Customer;
+use Syscover\Crm\Old\Models\Customer;
 
 /**
  * Class Voucher
