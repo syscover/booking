@@ -5,4 +5,5 @@
 <li class="current">
     <a href="{{ route($routeSuffix) }}">{{ trans_choice($objectTrans, 2) }}</a>
 </li>
+
 <!-- /booking::voucher.breadcrumbs -->
