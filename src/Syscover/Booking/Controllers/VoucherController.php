@@ -47,7 +47,9 @@ class VoucherController extends Controller
         if($parameters['modal'] == 1)
         {
             $this->viewParameters['checkBoxColumn'] = false;
-            $this->viewParameters['relatedButton']  = true;
+            $this->viewParameters['relatedButton']  = function($object) {
+                return $object->active_226;
+            };
         }
     }
 
