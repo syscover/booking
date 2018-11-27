@@ -99,7 +99,7 @@ class VoucherController extends Controller
         {
             // create task to create vouchers
             VoucherTask::create([
-                'user_id_227'               => auth('pulsar')->user()->id_010,
+                'user_id_227'               => auth()->guard('pulsar')->user()->id_010,
                 'voucher_id_227'            => $voucher->id_226,
                 'vouchers_to_create_227'    => (int)$this->request->input('bulkCreate') - 1,
                 'total_vouchers_227'        => $this->request->input('bulkCreate')
