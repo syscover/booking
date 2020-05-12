@@ -320,7 +320,6 @@
         };
 
         $.sumTotalAmount = function() {
-            // var totalAmount = parseFloat($('[name=partnerDirectPaymentAmount]').val()) + parseFloat($('[name=placeDirectPaymentAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
             var totalAmount = parseFloat($('[name=placeDirectPaymentAmount]').val()) + parseFloat($('[name=voucherCostAmount]').val());
             $('[name=totalAmount]').val(totalAmount);
 
